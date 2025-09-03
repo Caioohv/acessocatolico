@@ -1,0 +1,43 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+:root {
+  font-size: 10px;
+  --radius: 1.5rem;
+  --transition: 0.3s ease-in-out;
+
+  /* Colors */
+  /* Primary */
+  --teal: #0D6E6E;
+  --teal-light: #4a9d9c;
+  --teal-lighter: #afffff;
+
+  /* Secondary */
+  --red: #FF3D3D;
+  --red-light: #ffe0c8;
+
+
+  /* UI Dark */
+  --blue-dark: #354656;
+  --blue-darker: #0D1F2D;
+
+  /* UI Light */
+  --light: #e0e0e0;
+  --lighter: #FFFFFF;
+}
+/* https://www.bairesdev.com/tools/ai-colors */
+
+@theme {
+  --color-primary: var(--teal);
+  --color-primary-light: var(--teal-light);
+  --color-primary-lighter: var(--teal-lighter);
+  --color-secondary: var(--red);
+  --color-secondary-light: var(--red-light);
+  --color-ui-dark: var(--blue-dark);
+  --color-ui-darker: var(--blue-darker);
+  --color-ui-light: var(--light);
+  --color-ui-lighter: var(--lighter);
+
+  --ui-bg: var(--color-ui-darker);
+  --ui-text: var(--color-ui-lighter);
+}
