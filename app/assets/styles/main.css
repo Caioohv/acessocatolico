@@ -9,20 +9,21 @@
   /* Colors */
   /* Primary */
   --teal: #0D6E6E;
-  --teal-light: #4a9d9c;
-  --teal-lighter: #afffff;
+  --teal-light: #4A9D9C;
+  --teal-lighter: #AFFFFF;
 
   /* Secondary */
   --red: #FF3D3D;
-  --red-light: #ffe0c8;
+  --red-light: #FF3D3D;
 
 
   /* UI Dark */
-  --blue-dark: #354656;
-  --blue-darker: #0D1F2D;
+  --coal: #0D1F2D;
+  --coal-light: #1D2E3D;
+  --coal-lighter: #354656;
 
   /* UI Light */
-  --light: #e0e0e0;
+  --light: #E0E0E0;
   --lighter: #FFFFFF;
 }
 /* https://www.bairesdev.com/tools/ai-colors */
@@ -33,11 +34,12 @@
   --color-primary-lighter: var(--teal-lighter);
   --color-secondary: var(--red);
   --color-secondary-light: var(--red-light);
-  --color-ui-dark: var(--blue-dark);
-  --color-ui-darker: var(--blue-darker);
+  --color-ui-darkest: var(--coal);
+  --color-ui-darker: var(--coal-light);
+  --color-ui: var(--coal-lighter);
   --color-ui-light: var(--light);
   --color-ui-lighter: var(--lighter);
 
-  --ui-bg: var(--color-ui-darker);
+  --ui-bg: var(--color-ui-darkest);
   --ui-text: var(--color-ui-lighter);
 }
