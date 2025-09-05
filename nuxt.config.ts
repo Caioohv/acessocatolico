@@ -8,7 +8,9 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@nuxt/icon',
     '@nuxt/image',
-    '@nuxt/ui'
+    '@nuxt/ui',
+    '@pinia/nuxt',
+    '@nuxtjs/supabase'
   ],
 
   css: [
@@ -27,13 +29,27 @@ export default defineNuxtConfig({
         'primary-lighter',
         'secondary',
         'secondary-light',
-        'ui-dark',
         'ui-darker',
+        'ui-dark',
+        'ui',
         'ui-light',
         'ui-lighter',
       ]
     }
-  }
+  },
+  runtimeConfig: {
+    public: {
+      supabaseUrl: process.env.SUPABASE_URL,
+      supabaseKey: process.env.SUPABASE_KEY,
+    }
+  },
+  supabase: {
+    redirectOptions: {
+      login: '/login',
+      callback: '/dashboard',
+      exclude: ['/', '/sobre', '/igrejas'] // Páginas públicas
+    }
+  },
 })
 
 

@@ -34,8 +34,8 @@
   --color-primary-lighter: var(--teal-lighter);
   --color-secondary: var(--red);
   --color-secondary-light: var(--red-light);
-  --color-ui-darkest: var(--coal);
-  --color-ui-darker: var(--coal-light);
+  --color-ui-darker: var(--coal);
+  --color-ui-dark: var(--coal-light);
   --color-ui: var(--coal-lighter);
   --color-ui-light: var(--light);
   --color-ui-lighter: var(--lighter);
