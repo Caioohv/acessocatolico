@@ -44,17 +44,17 @@ Este roadmap detalha o desenvolvimento completo da plataforma AcessoCatólico, d
   - [x] Tabela `cities` (cidades)
   - [x] Tabela `neighborhoods` (bairros)
 
-### 🔐 1.3 Sistema de Autenticação Base
-- [ ] **Configuração JWT Auth**
-  - [ ] Login/Registro com email
-  - [ ] Recuperação de senha
-  - [ ] Middleware de autenticação
-  - [ ] Guards de rota
+### ✅ 1.3 Sistema de Autenticação Base
+- [x] **Configuração JWT Auth**
+  - [x] Login/Registro com email
+  - [x] Recuperação de senha
+  - [x] Middleware de autenticação
+  - [x] Guards de rota
   
-- [ ] **Sistema de Papéis (RBAC)**
-  - [ ] Enum de tipos de usuário
-  - [ ] Middleware de autorização
-  - [ ] Composables para verificar permissões
+- [x] **Sistema de Papéis (RBAC)**
+  - [x] Enum de tipos de usuário
+  - [x] Middleware de autorização
+  - [x] Composables para verificar permissões
 
 ### 🎨 1.4 Layout e Design System
 - [ ] **Componentes Base**
@@ -511,9 +511,9 @@ Este roadmap detalha o desenvolvimento completo da plataforma AcessoCatólico, d
 ## 📋 Checklist de Entrega por Fase
 
 ### Fase 1 - Fundação ✅
-- [ ] Ambiente configurado
-- [ ] Banco de dados modelado
-- [ ] Autenticação funcionando
+- [x] Ambiente configurado
+- [x] Banco de dados modelado
+- [x] Autenticação funcionando
 - [ ] Design system implementado
 
 ### Fase 2 - Paróquias ✅

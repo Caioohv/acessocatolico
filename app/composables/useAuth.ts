@@ -1,16 +1,4 @@
-// Types
-type UserRole = 'ADMIN' | 'PRIEST' | 'ORGANIZER' | 'MEMBER' | 'VISITOR'
-
-interface AuthUser {
-  id: string
-  email: string
-  role: UserRole
-  profile?: {
-    firstName: string
-    lastName: string
-    avatar?: string
-  }
-}
+import type { AuthUser, UserRole, AuthResponse, AuthResult, RegisterData } from '~/types/auth'
 
 export const useAuth = () => {
   const user = useState<AuthUser | null>('auth.user', () => null)
@@ -18,7 +6,7 @@ export const useAuth = () => {
   
   const login = async (email: string, password: string) => {
     try {
-      const data = await $fetch<{ user: AuthUser; token: string }>('/api/auth/login', {
+      const data = await $fetch<AuthResponse>('/api/auth/login', {
         method: 'POST',
         body: { email, password }
       })
@@ -44,15 +32,9 @@ export const useAuth = () => {
     }
   }
   
-  const register = async (userData: {
-    email: string
-    password: string
-    firstName: string
-    lastName: string
-    phone?: string
-  }) => {
+  const register = async (userData: RegisterData) => {
     try {
-      const data = await $fetch<{ user: AuthUser; token: string }>('/api/auth/register', {
+      const data = await $fetch<AuthResponse>('/api/auth/register', {
         method: 'POST',
         body: userData
       })
@@ -97,6 +79,36 @@ export const useAuth = () => {
   const isOrganizer = computed(() => hasRole('ORGANIZER'))
   const isMember = computed(() => hasRole('MEMBER'))
   
+  const forgotPassword = async (email: string) => {
+    try {
+      await $fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        body: { email }
+      })
+      return { success: true }
+    } catch (error: any) {
+      return { 
+        success: false, 
+        error: error.data?.message || 'Erro ao processar solicitação'
+      }
+    }
+  }
+  
+  const resetPassword = async (token: string, password: string, confirmPassword: string) => {
+    try {
+      await $fetch('/api/auth/reset-password', {
+        method: 'POST',
+        body: { token, password, confirmPassword }
+      })
+      return { success: true }
+    } catch (error: any) {
+      return { 
+        success: false, 
+        error: error.data?.message || 'Erro ao redefinir senha'
+      }
+    }
+  }
+  
   return {
     user: readonly(user),
     isLoggedIn,
@@ -108,6 +120,8 @@ export const useAuth = () => {
     register,
     logout,
     fetchUser,
-    hasRole
+    hasRole,
+    forgotPassword,
+    resetPassword
   }
 }
