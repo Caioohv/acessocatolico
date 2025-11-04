@@ -1,0 +1,38 @@
+#!/bin/sh
+# Git pre-commit hook
+
+echo "🔍 Executando verificações pre-commit..."
+
+# Check for TypeScript errors
+echo "📝 Verificando TypeScript..."
+npx tsc --noEmit
+if [ $? -ne 0 ]; then
+  echo "❌ Erro de TypeScript encontrado!"
+  exit 1
+fi
+
+# Run ESLint
+echo "🔧 Executando ESLint..."
+npx eslint . --ext .js,.ts,.vue
+if [ $? -ne 0 ]; then
+  echo "❌ Erro de ESLint encontrado!"
+  exit 1
+fi
+
+# Run Prettier check
+echo "💅 Verificando formatação com Prettier..."
+npx prettier --check .
+if [ $? -ne 0 ]; then
+  echo "❌ Arquivos não formatados encontrados! Execute 'npm run format' para corrigir."
+  exit 1
+fi
+
+# Check Prisma schema
+echo "🗃️ Verificando schema do Prisma..."
+npx prisma validate
+if [ $? -ne 0 ]; then
+  echo "❌ Erro no schema do Prisma!"
+  exit 1
+fi
+
+echo "✅ Todas as verificações passaram!"

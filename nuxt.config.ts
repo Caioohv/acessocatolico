@@ -9,8 +9,7 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/image',
     '@nuxt/ui',
-    '@pinia/nuxt',
-    '@nuxtjs/supabase'
+    '@pinia/nuxt'
   ],
 
   css: [
@@ -38,16 +37,11 @@ export default defineNuxtConfig({
     }
   },
   runtimeConfig: {
+    databaseUrl: process.env.DATABASE_URL,
+    jwtSecret: process.env.JWT_SECRET,
     public: {
-      supabaseUrl: process.env.SUPABASE_URL,
-      supabaseKey: process.env.SUPABASE_KEY,
-    }
-  },
-  supabase: {
-    redirectOptions: {
-      login: '/login',
-      callback: '/dashboard',
-      exclude: ['/', '/sobre', '/igrejas'] // Páginas públicas
+      appName: 'AcessoCatólico',
+      appVersion: '1.0.0'
     }
   },
 })

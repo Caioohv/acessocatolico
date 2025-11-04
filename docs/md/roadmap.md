@@ -7,9 +7,11 @@ Este roadmap detalha o desenvolvimento completo da plataforma AcessoCatólico, d
 **Stack Tecnológica Atual:**
 - Frontend: Nuxt 3 + Vue 3 + TypeScript
 - UI: Nuxt UI
-- Backend/Database: Supabase
+- Backend/Database: Prisma + MySQL
 - State Management: Pinia
 - Styling: CSS customizado
+- Authentication: JWT + bcryptjs
+- Dev Tools: ESLint + Prettier + Docker
 
 ---
 
@@ -18,15 +20,15 @@ Este roadmap detalha o desenvolvimento completo da plataforma AcessoCatólico, d
 ### ✅ 1.1 Configuração do Ambiente de Desenvolvimento
 - [x] Setup inicial do Nuxt 3
 - [x] Estrutura de pastas definida
-- [ ] Configuração do Prisma
-- [ ] Configuração de ESLint/Prettier
-- [ ] Setup de Git hooks (pre-commit)
+- [x] Configuração do Prisma
+- [x] Configuração de ESLint/Prettier
+- [x] Setup de Git hooks (pre-commit)
 - [ ] Configuração de CI/CD pipeline
-- [ ] Docker setup para desenvolvimento local
+- [x] Docker setup para desenvolvimento local
 
 ### 📊 1.2 Modelagem do Banco de Dados
 - [ ] **Schema de Usuários e Autenticação**
-  - [ ] Tabela `users` (base do Supabase Auth)
+  - [ ] Tabela `users` (autenticação JWT)
   - [ ] Tabela `user_profiles` (dados complementares)
   - [ ] Tabela `user_roles` (papéis do sistema)
   - [ ] RLS (Row Level Security) básico
@@ -43,7 +45,7 @@ Este roadmap detalha o desenvolvimento completo da plataforma AcessoCatólico, d
   - [ ] Tabela `neighborhoods` (bairros)
 
 ### 🔐 1.3 Sistema de Autenticação Base
-- [ ] **Configuração Supabase Auth**
+- [ ] **Configuração JWT Auth**
   - [ ] Login/Registro com email
   - [ ] Recuperação de senha
   - [ ] Middleware de autenticação
@@ -582,7 +584,7 @@ Este roadmap detalha o desenvolvimento completo da plataforma AcessoCatólico, d
 ## 💰 Estimativa de Recursos
 
 ### 👨‍💻 Equipe Mínima Recomendada
-- **1 Full-stack Developer** (Nuxt/Vue/Supabase)
+- **1 Full-stack Developer** (Nuxt/Vue/Prisma)
 - **1 UI/UX Designer** (part-time)
 - **1 Product Owner** (padre ou líder católico)
 - **1 QA Tester** (part-time nas fases finais)
@@ -593,7 +595,7 @@ Este roadmap detalha o desenvolvimento completo da plataforma AcessoCatólico, d
 - **Dedicação**: 40-50 horas/semana (full-time)
 
 ### 💸 Custos Estimados
-- **Hospedagem**: $50-100/mês (Supabase + Vercel)
+- **Hospedagem**: $50-100/mês (MySQL + Vercel)
 - **Domínio e SSL**: $20/ano
 - **Serviços Terceiros**: $100-200/mês (emails, analytics)
 - **Total Operacional**: ~$200-300/mês
@@ -603,7 +605,7 @@ Este roadmap detalha o desenvolvimento completo da plataforma AcessoCatólico, d
 ## 🚨 Riscos e Mitigações
 
 ### ⚠️ Riscos Técnicos
-- **Escala do Supabase**: Monitorar limites e considerar upgrade
+- **Escala do Banco**: Monitorar performance e considerar otimizações
 - **Performance**: Implementar caching e otimizações desde o início
 - **Segurança**: Auditorias regulares e boas práticas
 
