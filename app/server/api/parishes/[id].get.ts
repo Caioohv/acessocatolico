@@ -1,4 +1,4 @@
-import { defineEventHandler, getMethod, getRouterParam, createError } from 'h3'
+import { createError, defineEventHandler, getMethod, getRouterParam } from 'h3'
 
 export default defineEventHandler(async (event) => {
   if (getMethod(event) !== 'GET') {

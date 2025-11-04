@@ -8,22 +8,11 @@
           Paróquias no Mapa
         </h3>
         <div class="map-controls">
-          <UButton
-            @click="locateUser"
-            :loading="locatingUser" 
-            variant="outline"
-            size="sm"
-            class="locate-btn"
-          >
+          <UButton @click="locateUser" :loading="locatingUser" variant="outline" size="sm" class="locate-btn">
             <Icon name="heroicons:map-pin" class="btn-icon" />
             Minha Localização
           </UButton>
-          <UButton
-            @click="fitAllMarkers"
-            variant="outline"
-            size="sm"
-            class="fit-all-btn"
-          >
+          <UButton @click="fitAllMarkers" variant="outline" size="sm" class="fit-all-btn">
             <Icon name="heroicons:globe-americas" class="btn-icon" />
             Ver Todas
           </UButton>
@@ -32,32 +21,14 @@
 
       <!-- Map -->
       <div class="map-wrapper">
-        <LMap
-          ref="map"
-          v-model:zoom="zoom"
-          :center="center"
-          :options="mapOptions"
-          class="leaflet-map"
-          @ready="onMapReady"
-        >
+        <LMap ref="map" v-model:zoom="zoom" :center="center" :options="mapOptions" class="leaflet-map"
+          @ready="onMapReady">
           <!-- Tile Layer -->
-          <LTileLayer
-            :url="tileUrl"
-            :attribution="attribution"
-            :options="tileOptions"
-          />
+          <LTileLayer :url="tileUrl" :attribution="attribution" :options="tileOptions" />
 
           <!-- User Location Marker -->
-          <LMarker
-            v-if="userLocation"
-            :lat-lng="userLocation"
-            :options="userMarkerOptions"
-          >
-            <LIcon
-              :icon-url="userIconUrl"
-              :icon-size="[40, 40]"
-              :icon-anchor="[20, 40]"
-            />
+          <LMarker v-if="userLocation" :lat-lng="userLocation" :options="userMarkerOptions">
+            <LIcon :icon-url="userIconUrl" :icon-size="[40, 40]" :icon-anchor="[20, 40]" />
             <LPopup>
               <div class="user-popup">
                 <Icon name="heroicons:map-pin" class="popup-icon" />
@@ -67,18 +38,10 @@
           </LMarker>
 
           <!-- Parish Markers -->
-          <LMarker
-            v-for="parish in parishesWithCoordinates"
-            :key="parish.id"
-            :lat-lng="[parish.latitude!, parish.longitude!]"
-            :options="parishMarkerOptions"
-            @click="selectParish(parish)"
-          >
-            <LIcon
-              :icon-url="parishIconUrl"
-              :icon-size="[32, 32]"
-              :icon-anchor="[16, 32]"
-            />
+          <LMarker v-for="parish in parishesWithCoordinates" :key="parish.id"
+            :lat-lng="[parish.latitude!, parish.longitude!]" :options="parishMarkerOptions"
+            @click="selectParish(parish)">
+            <LIcon :icon-url="parishIconUrl" :icon-size="[32, 32]" :icon-anchor="[16, 32]" />
             <LPopup>
               <div class="parish-popup">
                 <div class="popup-header">
@@ -104,20 +67,10 @@
                   </div>
                 </div>
                 <div class="popup-actions">
-                  <UButton
-                    :to="`/paroquias/${parish.id}`"
-                    size="xs"
-                    variant="solid"
-                    class="view-parish-btn"
-                  >
+                  <UButton :to="`/paroquias/${parish.id}`" size="xs" variant="solid" class="view-parish-btn">
                     Ver Detalhes
                   </UButton>
-                  <UButton
-                    @click="getDirections(parish)"
-                    size="xs"
-                    variant="outline"
-                    class="directions-btn"
-                  >
+                  <UButton @click="getDirections(parish)" size="xs" variant="outline" class="directions-btn">
                     <Icon name="heroicons:arrow-top-right-on-square" class="btn-icon" />
                     Rotas
                   </UButton>
@@ -127,12 +80,8 @@
           </LMarker>
 
           <!-- Selected Parish Circle -->
-          <LCircle
-            v-if="selectedParish"
-            :lat-lng="[selectedParish.latitude, selectedParish.longitude]"
-            :radius="500"
-            :options="selectedCircleOptions"
-          />
+          <LCircle v-if="selectedParish" :lat-lng="[selectedParish.latitude, selectedParish.longitude]" :radius="500"
+            :options="selectedCircleOptions" />
         </LMap>
 
         <!-- Loading Overlay -->
@@ -266,9 +215,9 @@ const onMapReady = () => {
 
 const locateUser = async () => {
   if (!process.client) return
-  
+
   locatingUser.value = true
-  
+
   try {
     const position = await new Promise<GeolocationPosition>((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(resolve, reject, {
@@ -285,7 +234,7 @@ const locateUser = async () => {
 
     // Find nearest parishes
     findNearestParishes(latitude, longitude)
-    
+
   } catch (error) {
     console.error('Geolocation error:', error)
     const toast = useToast()
@@ -324,10 +273,10 @@ const calculateDistance = (lat1: number, lng1: number, lat2: number, lng2: numbe
   const R = 6371 // Earth's radius in km
   const dLat = (lat2 - lat1) * Math.PI / 180
   const dLng = (lng2 - lng1) * Math.PI / 180
-  const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-    Math.sin(dLng/2) * Math.sin(dLng/2)
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
+    Math.sin(dLng / 2) * Math.sin(dLng / 2)
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
   return R * c
 }
 
@@ -335,12 +284,12 @@ const fitAllMarkers = () => {
   if (!map.value || props.parishes.length === 0) return
 
   const bounds = []
-  
+
   // Add parish coordinates
   for (const parish of parishesWithCoordinates.value) {
     bounds.push([parish.latitude!, parish.longitude!])
   }
-  
+
   // Add user location if available
   if (userLocation.value) {
     bounds.push(userLocation.value)
@@ -353,7 +302,7 @@ const fitAllMarkers = () => {
 
 const selectParish = (parish: Parish) => {
   if (!parish.latitude || !parish.longitude) return
-  
+
   selectedParish.value = parish
   center.value = [parish.latitude, parish.longitude]
   zoom.value = 14
@@ -362,7 +311,7 @@ const selectParish = (parish: Parish) => {
 
 const getDirections = (parish: Parish) => {
   if (!parish.latitude || !parish.longitude) return
-  
+
   const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${parish.latitude},${parish.longitude}&travelmode=driving`
   window.open(googleMapsUrl, '_blank')
 }
@@ -548,7 +497,7 @@ onMounted(() => {
   margin-bottom: 0.75rem;
 }
 
-.popup-content > * + * {
+.popup-content>*+* {
   margin-top: 0.5rem;
 }
 

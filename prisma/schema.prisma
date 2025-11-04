@@ -39,6 +39,29 @@ enum AppointmentStatus {
   COMPLETED
 }
 
+enum PriestRegistrationStatus {
+  PENDING
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  REQUIRES_DOCUMENTATION
+}
+
+enum DocumentType {
+  ORDINATION_CERTIFICATE
+  IDENTITY_DOCUMENT
+  RESIDENCE_PROOF
+  RECOMMENDATION_LETTER
+  OTHER
+}
+
+enum DocumentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  REQUIRES_REPLACEMENT
+}
+
 // User and Authentication
 model User {
   id        String   @id @default(cuid())
@@ -60,6 +83,9 @@ model User {
   appointments  Appointment[]
   ministryMembers MinistryMember[]
   emailVerificationTokens EmailVerificationToken[]
+  
+  // Priest Registration
+  priestRegistration PriestRegistration?
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -173,6 +199,7 @@ model Diocese {
   name      String
   
   parishes  Parish[]
+  priestRegistrations     PriestRegistration[]
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -266,6 +293,105 @@ model Mass {
   updatedAt   DateTime @updatedAt
   
   @@map("masses")
+}
+
+// Priest Registration Models
+model PriestRegistration {
+  id                  String                   @id @default(cuid())
+  userId              String?                  @unique
+  user                User?                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Personal Information
+  firstName           String
+  lastName            String
+  email               String                   @unique
+  phone               String
+  birthDate           DateTime
+  cpf                 String                   @unique
+  bio                 String?                  @db.Text
+  
+  // Ecclesiastical Information
+  ordinationNumber    String                   @unique
+  ordinationDate      DateTime
+  ordinationDioceseId String
+  ordinationDiocese   Diocese                  @relation(fields: [ordinationDioceseId], references: [id])
+  seminary            String?
+  specializations     Json?                    // Array of specializations
+  languages           Json?                    // Array of languages
+  
+  // Registration Status
+  status              PriestRegistrationStatus @default(PENDING)
+  statusUpdatedAt     DateTime                 @default(now())
+  statusUpdatedBy     String?                  // Admin user ID
+  
+  // Review and Comments
+  reviewComments      String?                  @db.Text
+  internalNotes       String?                  @db.Text
+  
+  // Documents
+  documents           PriestDocument[]
+  
+  // Approval History
+  approvalHistory     PriestApprovalHistory[]
+  
+  // Email verification
+  emailVerified       Boolean                  @default(false)
+  emailVerificationToken String?               @unique
+  emailVerificationSentAt DateTime?
+  
+  createdAt           DateTime                 @default(now())
+  updatedAt           DateTime                 @updatedAt
+  
+  @@index([status])
+  @@index([email])
+  @@index([cpf])
+  @@index([ordinationNumber])
+  @@map("priest_registrations")
+}
+
+model PriestDocument {
+  id                    String                 @id @default(cuid())
+  registrationId        String
+  registration          PriestRegistration     @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  
+  type                  DocumentType
+  fileName              String
+  originalFileName      String
+  filePath              String
+  fileSize              Int
+  mimeType              String
+  
+  status                DocumentStatus         @default(PENDING)
+  statusUpdatedAt       DateTime               @default(now())
+  statusUpdatedBy       String?                // Admin user ID
+  
+  reviewComments        String?                @db.Text
+  
+  uploadedAt            DateTime               @default(now())
+  
+  @@index([registrationId])
+  @@index([type])
+  @@index([status])
+  @@map("priest_documents")
+}
+
+model PriestApprovalHistory {
+  id                String               @id @default(cuid())
+  registrationId    String
+  registration      PriestRegistration   @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  
+  fromStatus        PriestRegistrationStatus
+  toStatus          PriestRegistrationStatus
+  comments          String?              @db.Text
+  
+  // Admin who made the change
+  adminId           String?
+  adminEmail        String?
+  
+  createdAt         DateTime             @default(now())
+  
+  @@index([registrationId])
+  @@map("priest_approval_history")
 }
 
 // Event Models

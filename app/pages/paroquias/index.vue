@@ -82,22 +82,16 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- View Toggle -->
             <div class="view-toggle">
-              <button 
-                @click="viewMode = 'list'" 
-                :class="['view-toggle__button', { active: viewMode === 'list' }]"
-                aria-label="Vista em lista"
-              >
+              <button @click="viewMode = 'list'" :class="['view-toggle__button', { active: viewMode === 'list' }]"
+                aria-label="Vista em lista">
                 <Icon name="heroicons:list-bullet" class="view-toggle__icon" />
                 Lista
               </button>
-              <button 
-                @click="viewMode = 'map'" 
-                :class="['view-toggle__button', { active: viewMode === 'map' }]"
-                aria-label="Vista em mapa"
-              >
+              <button @click="viewMode = 'map'" :class="['view-toggle__button', { active: viewMode === 'map' }]"
+                aria-label="Vista em mapa">
                 <Icon name="heroicons:map" class="view-toggle__icon" />
                 Mapa
               </button>
@@ -359,7 +353,7 @@ onMounted(async () => {
   position: relative;
 }
 
-.content__main > * + * {
+.content__main>*+* {
   margin-top: 1.5rem;
 }
 
@@ -568,16 +562,16 @@ onMounted(async () => {
   .header__title {
     font-size: 2rem;
   }
-  
+
   .header__content {
     padding: 2rem 1rem;
   }
-  
+
   .results-header {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .view-toggle {
     justify-content: center;
   }

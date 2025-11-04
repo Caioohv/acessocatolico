@@ -1,4 +1,4 @@
-import { defineEventHandler, getMethod, getQuery, createError } from 'h3'
+import { createError, defineEventHandler, getMethod, getQuery } from 'h3'
 
 export default defineEventHandler(async (event) => {
   if (getMethod(event) !== 'GET') {
