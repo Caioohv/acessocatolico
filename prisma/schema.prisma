@@ -45,6 +45,10 @@ model User {
   email     String   @unique
   password  String
   role      UserRole @default(VISITOR)
+  isActive  Boolean  @default(true)
+  emailVerified Boolean @default(false)
+  emailVerifiedAt DateTime?
+  lastLoginAt DateTime?
   
   // Profile
   profile   UserProfile?
@@ -55,10 +59,14 @@ model User {
   registrations EventRegistration[]
   appointments  Appointment[]
   ministryMembers MinistryMember[]
+  emailVerificationTokens EmailVerificationToken[]
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   
+  @@index([role])
+  @@index([isActive])
+  @@index([email])
   @@map("users")
 }
 
@@ -78,6 +86,8 @@ model UserProfile {
   state       State?  @relation(fields: [stateId], references: [id])
   cityId      String?
   city        City?   @relation(fields: [cityId], references: [id])
+  neighborhoodId String?
+  neighborhood   Neighborhood? @relation(fields: [neighborhoodId], references: [id])
   
   // Participant data
   level       ParticipantLevel @default(NOVICE)
@@ -86,6 +96,36 @@ model UserProfile {
   updatedAt   DateTime @updatedAt
   
   @@map("user_profiles")
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  
+  createdAt DateTime @default(now())
+  
+  @@index([email])
+  @@index([token])
+  @@index([expiresAt])
+  @@map("password_reset_tokens")
+}
+
+model EmailVerificationToken {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  
+  createdAt DateTime @default(now())
+  
+  @@index([userId])
+  @@index([token])
+  @@map("email_verification_tokens")
 }
 
 // Location Models
@@ -107,11 +147,24 @@ model City {
   stateId     String
   state       State  @relation(fields: [stateId], references: [id])
   
+  neighborhoods Neighborhood[]
   parishes    Parish[]
   profiles    UserProfile[]
   events      Event[]
   
   @@map("cities")
+}
+
+model Neighborhood {
+  id          String @id @default(cuid())
+  name        String
+  cityId      String
+  city        City   @relation(fields: [cityId], references: [id])
+  
+  parishes    Parish[]
+  profiles    UserProfile[]
+  
+  @@map("neighborhoods")
 }
 
 // Parish Models
@@ -141,6 +194,8 @@ model Parish {
   state       State  @relation(fields: [stateId], references: [id])
   cityId      String
   city        City   @relation(fields: [cityId], references: [id])
+  neighborhoodId String?
+  neighborhood   Neighborhood? @relation(fields: [neighborhoodId], references: [id])
   
   // Diocese
   dioceseId   String
@@ -156,6 +211,11 @@ model Parish {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   
+  @@index([stateId])
+  @@index([cityId])
+  @@index([neighborhoodId])
+  @@index([dioceseId])
+  @@index([name])
   @@map("parishes")
 }
 

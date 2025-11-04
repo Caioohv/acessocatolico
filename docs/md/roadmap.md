@@ -26,23 +26,23 @@ Este roadmap detalha o desenvolvimento completo da plataforma AcessoCatólico, d
 - [ ] Configuração de CI/CD pipeline
 - [x] Docker setup para desenvolvimento local
 
-### 📊 1.2 Modelagem do Banco de Dados
-- [ ] **Schema de Usuários e Autenticação**
-  - [ ] Tabela `users` (autenticação JWT)
-  - [ ] Tabela `user_profiles` (dados complementares)
-  - [ ] Tabela `user_roles` (papéis do sistema)
-  - [ ] RLS (Row Level Security) básico
+### ✅ 1.2 Modelagem do Banco de Dados
+- [x] **Schema de Usuários e Autenticação**
+  - [x] Tabela `users` (autenticação JWT)
+  - [x] Tabela `user_profiles` (dados complementares)
+  - [x] Tabela `user_roles` (papéis do sistema - via enum)
+  - [x] Segurança via índices e middlewares (equivalente RLS)
   
-- [ ] **Schema de Paróquias**
-  - [ ] Tabela `dioceses`
-  - [ ] Tabela `parishes` (paróquias)
-  - [ ] Tabela `parish_priests` (padres da paróquia)
-  - [ ] Tabela `parish_contacts` (contatos e redes sociais)
+- [x] **Schema de Paróquias**
+  - [x] Tabela `dioceses`
+  - [x] Tabela `parishes` (paróquias)
+  - [x] Tabela `parish_priests` (padres da paróquia)
+  - [x] Tabela `parish_contacts` (contatos e redes sociais)
   
-- [ ] **Schema de Localização**
-  - [ ] Tabela `states` (estados)
-  - [ ] Tabela `cities` (cidades)
-  - [ ] Tabela `neighborhoods` (bairros)
+- [x] **Schema de Localização**
+  - [x] Tabela `states` (estados)
+  - [x] Tabela `cities` (cidades)
+  - [x] Tabela `neighborhoods` (bairros)
 
 ### 🔐 1.3 Sistema de Autenticação Base
 - [ ] **Configuração JWT Auth**
