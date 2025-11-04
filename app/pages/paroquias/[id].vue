@@ -14,19 +14,11 @@
         {{ error || 'A paróquia solicitada não foi encontrada ou não existe.' }}
       </p>
       <div class="error-actions">
-        <CatholicButton
-          @click="$router.go(-1)"
-          variant="secondary"
-          size="md"
-        >
+        <CatholicButton @click="$router.go(-1)" variant="secondary" size="md">
           <Icon name="heroicons:arrow-left" class="button-icon" />
           Voltar
         </CatholicButton>
-        <CatholicButton
-          @click="$router.push('/paroquias')"
-          variant="primary"
-          size="md"
-        >
+        <CatholicButton @click="$router.push('/paroquias')" variant="primary" size="md">
           <Icon name="heroicons:building-library" class="button-icon" />
           Ver todas as paróquias
         </CatholicButton>
@@ -59,7 +51,7 @@
                 {{ parish.description }}
               </p>
             </div>
-            
+
             <!-- Quick Contact -->
             <div class="hero-contact">
               <div v-if="parish.phone" class="contact-item">
@@ -98,18 +90,11 @@
                   Equipe Paroquial
                 </h2>
                 <div class="priests-grid">
-                  <div 
-                    v-for="priest in parish.priests" 
-                    :key="priest.id"
-                    class="priest-card"
-                  >
+                  <div v-for="priest in parish.priests" :key="priest.id" class="priest-card">
                     <div class="priest-avatar">
-                      <img 
-                        v-if="priest.user.profile.avatar"
-                        :src="priest.user.profile.avatar"
+                      <img v-if="priest.user.profile.avatar" :src="priest.user.profile.avatar"
                         :alt="`${priest.user.profile.firstName} ${priest.user.profile.lastName}`"
-                        class="avatar-image"
-                      />
+                        class="avatar-image" />
                       <Icon v-else name="heroicons:user" class="avatar-icon" />
                     </div>
                     <div class="priest-info">
@@ -135,23 +120,19 @@
 
               <!-- Mass Schedule -->
               <section v-if="massScheduleData && Object.keys(massScheduleData).length > 0" class="content-section">
-                <h2 class="section-title">
-                  <Icon name="heroicons:clock" class="section-icon" />
-                  Horários de Missa
-                </h2>
+                <div class="section-header">
+                  <h2 class="section-title">
+                    <Icon name="heroicons:clock" class="section-icon" />
+                    Horários de Missa
+                  </h2>
+                  <CalendarExport :masses="parish.masses" :parish-name="parish.name"
+                    :parish-address="`${parish.address}, ${parish.city.name}, ${parish.state.code}`" />
+                </div>
                 <div class="mass-schedule">
-                  <div 
-                    v-for="(masses, dayOfWeek) in massScheduleData" 
-                    :key="dayOfWeek"
-                    class="schedule-day"
-                  >
+                  <div v-for="(masses, dayOfWeek) in massScheduleData" :key="dayOfWeek" class="schedule-day">
                     <h3 class="day-name">{{ getDayName(Number(dayOfWeek)) }}</h3>
                     <div class="day-masses">
-                      <div 
-                        v-for="(mass, index) in masses" 
-                        :key="index"
-                        class="mass-item"
-                      >
+                      <div v-for="(mass, index) in masses" :key="index" class="mass-item">
                         <span class="mass-time">{{ mass.time }}</span>
                         <div class="mass-details">
                           <span class="mass-type">{{ getMassTypeName(mass.type) }}</span>
@@ -172,11 +153,7 @@
                   Próximos Eventos
                 </h2>
                 <div class="events-list">
-                  <div 
-                    v-for="event in parish.events" 
-                    :key="event.id"
-                    class="event-card"
-                  >
+                  <div v-for="event in parish.events" :key="event.id" class="event-card">
                     <div class="event-date">
                       <span class="event-day">{{ formatEventDay(event.startDate) }}</span>
                       <span class="event-month">{{ formatEventMonth(event.startDate) }}</span>
@@ -208,15 +185,11 @@
                   Ministérios e Pastorais
                 </h2>
                 <div class="ministries-grid">
-                  <div 
-                    v-for="ministry in parish.ministries" 
-                    :key="ministry.id"
-                    class="ministry-card"
-                  >
+                  <div v-for="ministry in parish.ministries" :key="ministry.id" class="ministry-card">
                     <div class="ministry-header">
                       <h3 class="ministry-name">{{ ministry.name }}</h3>
                       <span class="ministry-members">
-                        {{ ministry._count.members }} 
+                        {{ ministry._count.members }}
                         {{ ministry._count.members === 1 ? 'membro' : 'membros' }}
                       </span>
                     </div>
@@ -225,6 +198,15 @@
                     </p>
                   </div>
                 </div>
+              </section>
+
+              <!-- Photo Gallery -->
+              <section v-if="parishPhotos.length > 0" class="content-section">
+                <h2 class="section-title">
+                  <Icon name="heroicons:photo" class="section-icon" />
+                  Galeria de Fotos
+                </h2>
+                <ParishGallery :photos="parishPhotos" />
               </section>
             </div>
 
@@ -273,14 +255,8 @@
                   Redes Sociais
                 </h3>
                 <div class="social-list">
-                  <a 
-                    v-for="contact in socialContacts" 
-                    :key="contact.id"
-                    :href="getSocialUrl(contact)"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="social-link"
-                  >
+                  <a v-for="contact in socialContacts" :key="contact.id" :href="getSocialUrl(contact)" target="_blank"
+                    rel="noopener noreferrer" class="social-link">
                     <Icon :name="getSocialIcon(contact.type)" class="social-icon" />
                     <span class="social-name">{{ getSocialTitle(contact.type) }}</span>
                   </a>
@@ -297,14 +273,14 @@
                   <div class="stat-item">
                     <Icon name="heroicons:calendar-days" class="stat-icon" />
                     <span class="stat-text">
-                      {{ parish._count.events }} 
+                      {{ parish._count.events }}
                       {{ parish._count.events === 1 ? 'evento' : 'eventos' }}
                     </span>
                   </div>
                   <div class="stat-item">
                     <Icon name="heroicons:user-group" class="stat-icon" />
                     <span class="stat-text">
-                      {{ parish._count.ministries }} 
+                      {{ parish._count.ministries }}
                       {{ parish._count.ministries === 1 ? 'ministério' : 'ministérios' }}
                     </span>
                   </div>
@@ -313,6 +289,13 @@
                     <span class="stat-text">{{ parish.diocese.name }}</span>
                   </div>
                 </div>
+              </div>
+
+              <!-- Donation Section -->
+              <div class="sidebar-card donation-sidebar">
+                <DonationSection :parish-name="parish.name"
+                  :parish-location="`${parish.city.name}, ${parish.state.code}`"
+                  :pix-key="parish.pixKey || 'pix@paroquia.com.br'" :qr-code-url="parish.qrCodeUrl" />
               </div>
             </aside>
           </div>
@@ -343,7 +326,7 @@ const error = ref<string | null>(null)
 // Computed properties
 const socialContacts = computed(() => {
   if (!parish.value) return []
-  return parish.value.contacts.filter(contact => 
+  return parish.value.contacts.filter((contact: any) =>
     ['facebook', 'instagram', 'whatsapp', 'youtube', 'twitter'].includes(contact.type)
   )
 })
@@ -351,6 +334,47 @@ const socialContacts = computed(() => {
 const massScheduleData = computed(() => {
   if (!parish.value || !parish.value.masses) return {}
   return getMassSchedule(parish.value.masses)
+})
+
+// Mock photos data - In real app, this would come from API
+const parishPhotos = computed(() => {
+  if (!parish.value) return []
+
+  // Mock data for demonstration
+  return [
+    {
+      id: '1',
+      url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop',
+      alt: 'Interior da igreja',
+      title: 'Interior da Igreja',
+      description: 'Vista interna do altar principal',
+      order: 1
+    },
+    {
+      id: '2',
+      url: 'https://images.unsplash.com/photo-1520637836862-4d197d17c35a?w=400&h=300&fit=crop',
+      alt: 'Fachada da paróquia',
+      title: 'Fachada Principal',
+      description: 'Entrada principal da paróquia',
+      order: 2
+    },
+    {
+      id: '3',
+      url: 'https://images.unsplash.com/photo-1438032005730-c779502df39b?w=400&h=300&fit=crop',
+      alt: 'Altar da igreja',
+      title: 'Altar Principal',
+      description: 'Altar onde são celebradas as missas',
+      order: 3
+    },
+    {
+      id: '4',
+      url: 'https://images.unsplash.com/photo-1605130284535-7c2ad0e09e4b?w=400&h=300&fit=crop',
+      alt: 'Atividade paroquial',
+      title: 'Atividades Paroquiais',
+      description: 'Encontro da comunidade paroquial',
+      order: 4
+    }
+  ]
 })
 
 // Utility functions
@@ -380,9 +404,9 @@ const formatEventMonth = (date: string) => {
 }
 
 const formatEventTime = (date: string) => {
-  return new Date(date).toLocaleTimeString('pt-BR', { 
-    hour: '2-digit', 
-    minute: '2-digit' 
+  return new Date(date).toLocaleTimeString('pt-BR', {
+    hour: '2-digit',
+    minute: '2-digit'
   })
 }
 
@@ -429,7 +453,7 @@ const getSocialTitle = (type: string) => {
 onMounted(async () => {
   try {
     parish.value = await loadParish(parishId)
-    
+
     // Set SEO meta
     useSeoMeta({
       title: `${parish.value.name} - AcessoCatólico`,
@@ -438,7 +462,7 @@ onMounted(async () => {
       ogDescription: parish.value.description || `Paróquia ${parish.value.name} em ${parish.value.city.name}, ${parish.value.state.code}. Horários de missa, eventos e contato.`,
       ogImage: '/og-parish.jpg'
     })
-    
+
   } catch (err: any) {
     error.value = err.message || 'Erro ao carregar paróquia'
   } finally {
@@ -872,6 +896,36 @@ onMounted(async () => {
 
 .social-link:hover .social-name {
   color: var(--color-primary-700);
+}
+
+/* Donation Section */
+.donation-sidebar {
+  @apply p-4 rounded-lg border;
+  border-color: var(--color-gray-200);
+  background-color: var(--color-gray-50);
+}
+
+.donation-title {
+  @apply text-lg font-semibold mb-4;
+  color: var(--color-gray-900);
+  font-family: var(--font-heading);
+}
+
+.donation-content {
+  @apply flex flex-col gap-4;
+}
+
+.donation-qr {
+  @apply w-full h-auto rounded-lg overflow-hidden;
+}
+
+.qr-code {
+  @apply w-full h-full object-cover;
+}
+
+.donation-info {
+  @apply text-sm text-center;
+  color: var(--color-gray-700);
 }
 </style>
 -->

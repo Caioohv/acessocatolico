@@ -8,12 +8,8 @@
 
     <div class="pagination__controls">
       <!-- Previous button -->
-      <button
-        @click="$emit('prev-page')"
-        :disabled="!hasPrev"
-        class="pagination__button pagination__button--prev"
-        type="button"
-      >
+      <button @click="$emit('prev-page')" :disabled="!hasPrev" class="pagination__button pagination__button--prev"
+        type="button">
         <Icon name="heroicons:chevron-left" class="button__icon" />
         Anterior
       </button>
@@ -21,13 +17,8 @@
       <!-- Page numbers -->
       <div class="pagination__numbers">
         <!-- First page -->
-        <button
-          v-if="showFirstPage"
-          @click="$emit('go-to-page', 1)"
-          class="pagination__number"
-          :class="{ 'pagination__number--active': currentPage === 1 }"
-          type="button"
-        >
+        <button v-if="showFirstPage" @click="$emit('go-to-page', 1)" class="pagination__number"
+          :class="{ 'pagination__number--active': currentPage === 1 }" type="button">
           1
         </button>
 
@@ -35,14 +26,8 @@
         <span v-if="showLeftEllipsis" class="pagination__ellipsis">...</span>
 
         <!-- Visible pages -->
-        <button
-          v-for="pageNum in visiblePages"
-          :key="pageNum"
-          @click="$emit('go-to-page', pageNum)"
-          class="pagination__number"
-          :class="{ 'pagination__number--active': currentPage === pageNum }"
-          type="button"
-        >
+        <button v-for="pageNum in visiblePages" :key="pageNum" @click="$emit('go-to-page', pageNum)"
+          class="pagination__number" :class="{ 'pagination__number--active': currentPage === pageNum }" type="button">
           {{ pageNum }}
         </button>
 
@@ -50,24 +35,15 @@
         <span v-if="showRightEllipsis" class="pagination__ellipsis">...</span>
 
         <!-- Last page -->
-        <button
-          v-if="showLastPage"
-          @click="$emit('go-to-page', totalPages)"
-          class="pagination__number"
-          :class="{ 'pagination__number--active': currentPage === totalPages }"
-          type="button"
-        >
+        <button v-if="showLastPage" @click="$emit('go-to-page', totalPages)" class="pagination__number"
+          :class="{ 'pagination__number--active': currentPage === totalPages }" type="button">
           {{ totalPages }}
         </button>
       </div>
 
       <!-- Next button -->
-      <button
-        @click="$emit('next-page')"
-        :disabled="!hasNext"
-        class="pagination__button pagination__button--next"
-        type="button"
-      >
+      <button @click="$emit('next-page')" :disabled="!hasNext" class="pagination__button pagination__button--next"
+        type="button">
         Próxima
         <Icon name="heroicons:chevron-right" class="button__icon" />
       </button>
@@ -108,9 +84,9 @@ const visiblePages = computed(() => {
   const range = []
   const rangeWithDots = []
 
-  for (let i = Math.max(2, props.currentPage - delta); 
-       i <= Math.min(props.totalPages - 1, props.currentPage + delta); 
-       i++) {
+  for (let i = Math.max(2, props.currentPage - delta);
+    i <= Math.min(props.totalPages - 1, props.currentPage + delta);
+    i++) {
     range.push(i)
   }
 
@@ -127,9 +103,9 @@ const visiblePages = computed(() => {
   if (props.currentPage + delta < props.totalPages - 1) {
     rangeWithDots.push('...', props.totalPages - 1)
   } else {
-    for (let i = Math.min(props.totalPages - 1, props.currentPage + delta) + 1; 
-         i < props.totalPages; 
-         i++) {
+    for (let i = Math.min(props.totalPages - 1, props.currentPage + delta) + 1;
+      i < props.totalPages;
+      i++) {
       rangeWithDots.push(i)
     }
   }

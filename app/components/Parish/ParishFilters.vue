@@ -5,12 +5,7 @@
         <Icon name="heroicons:funnel" class="title__icon" />
         Filtrar Paróquias
       </h3>
-      <button
-        v-if="hasActiveFilters"
-        @click="clearAllFilters"
-        class="parish-filters__clear"
-        type="button"
-      >
+      <button v-if="hasActiveFilters" @click="clearAllFilters" class="parish-filters__clear" type="button">
         <Icon name="heroicons:x-mark" class="clear__icon" />
         Limpar Filtros
       </button>
@@ -23,13 +18,8 @@
           <Icon name="heroicons:magnifying-glass" class="label__icon" />
           Buscar
         </label>
-        <input
-          id="search"
-          v-model="localFilters.search"
-          type="text"
-          placeholder="Nome da paróquia, endereço..."
-          class="filter-input"
-        />
+        <input id="search" v-model="localFilters.search" type="text" placeholder="Nome da paróquia, endereço..."
+          class="filter-input" />
       </div>
 
       <!-- State -->
@@ -38,18 +28,9 @@
           <Icon name="heroicons:map" class="label__icon" />
           Estado
         </label>
-        <select
-          id="state"
-          v-model="localFilters.stateId"
-          @change="onStateChange"
-          class="filter-select"
-        >
+        <select id="state" v-model="localFilters.stateId" @change="onStateChange" class="filter-select">
           <option value="">Todos os estados</option>
-          <option
-            v-for="state in states"
-            :key="state.id"
-            :value="state.id"
-          >
+          <option v-for="state in states" :key="state.id" :value="state.id">
             {{ state.name }} ({{ state._count?.parishes || 0 }})
           </option>
         </select>
@@ -61,19 +42,10 @@
           <Icon name="heroicons:building-office-2" class="label__icon" />
           Cidade
         </label>
-        <select
-          id="city"
-          v-model="localFilters.cityId"
-          @change="onCityChange"
-          class="filter-select"
-          :disabled="cities.length === 0"
-        >
+        <select id="city" v-model="localFilters.cityId" @change="onCityChange" class="filter-select"
+          :disabled="cities.length === 0">
           <option value="">Todas as cidades</option>
-          <option
-            v-for="city in cities"
-            :key="city.id"
-            :value="city.id"
-          >
+          <option v-for="city in cities" :key="city.id" :value="city.id">
             {{ city.name }} ({{ city._count?.parishes || 0 }})
           </option>
         </select>
@@ -85,17 +57,9 @@
           <Icon name="heroicons:map-pin" class="label__icon" />
           Bairro
         </label>
-        <select
-          id="neighborhood"
-          v-model="localFilters.neighborhoodId"
-          class="filter-select"
-        >
+        <select id="neighborhood" v-model="localFilters.neighborhoodId" class="filter-select">
           <option value="">Todos os bairros</option>
-          <option
-            v-for="neighborhood in neighborhoods"
-            :key="neighborhood.id"
-            :value="neighborhood.id"
-          >
+          <option v-for="neighborhood in neighborhoods" :key="neighborhood.id" :value="neighborhood.id">
             {{ neighborhood.name }} ({{ neighborhood._count?.parishes || 0 }})
           </option>
         </select>
@@ -107,28 +71,16 @@
           <Icon name="heroicons:building-library" class="label__icon" />
           Diocese
         </label>
-        <select
-          id="diocese"
-          v-model="localFilters.dioceseId"
-          class="filter-select"
-        >
+        <select id="diocese" v-model="localFilters.dioceseId" class="filter-select">
           <option value="">Todas as dioceses</option>
-          <option
-            v-for="diocese in dioceses"
-            :key="diocese.id"
-            :value="diocese.id"
-          >
+          <option v-for="diocese in dioceses" :key="diocese.id" :value="diocese.id">
             {{ diocese.name }} ({{ diocese._count?.parishes || 0 }})
           </option>
         </select>
       </div>
 
       <div class="parish-filters__actions">
-        <button
-          type="submit"
-          class="filter-button filter-button--primary"
-          :disabled="loading"
-        >
+        <button type="submit" class="filter-button filter-button--primary" :disabled="loading">
           <LoadingSpinner v-if="loading" class="button__spinner" />
           <Icon v-else name="heroicons:magnifying-glass" class="button__icon" />
           Filtrar
@@ -220,7 +172,7 @@ const onStateChange = () => {
   // Clear dependent filters when state changes
   localFilters.value.cityId = ''
   localFilters.value.neighborhoodId = ''
-  
+
   if (localFilters.value.stateId) {
     emit('state-change', localFilters.value.stateId)
   }
@@ -229,7 +181,7 @@ const onStateChange = () => {
 const onCityChange = () => {
   // Clear dependent filters when city changes
   localFilters.value.neighborhoodId = ''
-  
+
   if (localFilters.value.cityId) {
     emit('city-change', localFilters.value.cityId)
   }
@@ -241,7 +193,7 @@ watch(() => localFilters.value.search, () => {
   if (searchDebounce.value) {
     clearTimeout(searchDebounce.value)
   }
-  
+
   searchDebounce.value = setTimeout(() => {
     applyFilters()
   }, 500)

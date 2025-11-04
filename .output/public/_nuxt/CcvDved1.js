@@ -1,0 +1,1 @@
+import{b_ as l,N as i,bZ as c}from"./DXWSERTp.js";const n=l(o=>{const{user:r}=i(),e=o.query.requireRole;if(e&&r.value){const t=r.value.role,s={VISITOR:1,MEMBER:2,ORGANIZER:3,PRIEST:4,ADMIN:5},u=s[t]||0,a=s[e]||0;if(u<a)throw c({statusCode:403,statusMessage:`Acesso restrito a ${e}s`})}});export{n as default};

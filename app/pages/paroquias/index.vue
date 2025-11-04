@@ -6,7 +6,7 @@
         <div class="header__text">
           <h1 class="header__title">Paróquias Católicas</h1>
           <p class="header__description">
-            Encontre paróquias católicas em todo o Brasil. Descubra horários de missa, 
+            Encontre paróquias católicas em todo o Brasil. Descubra horários de missa,
             eventos, ministérios e entre em contato com a comunidade local.
           </p>
         </div>
@@ -32,18 +32,9 @@
       <div class="content__layout">
         <!-- Sidebar with Filters -->
         <aside class="content__sidebar">
-          <ParishFilters
-            :filters="filters"
-            :states="states"
-            :cities="cities"
-            :neighborhoods="neighborhoods"
-            :dioceses="dioceses"
-            :loading="loading"
-            @apply-filters="handleFiltersChange"
-            @clear-filters="handleClearFilters"
-            @state-change="handleStateChange"
-            @city-change="handleCityChange"
-          />
+          <ParishFilters :filters="filters" :states="states" :cities="cities" :neighborhoods="neighborhoods"
+            :dioceses="dioceses" :loading="loading" @apply-filters="handleFiltersChange"
+            @clear-filters="handleClearFilters" @state-change="handleStateChange" @city-change="handleCityChange" />
         </aside>
 
         <!-- Main Content Area -->
@@ -52,7 +43,7 @@
           <div class="results-header">
             <div class="results-header__info">
               <h2 class="results-header__title">
-                {{ pagination.total }} 
+                {{ pagination.total }}
                 {{ pagination.total === 1 ? 'paróquia encontrada' : 'paróquias encontradas' }}
               </h2>
               <div v-if="hasActiveFilters" class="active-filters">
@@ -125,26 +116,14 @@
 
           <!-- Parish Grid -->
           <div v-else class="parishes-grid">
-            <ParishCard
-              v-for="parish in parishes"
-              :key="parish.id"
-              :parish="parish"
-            />
+            <ParishCard v-for="parish in parishes" :key="parish.id" :parish="parish" />
           </div>
 
           <!-- Pagination -->
-          <ParishPagination
-            v-if="!loading && !error && parishes.length > 0"
-            :current-page="pagination.page"
-            :total-pages="pagination.totalPages"
-            :total="pagination.total"
-            :limit="pagination.limit"
-            :has-next="pagination.hasNext"
-            :has-prev="pagination.hasPrev"
-            @prev-page="prevPage"
-            @next-page="nextPage"
-            @go-to-page="goToPage"
-          />
+          <ParishPagination v-if="!loading && !error && parishes.length > 0" :current-page="pagination.page"
+            :total-pages="pagination.totalPages" :total="pagination.total" :limit="pagination.limit"
+            :has-next="pagination.hasNext" :has-prev="pagination.hasPrev" @prev-page="prevPage" @next-page="nextPage"
+            @go-to-page="goToPage" />
         </main>
       </div>
     </div>
@@ -237,7 +216,7 @@ const handleCityChange = (cityId: string) => {
 const removeFilter = (filterKey: keyof typeof filters.value) => {
   const newFilters = { ...filters.value }
   delete newFilters[filterKey]
-  
+
   // Clear dependent filters
   if (filterKey === 'stateId') {
     delete newFilters.cityId
@@ -245,7 +224,7 @@ const removeFilter = (filterKey: keyof typeof filters.value) => {
   } else if (filterKey === 'cityId') {
     delete newFilters.neighborhoodId
   }
-  
+
   loadParishes(1, newFilters)
 }
 

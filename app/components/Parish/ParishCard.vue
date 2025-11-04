@@ -11,7 +11,7 @@
 
     <div class="parish-card__content">
       <h3 class="parish-card__name">{{ parish.name }}</h3>
-      
+
       <div class="parish-card__location">
         <Icon name="heroicons:map-pin" class="parish-card__location-icon" />
         <span class="parish-card__location-text">
@@ -57,25 +57,15 @@
       </div>
 
       <div class="parish-card__social">
-        <a 
-          v-for="contact in socialContacts" 
-          :key="contact.id"
-          :href="getSocialUrl(contact)"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="social-link"
-          :title="getSocialTitle(contact.type)"
-        >
+        <a v-for="contact in socialContacts" :key="contact.id" :href="getSocialUrl(contact)" target="_blank"
+          rel="noopener noreferrer" class="social-link" :title="getSocialTitle(contact.type)">
           <Icon :name="getSocialIcon(contact.type)" class="social-link__icon" />
         </a>
       </div>
     </div>
 
     <div class="parish-card__footer">
-      <NuxtLink 
-        :to="`/paroquias/${parish.id}`" 
-        class="parish-card__button"
-      >
+      <NuxtLink :to="`/paroquias/${parish.id}`" class="parish-card__button">
         <span>Ver Detalhes</span>
         <Icon name="heroicons:arrow-right" class="button__icon" />
       </NuxtLink>
@@ -127,7 +117,7 @@ const mainPriest = computed(() => {
 })
 
 const socialContacts = computed(() => {
-  return props.parish.contacts.filter(contact => 
+  return props.parish.contacts.filter(contact =>
     ['facebook', 'instagram', 'whatsapp', 'youtube', 'twitter'].includes(contact.type)
   )
 })
