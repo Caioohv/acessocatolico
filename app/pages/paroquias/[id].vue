@@ -41,7 +41,7 @@
           <div class="hero-overlay"></div>
         </div>
         <div class="hero-content">
-          <div class="container mx-auto px-4 py-12">
+          <div class="hero-container">
             <div class="hero-main">
               <div class="hero-badge">
                 <Icon name="heroicons:building-library" class="badge-icon" />
@@ -447,43 +447,68 @@ onMounted(async () => {
 })
 </script>
 
+<!-- 
 <style scoped>
 .loading-container,
 .error-container {
-  @apply flex flex-col items-center justify-center min-h-screen text-center px-4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  padding: 0 1rem;
 }
 
 .loading-spinner {
-  @apply w-8 h-8 mb-4;
+  width: 2rem;
+  height: 2rem;
+  margin-bottom: 1rem;
 }
 
 .loading-text {
-  @apply text-lg;
+  font-size: 1.125rem;
   color: var(--color-gray-600);
 }
 
 .error-icon {
-  @apply w-16 h-16 mb-4;
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: 1rem;
   color: var(--color-red-500);
 }
 
 .error-title {
-  @apply text-2xl font-bold mb-2;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
   color: var(--color-gray-900);
   font-family: var(--font-heading);
 }
 
 .error-message {
-  @apply text-lg mb-6 max-w-lg;
+  font-size: 1.125rem;
+  margin-bottom: 1.5rem;
+  max-width: 32rem;
   color: var(--color-gray-600);
 }
 
 .error-actions {
-  @apply flex flex-wrap gap-4 justify-center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
 }
 
 .button-icon {
-  @apply w-4 h-4;
+  width: 1rem;
+  height: 1rem;
+}
+
+.hero-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 1rem;
 }
 
 /* Hero Section */
@@ -849,3 +874,4 @@ onMounted(async () => {
   color: var(--color-primary-700);
 }
 </style>
+-->

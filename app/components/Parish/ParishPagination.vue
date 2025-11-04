@@ -154,6 +154,7 @@ const showRightEllipsis = computed(() => {
 })
 </script>
 
+<!-- 
 <style scoped>
 .pagination {
   @apply flex flex-col sm:flex-row items-center justify-between gap-4 py-6;
@@ -238,3 +239,4 @@ const showRightEllipsis = computed(() => {
   }
 }
 </style>
+-->

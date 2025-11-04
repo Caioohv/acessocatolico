@@ -178,6 +178,7 @@ const getSocialTitle = (type: string) => {
 }
 </script>
 
+<!-- 
 <style scoped>
 .parish-card {
   @apply bg-white rounded-lg shadow-md overflow-hidden transition-all duration-200 hover:shadow-lg hover:-translate-y-1;
@@ -345,3 +346,4 @@ const getSocialTitle = (type: string) => {
   transform: translateX(2px);
 }
 </style>
+-->

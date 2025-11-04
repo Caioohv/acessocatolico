@@ -250,27 +250,45 @@ watch(() => localFilters.value.search, () => {
 
 <style scoped>
 .parish-filters {
-  @apply bg-white rounded-lg shadow-sm p-6;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  padding: 1.5rem;
   border: 1px solid var(--color-gray-200);
 }
 
 .parish-filters__header {
-  @apply flex items-center justify-between mb-6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
 }
 
 .parish-filters__title {
-  @apply flex items-center gap-2 text-lg font-semibold;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
   color: var(--color-gray-900);
   font-family: var(--font-heading);
 }
 
 .title__icon {
-  @apply w-5 h-5;
+  width: 1.25rem;
+  height: 1.25rem;
   color: var(--color-primary-500);
 }
 
 .parish-filters__clear {
-  @apply flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition: background-color 200ms;
   color: var(--color-red-600);
   background-color: var(--color-red-50);
 }
@@ -280,31 +298,45 @@ watch(() => localFilters.value.search, () => {
 }
 
 .clear__icon {
-  @apply w-4 h-4;
+  width: 1rem;
+  height: 1rem;
 }
 
 .parish-filters__form {
-  @apply space-y-4;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .filter-group {
-  @apply space-y-2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .filter-label {
-  @apply flex items-center gap-2 text-sm font-medium;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
   color: var(--color-gray-700);
 }
 
 .label__icon {
-  @apply w-4 h-4;
+  width: 1rem;
+  height: 1rem;
   color: var(--color-gray-500);
 }
 
 .filter-input,
 .filter-select {
-  @apply w-full px-4 py-3 rounded-lg border transition-colors duration-200 focus:outline-none focus:ring-2;
-  border-color: var(--color-gray-300);
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-gray-300);
+  transition: border-color 200ms, box-shadow 200ms;
+  outline: none;
   background-color: white;
   color: var(--color-gray-900);
 }
@@ -312,7 +344,7 @@ watch(() => localFilters.value.search, () => {
 .filter-input:focus,
 .filter-select:focus {
   border-color: var(--color-primary-500);
-  ring-color: var(--color-primary-100);
+  box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.1);
 }
 
 .filter-input::placeholder {
@@ -320,23 +352,32 @@ watch(() => localFilters.value.search, () => {
 }
 
 .filter-select:disabled {
-  @apply cursor-not-allowed;
+  cursor: not-allowed;
   background-color: var(--color-gray-50);
   color: var(--color-gray-500);
 }
 
 .parish-filters__actions {
-  @apply pt-4 border-t;
-  border-color: var(--color-gray-200);
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-gray-200);
 }
 
 .filter-button {
-  @apply w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-all duration-200;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 200ms;
 }
 
 .filter-button--primary {
   background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-secondary-500) 100%);
   color: white;
+  border: none;
 }
 
 .filter-button--primary:hover:not(:disabled) {
@@ -344,11 +385,13 @@ watch(() => localFilters.value.search, () => {
 }
 
 .filter-button:disabled {
-  @apply cursor-not-allowed opacity-50;
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .button__icon,
 .button__spinner {
-  @apply w-4 h-4;
+  width: 1rem;
+  height: 1rem;
 }
 </style>

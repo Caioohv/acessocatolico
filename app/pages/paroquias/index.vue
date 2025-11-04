@@ -259,6 +259,7 @@ onMounted(async () => {
 })
 </script>
 
+<!-- 
 <style scoped>
 .parishes-header {
   @apply relative overflow-hidden;
@@ -416,3 +417,4 @@ onMounted(async () => {
   @apply grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6;
 }
 </style>
+-->
