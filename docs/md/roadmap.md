@@ -56,21 +56,21 @@ Este roadmap detalha o desenvolvimento completo da plataforma AcessoCatólico, d
   - [x] Middleware de autorização
   - [x] Composables para verificar permissões
 
-### 🎨 1.4 Layout e Design System
-- [ ] **Componentes Base**
-  - [ ] Header/Navigation responsiva
-  - [ ] Footer
-  - [ ] Sidebar
-  - [ ] Breadcrumbs
-  - [ ] Loading states
-  - [ ] Toast notifications
+### ✅ 1.4 Layout e Design System
+- [x] **Componentes Base**
+  - [x] Header/Navigation responsiva
+  - [x] Footer
+  - [x] Sidebar
+  - [x] Breadcrumbs
+  - [x] Loading states
+  - [x] Toast notifications
   
-- [ ] **Design System**
-  - [ ] Paleta de cores católica
-  - [ ] Tipografia consistente
-  - [ ] Componentes de formulário
-  - [ ] Cards padronizados
-  - [ ] Botões e estados
+- [x] **Design System**
+  - [x] Paleta de cores católica
+  - [x] Tipografia consistente
+  - [x] Componentes de formulário
+  - [x] Cards padronizados
+  - [x] Botões e estados
 
 ---
 
@@ -514,7 +514,7 @@ Este roadmap detalha o desenvolvimento completo da plataforma AcessoCatólico, d
 - [x] Ambiente configurado
 - [x] Banco de dados modelado
 - [x] Autenticação funcionando
-- [ ] Design system implementado
+- [x] Design system implementado
 
 ### Fase 2 - Paróquias ✅
 - [ ] Catálogo público funcional

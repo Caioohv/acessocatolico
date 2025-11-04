@@ -17,14 +17,9 @@ if (process.env.NODE_ENV === 'production') {
   prisma = global.__prisma
 }
 
-export default defineNitroPlugin(async (nitroApp) => {
+export default defineNuxtPlugin(async () => {
   // Initialize Prisma connection
   await prisma.$connect()
-  
-  // Graceful shutdown
-  nitroApp.hooks.hook('close', async () => {
-    await prisma.$disconnect()
-  })
 })
 
 export { prisma }

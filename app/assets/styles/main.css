@@ -3,43 +3,149 @@
 
 :root {
   font-size: 10px;
-  --radius: 1.5rem;
+  --radius: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
   --transition: 0.3s ease-in-out;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 
-  /* Colors */
-  /* Primary */
-  --teal: #0D6E6E;
-  --teal-light: #4A9D9C;
-  --teal-lighter: #AFFFFF;
+  /* Catholic Colors - Inspiradas na tradição católica */
+  /* Primary - Azul mariano (Manto de Nossa Senhora) */
+  --primary-50: #eff6ff;
+  --primary-100: #dbeafe;
+  --primary-200: #bfdbfe;
+  --primary-300: #93c5fd;
+  --primary-400: #60a5fa;
+  --primary-500: #2563eb;
+  --primary-600: #1d4ed8;
+  --primary-700: #1e40af;
+  --primary-800: #1e3a8a;
+  --primary-900: #1e2b6f;
+  --primary-950: #172554;
 
-  /* Secondary */
-  --red: #FF3D3D;
-  --red-light: #FF3D3D;
+  /* Secondary - Dourado litúrgico */
+  --secondary-50: #fffbeb;
+  --secondary-100: #fef3c7;
+  --secondary-200: #fde68a;
+  --secondary-300: #fcd34d;
+  --secondary-400: #fbbf24;
+  --secondary-500: #f59e0b;
+  --secondary-600: #d97706;
+  --secondary-700: #b45309;
+  --secondary-800: #92400e;
+  --secondary-900: #783208;
+  --secondary-950: #451a03;
 
+  /* Accent - Vermelho cardinalício */
+  --accent-50: #fef2f2;
+  --accent-100: #fee2e2;
+  --accent-200: #fecaca;
+  --accent-300: #fca5a5;
+  --accent-400: #f87171;
+  --accent-500: #ef4444;
+  --accent-600: #dc2626;
+  --accent-700: #b91c1c;
+  --accent-800: #991b1b;
+  --accent-900: #7f1d1d;
+  --accent-950: #450a0a;
 
-  /* UI Dark */
-  --coal: #0D1F2D;
-  --coal-light: #1D2E3D;
-  --coal-lighter: #354656;
+  /* Success - Verde esperança */
+  --success-50: #f0fdf4;
+  --success-100: #dcfce7;
+  --success-200: #bbf7d0;
+  --success-300: #86efac;
+  --success-400: #4ade80;
+  --success-500: #22c55e;
+  --success-600: #16a34a;
+  --success-700: #15803d;
+  --success-800: #166534;
+  --success-900: #14532d;
+  --success-950: #052e16;
 
-  /* UI Light */
-  --light: #E0E0E0;
-  --lighter: #FFFFFF;
+  /* Warning - Âmbar litúrgico */
+  --warning-50: #fffbeb;
+  --warning-100: #fef3c7;
+  --warning-200: #fde68a;
+  --warning-300: #fcd34d;
+  --warning-400: #fbbf24;
+  --warning-500: #f59e0b;
+  --warning-600: #d97706;
+  --warning-700: #b45309;
+  --warning-800: #92400e;
+  --warning-900: #783208;
+
+  /* Error - Vermelho */
+  --error-50: #fef2f2;
+  --error-100: #fee2e2;
+  --error-200: #fecaca;
+  --error-300: #fca5a5;
+  --error-400: #f87171;
+  --error-500: #ef4444;
+  --error-600: #dc2626;
+  --error-700: #b91c1c;
+  --error-800: #991b1b;
+  --error-900: #7f1d1d;
+
+  /* Neutrals - Tons terrestres inspirados em mosteiros */
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  --gray-950: #030712;
+
+  /* Typography */
+  --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family-serif: 'Playfair Display', Georgia, serif;
+  --font-family-mono: 'JetBrains Mono', 'Fira Code', monospace;
 }
 /* https://www.bairesdev.com/tools/ai-colors */
 
-@theme {
-  --color-primary: var(--teal);
-  --color-primary-light: var(--teal-light);
-  --color-primary-lighter: var(--teal-lighter);
-  --color-secondary: var(--red);
-  --color-secondary-light: var(--red-light);
-  --color-ui-darker: var(--coal);
-  --color-ui-dark: var(--coal-light);
-  --color-ui: var(--coal-lighter);
-  --color-ui-light: var(--light);
-  --color-ui-lighter: var(--lighter);
+/* Base styles */
+body {
+  font-family: var(--font-family-sans);
+  line-height: 1.6;
+  background-color: var(--gray-50);
+  color: var(--gray-900);
+}
 
-  --ui-bg: var(--color-ui-darkest);
-  --ui-text: var(--color-ui-lighter);
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-serif);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--primary-800);
+}
+
+/* Catholic-themed utility classes */
+.catholic-gradient {
+  background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
+}
+
+.liturgical-gold {
+  background: linear-gradient(135deg, var(--secondary-400), var(--secondary-600));
+}
+
+.sacred-shadow {
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.15);
+}
+
+.holy-border {
+  border: 2px solid var(--secondary-300);
+  border-radius: var(--radius-lg);
+}
+
+/* Animation utilities */
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

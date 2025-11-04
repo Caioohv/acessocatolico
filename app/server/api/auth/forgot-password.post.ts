@@ -1,6 +1,6 @@
-import { z } from 'zod'
 import { PrismaClient } from '@prisma/client'
 import { randomBytes } from 'crypto'
+import { z } from 'zod'
 
 const prisma = new PrismaClient()
 

@@ -1,5 +1,5 @@
-import jsonwebtoken from 'jsonwebtoken'
 import { PrismaClient } from '@prisma/client'
+import jsonwebtoken from 'jsonwebtoken'
 
 const prisma = new PrismaClient()
 
