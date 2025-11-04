@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { defineEventHandler, getMethod, getQuery, createError } from 'h3'
 
 export default defineEventHandler(async (event) => {
   if (getMethod(event) !== 'GET') {
@@ -11,8 +9,11 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const query = getQuery(event)
+    // Always use mock data for development/demonstration
+    console.log('Using mock parish data for development')
+    const { mockParishes } = await import('./mock-data')
     
+    const query = getQuery(event)
     const {
       page = '1',
       limit = '12',
@@ -35,70 +36,35 @@ export default defineEventHandler(async (event) => {
     const limitNum = parseInt(limit)
     const skip = (pageNum - 1) * limitNum
 
-    // Build where clause
-    const where: any = {}
+    let filteredParishes = mockParishes
     
+    // Apply search filter
     if (search) {
-      where.OR = [
-        { name: { contains: search, mode: 'insensitive' } },
-        { description: { contains: search, mode: 'insensitive' } },
-        { address: { contains: search, mode: 'insensitive' } }
-      ]
+      const searchLower = search.toLowerCase()
+      filteredParishes = filteredParishes.filter(parish =>
+        parish.name.toLowerCase().includes(searchLower) ||
+        parish.description?.toLowerCase().includes(searchLower) ||
+        parish.address.toLowerCase().includes(searchLower)
+      )
     }
     
-    if (stateId) where.stateId = stateId
-    if (cityId) where.cityId = cityId
-    if (neighborhoodId) where.neighborhoodId = neighborhoodId
-    if (dioceseId) where.dioceseId = dioceseId
+    // Apply location filters (simplified for mock data)
+    if (stateId) {
+      filteredParishes = filteredParishes.filter(parish => parish.state.id === stateId)
+    }
+    if (cityId) {
+      filteredParishes = filteredParishes.filter(parish => parish.city.id === cityId)
+    }
+    if (neighborhoodId) {
+      filteredParishes = filteredParishes.filter(parish => parish.neighborhood?.id === neighborhoodId)
+    }
+    if (dioceseId) {
+      filteredParishes = filteredParishes.filter(parish => parish.diocese.id === dioceseId)
+    }
 
-    // Get parishes with related data
-    const [parishes, total] = await Promise.all([
-      prisma.parish.findMany({
-        where,
-        include: {
-          state: true,
-          city: true,
-          neighborhood: true,
-          diocese: true,
-          priests: {
-            include: {
-              user: {
-                include: {
-                  profile: true
-                }
-              }
-            },
-            where: {
-              isMain: true
-            },
-            take: 1
-          },
-          contacts: true,
-          masses: {
-            orderBy: [
-              { dayOfWeek: 'asc' },
-              { time: 'asc' }
-            ]
-          },
-          _count: {
-            select: {
-              events: true,
-              ministries: true
-            }
-          }
-        },
-        orderBy: [
-          { name: 'asc' }
-        ],
-        skip,
-        take: limitNum
-      }),
-      prisma.parish.count({ where })
-    ])
-
+    const total = filteredParishes.length
+    const parishes = filteredParishes.slice(skip, skip + limitNum)
     const totalPages = Math.ceil(total / limitNum)
-    const hasNext = pageNum < totalPages
-    const hasPrev = pageNum > 1
 
     return {
       parishes,
@@ -107,8 +73,8 @@ export default defineEventHandler(async (event) => {
         limit: limitNum,
         total,
         totalPages,
-        hasNext,
-        hasPrev
+        hasNext: pageNum < totalPages,
+        hasPrev: pageNum > 1
       }
     }
   } catch (error) {

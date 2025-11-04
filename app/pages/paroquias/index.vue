@@ -39,7 +39,7 @@
 
         <!-- Main Content Area -->
         <main class="content__main">
-          <!-- Results Header -->
+          <!-- Results Header with View Toggle -->
           <div class="results-header">
             <div class="results-header__info">
               <h2 class="results-header__title">
@@ -82,6 +82,26 @@
                 </div>
               </div>
             </div>
+            
+            <!-- View Toggle -->
+            <div class="view-toggle">
+              <button 
+                @click="viewMode = 'list'" 
+                :class="['view-toggle__button', { active: viewMode === 'list' }]"
+                aria-label="Vista em lista"
+              >
+                <Icon name="heroicons:list-bullet" class="view-toggle__icon" />
+                Lista
+              </button>
+              <button 
+                @click="viewMode = 'map'" 
+                :class="['view-toggle__button', { active: viewMode === 'map' }]"
+                aria-label="Vista em mapa"
+              >
+                <Icon name="heroicons:map" class="view-toggle__icon" />
+                Mapa
+              </button>
+            </div>
           </div>
 
           <!-- Loading State -->
@@ -114,16 +134,24 @@
             </button>
           </div>
 
-          <!-- Parish Grid -->
-          <div v-else class="parishes-grid">
-            <ParishCard v-for="parish in parishes" :key="parish.id" :parish="parish" />
-          </div>
+          <!-- Content Based on View Mode -->
+          <template v-if="!loading && !error && parishes.length > 0">
+            <!-- Parish Grid (List View) -->
+            <div v-if="viewMode === 'list'" class="parishes-grid">
+              <ParishCard v-for="parish in parishes" :key="parish.id" :parish="parish" />
+            </div>
 
-          <!-- Pagination -->
-          <ParishPagination v-if="!loading && !error && parishes.length > 0" :current-page="pagination.page"
-            :total-pages="pagination.totalPages" :total="pagination.total" :limit="pagination.limit"
-            :has-next="pagination.hasNext" :has-prev="pagination.hasPrev" @prev-page="prevPage" @next-page="nextPage"
-            @go-to-page="goToPage" />
+            <!-- Parish Map (Map View) -->
+            <div v-else-if="viewMode === 'map'" class="parishes-map">
+              <ParishMap :parishes="parishes" :loading="loading" />
+            </div>
+
+            <!-- Pagination (only for list view) -->
+            <ParishPagination v-if="viewMode === 'list'" :current-page="pagination.page"
+              :total-pages="pagination.totalPages" :total="pagination.total" :limit="pagination.limit"
+              :has-next="pagination.hasNext" :has-prev="pagination.hasPrev" @prev-page="prevPage" @next-page="nextPage"
+              @go-to-page="goToPage" />
+          </template>
         </main>
       </div>
     </div>
@@ -168,6 +196,9 @@ const {
   goToPage,
   clearFilters
 } = useParishes()
+
+// View mode toggle
+const viewMode = ref<'list' | 'map'>('list')
 
 // Computed properties
 const hasActiveFilters = computed(() => {
@@ -238,101 +269,157 @@ onMounted(async () => {
 })
 </script>
 
-<!-- 
-<style scoped>
+<style>
 .parishes-header {
-  @apply relative overflow-hidden;
+  position: relative;
+  overflow: hidden;
   background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--color-secondary-50) 100%);
 }
 
 .header__content {
-  @apply container mx-auto px-4 py-12 lg:py-16;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 1rem;
 }
 
 .header__text {
-  @apply text-center mb-8;
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
 .header__title {
-  @apply text-3xl lg:text-4xl font-bold mb-4;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
   color: var(--color-gray-900);
   font-family: var(--font-heading);
 }
 
 .header__description {
-  @apply text-lg max-w-3xl mx-auto;
+  font-size: 1.125rem;
+  max-width: 48rem;
+  margin: 0 auto;
   color: var(--color-gray-700);
 }
 
 .header__stats {
-  @apply flex flex-wrap justify-center gap-6;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
 }
 
 .stat-card {
-  @apply text-center p-6 rounded-lg;
+  text-align: center;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
   background-color: white;
   box-shadow: var(--shadow-sm);
 }
 
 .stat-card__value {
-  @apply text-3xl font-bold mb-1;
+  font-size: 1.875rem;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
   color: var(--color-primary-600);
   font-family: var(--font-heading);
 }
 
 .stat-card__label {
-  @apply text-sm font-medium;
+  font-size: 0.875rem;
+  font-weight: 500;
   color: var(--color-gray-600);
 }
 
 .parishes-content {
-  @apply bg-gray-50 min-h-screen;
+  background-color: #f9fafb;
+  min-height: 100vh;
 }
 
 .content__layout {
-  @apply container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-4 gap-8;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .content__layout {
+    grid-template-columns: 1fr 3fr;
+  }
 }
 
 .content__sidebar {
-  @apply lg:col-span-1;
+  position: relative;
 }
 
 .content__main {
-  @apply lg:col-span-3 space-y-6;
+  position: relative;
+}
+
+.content__main > * + * {
+  margin-top: 1.5rem;
 }
 
 .results-header {
-  @apply bg-white rounded-lg shadow-sm p-6;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
   border: 1px solid var(--color-gray-200);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .results-header__title {
-  @apply text-xl font-semibold mb-4;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
   color: var(--color-gray-900);
   font-family: var(--font-heading);
 }
 
 .active-filters {
-  @apply space-y-2;
+  margin-top: 0.5rem;
 }
 
 .active-filters__label {
-  @apply text-sm font-medium;
+  font-size: 0.875rem;
+  font-weight: 500;
   color: var(--color-gray-700);
+  display: block;
+  margin-bottom: 0.5rem;
 }
 
 .active-filters__list {
-  @apply flex flex-wrap gap-2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .filter-tag {
-  @apply inline-flex items-center gap-2 px-3 py-1 text-sm rounded-full;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  border-radius: 9999px;
   background-color: var(--color-primary-100);
   color: var(--color-primary-800);
 }
 
 .filter-tag__remove {
-  @apply p-0.5 rounded-full transition-colors duration-200;
+  padding: 0.125rem;
+  border-radius: 9999px;
+  transition: background-color 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .filter-tag__remove:hover {
@@ -340,18 +427,25 @@ onMounted(async () => {
 }
 
 .filter-tag__icon {
-  @apply w-3 h-3;
+  width: 0.75rem;
+  height: 0.75rem;
 }
 
 .loading-state,
 .error-state,
 .empty-state {
-  @apply text-center py-12 bg-white rounded-lg shadow-sm;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
   border: 1px solid var(--color-gray-200);
 }
 
 .loading-state__spinner {
-  @apply w-8 h-8 mx-auto mb-4;
+  width: 2rem;
+  height: 2rem;
+  margin: 0 auto 1rem;
 }
 
 .loading-state__text {
@@ -360,27 +454,39 @@ onMounted(async () => {
 
 .error-state__icon,
 .empty-state__icon {
-  @apply w-16 h-16 mx-auto mb-4;
+  width: 4rem;
+  height: 4rem;
+  margin: 0 auto 1rem;
   color: var(--color-gray-400);
 }
 
 .error-state__title,
 .empty-state__title {
-  @apply text-xl font-semibold mb-2;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
   color: var(--color-gray-900);
 }
 
 .error-state__message,
 .empty-state__message {
-  @apply mb-6;
+  margin-bottom: 1.5rem;
   color: var(--color-gray-600);
 }
 
 .error-state__button,
 .empty-state__button {
-  @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors duration-200;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
   background-color: var(--color-primary-600);
   color: white;
+  border: none;
+  cursor: pointer;
 }
 
 .error-state__button:hover,
@@ -389,11 +495,92 @@ onMounted(async () => {
 }
 
 .button__icon {
-  @apply w-4 h-4;
+  width: 1rem;
+  height: 1rem;
 }
 
 .parishes-grid {
-  @apply grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .parishes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .parishes-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.view-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background-color: #f3f4f6;
+  border-radius: 0.5rem;
+}
+
+.view-toggle__button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.375rem;
+  transition: all 0.2s;
+  color: var(--color-gray-600);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.view-toggle__button.active {
+  background-color: var(--color-primary-600);
+  color: white;
+}
+
+.view-toggle__button:hover:not(.active) {
+  background-color: #e5e7eb;
+}
+
+.view-toggle__icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.parishes-map {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 1px solid var(--color-gray-200);
+  min-height: 600px;
+}
+
+@media (max-width: 767px) {
+  .header__title {
+    font-size: 2rem;
+  }
+  
+  .header__content {
+    padding: 2rem 1rem;
+  }
+  
+  .results-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .view-toggle {
+    justify-content: center;
+  }
 }
 </style>
 -->

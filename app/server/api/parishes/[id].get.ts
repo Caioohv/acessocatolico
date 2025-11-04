@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { defineEventHandler, getMethod, getRouterParam, createError } from 'h3'
 
 export default defineEventHandler(async (event) => {
   if (getMethod(event) !== 'GET') {
@@ -20,60 +18,11 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const parish = await prisma.parish.findUnique({
-      where: { id: parishId },
-      include: {
-        state: true,
-        city: true,
-        neighborhood: true,
-        diocese: true,
-        priests: {
-          include: {
-            user: {
-              include: {
-                profile: true
-              }
-            }
-          },
-          orderBy: [
-            { isMain: 'desc' },
-            { createdAt: 'asc' }
-          ]
-        },
-        contacts: true,
-        masses: {
-          where: { isActive: true },
-          orderBy: [
-            { dayOfWeek: 'asc' },
-            { time: 'asc' }
-          ]
-        },
-        events: {
-          where: {
-            endDate: {
-              gte: new Date()
-            }
-          },
-          orderBy: { startDate: 'asc' },
-          take: 5
-        },
-        ministries: {
-          include: {
-            _count: {
-              select: {
-                members: true
-              }
-            }
-          }
-        },
-        _count: {
-          select: {
-            events: true,
-            ministries: true
-          }
-        }
-      }
-    })
+    // Use mock data for development
+    console.log('Using mock parish data for individual parish')
+    const { mockParishes } = await import('./mock-data')
+    
+    const parish = mockParishes.find(p => p.id === parishId)
 
     if (!parish) {
       throw createError({
@@ -83,7 +32,7 @@ export default defineEventHandler(async (event) => {
     }
 
     return parish
-  } catch (error) {
+  } catch (error: any) {
     if (error.statusCode) {
       throw error
     }

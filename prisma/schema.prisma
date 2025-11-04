@@ -197,6 +197,10 @@ model Parish {
   neighborhoodId String?
   neighborhood   Neighborhood? @relation(fields: [neighborhoodId], references: [id])
   
+  // Geographic coordinates
+  latitude    Float?
+  longitude   Float?
+  
   // Diocese
   dioceseId   String
   diocese     Diocese @relation(fields: [dioceseId], references: [id])

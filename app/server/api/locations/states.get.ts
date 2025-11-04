@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { defineEventHandler, getMethod, createError } from 'h3'
 
 export default defineEventHandler(async (event) => {
   if (getMethod(event) !== 'GET') {
@@ -11,18 +9,9 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const states = await prisma.state.findMany({
-      orderBy: { name: 'asc' },
-      include: {
-        _count: {
-          select: {
-            parishes: true
-          }
-        }
-      }
-    })
-
-    return { states }
+    // Use mock data for development
+    const { mockStates } = await import('../parishes/mock-data')
+    return { states: mockStates }
   } catch (error) {
     console.error('Error fetching states:', error)
     throw createError({

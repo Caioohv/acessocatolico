@@ -17,11 +17,11 @@
 </template>
 
 <script setup lang="ts">
-import type { ToastItem } from '~/composables/useToast';
+// Using Nuxt UI toast system instead of custom types
 
 // Props
 interface Props {
-  toasts: ToastItem[]
+  toasts: any[]
 }
 
 defineProps<Props>()

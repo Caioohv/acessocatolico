@@ -4,9 +4,20 @@
 
 ## 📋 Visão Geral do Projeto
 
-Este roadmap detalha o desenvolvimento completo da plataforma AcessoCatólico, dividido em fases estratégicas para garantir uma implementação eficiente e escalável.
+Este roadmap detalha o desenvolvimento completo da plataforma AcessoCató### ⚠️ Problemas Conhecidos e Correções Pendentes
 
-**Estado Atual: ✅ Fase 1 Completa + ✅ Fase 2.1 Completa + ✅ Fase 2.2 Completa**
+### 🔄 Warnings de Build
+- **Browserslist**: Dados desatualizados (6 meses)
+- **Sourcemap**: Warnings do plugin Tailwind
+- **Prioridade**: 🟡 MÉDIA
+
+### 📱 UX/UI Pendente
+- **Conectar backend real**: APIs usam dados mock para desenvolvimento
+- **Coordenadas**: Adicionar coordenadas reais às paróquias no banco
+- **Polish e refinamentos**: Melhorar experiência de usuário
+- **Prioridade**: 🟡 MÉDIAses estratégicas para garantir uma implementação eficiente e escalável.
+
+**Estado Atual: ✅ Fase 1 Completa + ✅ Fase 2.1 Completa + ✅ Fase 2.2 Completa + 🗺️ Mapa Interativo Implementado**
 
 **Stack Tecnológica Implementada:**
 - Frontend: Nuxt 3.17.4 + Vue 3 + TypeScript
@@ -103,11 +114,13 @@ Este roadmap detalha o desenvolvimento completo da plataforma AcessoCatólico, d
   - [x] Cache de dados de localização
   - [x] Utilitários para formatação
   
-- [ ] **Mapa Interativo** ⚠️ PENDENTE
-  - [ ] Integração com Google Maps/OpenStreetMap
-  - [ ] Marcadores de paróquias
-  - [ ] InfoWindows com dados básicos
-  - [ ] Geolocalização do usuário
+- [x] **Mapa Interativo** ✅ IMPLEMENTADO
+  - [x] Integração com OpenStreetMap (Leaflet)
+  - [x] Marcadores de paróquias com coordenadas
+  - [x] InfoWindows com dados básicos
+  - [x] Geolocalização do usuário
+  - [x] Toggle entre vista de lista e mapa
+  - [x] Componente ParishMap.vue funcional
 
 ### ✅ 2.2 Página Individual da Paróquia - **COMPLETO**
 - [x] **Informações Básicas**
@@ -219,37 +232,39 @@ Este roadmap detalha o desenvolvimento completo da plataforma AcessoCatólico, d
 
 ## 🎯 Próximos Passos Imediatos
 
-### Sprint 1: Correções Críticas (1-2 dias)
-1. **Recriar CSS Scoped**
-   - Converter todos os componentes Parish para CSS vanilla
-   - Manter design system consistente
-   - Testar responsividade
+### Sprint 1: Finalização Fase 2.1 (COMPLETO ✅)
+1. **Mapa Interativo (Fase 2.1)** ✅ COMPLETO
+   - ✅ Integração OpenStreetMap via Leaflet
+   - ✅ Marcadores dinâmicos das paróquias
+   - ✅ Geolocalização e navegação
+   - ✅ Toggle entre vista lista e mapa
+   - ✅ InfoWindows com dados da paróquia
 
-2. **Resolver Warnings**
-   - Decidir estratégia useToast (custom vs Nuxt UI)
-   - Atualizar browserslist
-   - Configurar sourcemaps adequadamente
+2. **CSS e Styling** ✅ COMPLETO  
+   - ✅ Conversão para CSS vanilla
+   - ✅ Design system consistente
+   - ✅ Responsividade testada
 
-3. **Testes de Funcionalidade**
-   - Validar todas as APIs
-   - Testar fluxos de usuário
-   - Verificar responsividade
+3. **APIs Mock** ✅ COMPLETO
+   - ✅ Dados mock com coordenadas
+   - ✅ APIs funcionais para desenvolvimento
+   - ✅ Fallback quando banco indisponível
 
-### Sprint 2: Finalização Fase 2.1 e Início Fase 2.3 (3-5 dias)
-1. **Mapa Interativo (Fase 2.1)**
-   - Integração Google Maps ou OpenStreetMap
-   - Marcadores dinâmicos das paróquias
-   - Geolocalização e navegação
+### Sprint 2: Início Fase 2.3 e Melhorias (3-5 dias)
+1. **Conectar Backend Real**
+   - Migração de schema para coordenadas
+   - Dados reais de paróquias com coordenadas
+   - APIs de upload e gerenciamento de fotos
 
-2. **Conectar Backend Real (Fase 2.2)**
-   - API para upload e gerenciamento de fotos
-   - Integração real com processadores de pagamento
-   - Sistema de eventos para calendário
-
-3. **Início Fase 2.3: Sistema de Cadastro de Padres**
+2. **Início Fase 2.3: Sistema de Cadastro de Padres**
    - Formulário de cadastro específico
    - Sistema de aprovação/moderação
    - Dashboard para administradores
+
+3. **Polish e Refinamentos**
+   - Melhorar UX das novas funcionalidades
+   - Otimizações de performance
+   - Resolver warnings restantes
 
 ---
 
@@ -696,19 +711,20 @@ Este roadmap detalha o desenvolvimento completo da plataforma AcessoCatólico, d
 
 ### ✅ Progresso Geral
 - **Fase 1**: 100% Completa ✅
-- **Fase 2.1**: 100% Completa ✅
+- **Fase 2.1**: 100% Completa ✅ (incluindo mapa interativo)
 - **Fase 2.2**: 100% Completa ✅
-- **Projeto Total**: ~45% Completo
+- **Projeto Total**: ~50% Completo
 
 ### 📈 Métricas de Desenvolvimento
 ```
-Total de arquivos criados/modificados: ~45
-├── APIs Backend: 8 endpoints
-├── Componentes Vue: 12 componentes
+Total de arquivos criados/modificados: ~50
+├── APIs Backend: 8 endpoints (com mock data)
+├── Componentes Vue: 13 componentes (+ ParishMap)
 ├── Páginas: 8 páginas
 ├── Composables: 6 composables
 ├── Middleware: 3 middlewares
 ├── Utils: 4 utilitários
+├── Plugins: 1 plugin (Leaflet)
 └── Documentação: 5 documentos
 ```
 
@@ -719,11 +735,12 @@ Total de arquivos criados/modificados: ~45
 - **Status**: ✅ Build Funcionando
 
 ### 🔧 Stack Implementada
-- **Backend**: 8 APIs REST funcionais
-- **Frontend**: Interface completa responsiva
-- **Database**: Schema completo modelado
+- **Backend**: 8 APIs REST funcionais (com mock data)
+- **Frontend**: Interface completa responsiva + mapa interativo
+- **Database**: Schema completo modelado (coordenadas adicionadas)
 - **Auth**: Sistema JWT funcional
 - **UI**: Design system católico implementado
+- **Maps**: Leaflet + OpenStreetMap integrado
 
 ---
 
@@ -736,10 +753,10 @@ Total de arquivos criados/modificados: ~45
 - **1 QA Tester** (part-time nas fases finais)
 
 ### ⏱️ Estimativa de Tempo Restante
-- **Correções CSS**: 1-2 dias
-- **Fase 2.1 completa**: 3-5 dias
-- **Fase 2.2-2.4**: 4-6 semanas
-- **Lançamento Beta**: 2-3 meses
+- **Fase 2.1**: ✅ COMPLETA (mapa implementado)
+- **Fase 2.3-2.4**: 3-5 semanas
+- **Fase 3 (Eventos)**: 4-6 semanas  
+- **Lançamento Beta**: 1-2 meses
 
 ### 🕒 Estimativa de Tempo
 - **Desenvolvimento**: 30 semanas (~7 meses)

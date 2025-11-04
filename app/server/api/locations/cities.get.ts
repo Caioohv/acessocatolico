@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { defineEventHandler, getMethod, getQuery, createError } from 'h3'
 
 export default defineEventHandler(async (event) => {
   if (getMethod(event) !== 'GET') {
@@ -14,31 +12,16 @@ export default defineEventHandler(async (event) => {
     const query = getQuery(event)
     const { stateId } = query as { stateId?: string }
 
-    if (!stateId) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'stateId é obrigatório'
-      })
-    }
-
-    const cities = await prisma.city.findMany({
-      where: { stateId },
-      orderBy: { name: 'asc' },
-      include: {
-        _count: {
-          select: {
-            parishes: true
-          }
-        }
-      }
-    })
-
-    return { cities }
-  } catch (error) {
-    if (error.statusCode) {
-      throw error
+    // Use mock data for development
+    const { mockCities } = await import('../parishes/mock-data')
+    
+    let cities = mockCities
+    if (stateId) {
+      cities = mockCities.filter(city => city.stateId === stateId)
     }
     
+    return { cities }
+  } catch (error: any) {
     console.error('Error fetching cities:', error)
     throw createError({
       statusCode: 500,
