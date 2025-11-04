@@ -144,7 +144,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   navigation: () => [
     { name: 'Início', href: '/', icon: 'i-heroicons-home-20-solid' },
-    { name: 'Paróquias', href: '/parishes', icon: 'i-heroicons-building-library-20-solid' },
+    { name: 'Paróquias', href: '/paroquias', icon: 'i-heroicons-building-library-20-solid' },
     { name: 'Eventos', href: '/events', icon: 'i-heroicons-calendar-days-20-solid' },
     { name: 'Ministérios', href: '/ministries', icon: 'i-heroicons-user-group-20-solid' }
   ],

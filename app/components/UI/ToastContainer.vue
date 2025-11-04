@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ToastItem } from '~/composables/useToast'
+import type { ToastItem } from '~/composables/useToast';
 
 // Props
 interface Props {

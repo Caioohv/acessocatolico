@@ -76,13 +76,13 @@ Este roadmap detalha o desenvolvimento completo da plataforma AcessoCatólico, d
 
 ## 🏛️ Fase 2: Módulo de Paróquias (Semanas 5-8)
 
-### 📍 2.1 Catálogo de Paróquias
-- [ ] **Listagem Pública**
-  - [ ] Página de listagem com filtros
-  - [ ] Filtro por estado/cidade/bairro
-  - [ ] Busca por nome da paróquia
-  - [ ] Paginação e lazy loading
-  - [ ] Cards de paróquia com informações básicas
+### ✅ 2.1 Catálogo de Paróquias
+- [x] **Listagem Pública**
+  - [x] Página de listagem com filtros
+  - [x] Filtro por estado/cidade/bairro/diocese
+  - [x] Busca por nome da paróquia
+  - [x] Paginação e lazy loading
+  - [x] Cards de paróquia com informações básicas
   
 - [ ] **Mapa Interativo**
   - [ ] Integração com Google Maps/OpenStreetMap
@@ -90,18 +90,18 @@ Este roadmap detalha o desenvolvimento completo da plataforma AcessoCatólico, d
   - [ ] InfoWindows com dados básicos
   - [ ] Geolocalização do usuário
 
-### 🏛️ 2.2 Página Individual da Paróquia
-- [ ] **Informações Básicas**
-  - [ ] Layout responsivo da página
-  - [ ] Dados da paróquia (nome, endereço, contato)
+### ✅ 2.2 Página Individual da Paróquia
+- [x] **Informações Básicas**
+  - [x] Layout responsivo da página
+  - [x] Dados da paróquia (nome, endereço, contato)
   - [ ] Galeria de fotos
-  - [ ] Links para redes sociais
+  - [x] Links para redes sociais
   - [ ] Botão de doação online
   
-- [ ] **Horários de Missa**
-  - [ ] Tabela de horários por dia da semana
-  - [ ] Filtros (tipo de missa, idioma)
-  - [ ] Informações especiais (primeira comunhão, etc.)
+- [x] **Horários de Missa**
+  - [x] Tabela de horários por dia da semana
+  - [x] Filtros (tipo de missa, idioma)
+  - [x] Informações especiais (primeira comunhão, etc.)
   - [ ] Export para calendário pessoal
   
 - [ ] **Eventos e Atividades**
