@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { createError, defineEventHandler, getMethod, readBody } from 'h3'
+import { sendEmail } from '../../utils/email'
 
 const prisma = new PrismaClient()
 
@@ -124,9 +125,27 @@ export default defineEventHandler(async (event) => {
       }
     })
     
-    // Mock email sending (log to console)
-    console.log('📧 [MOCK EMAIL] Verification email would be sent to:', registration.email)
-    console.log('📧 [MOCK EMAIL] Verification token:', emailVerificationToken)
+    // Send verification email
+    try {
+      const verificationLink = `${process.env.NUXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/cadastro/padre/verificar-email?token=${emailVerificationToken}`
+      
+      await sendEmail({
+        to: registration.email,
+        subject: 'Confirme seu email - Cadastro de Padre',
+        template: 'priest-registration-verification',
+        data: {
+          name: `${registration.firstName} ${registration.lastName}`,
+          verificationLink,
+          ordinationNumber: registration.ordinationNumber,
+          diocese: diocese.name
+        }
+      })
+      
+      console.log('📧 [EMAIL SENT] Verification email sent to:', registration.email)
+    } catch (emailError) {
+      console.error('📧 [EMAIL ERROR] Failed to send verification email:', emailError)
+      // Don't fail registration if email fails, just log
+    }
     
     // Create approval history entry
     await prisma.priestApprovalHistory.create({

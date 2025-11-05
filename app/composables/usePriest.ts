@@ -222,6 +222,82 @@ export const usePriest = () => {
   }
 
   /**
+   * Get priest registration statistics (admin only)
+   */
+  const getStats = async (): Promise<{
+    stats: {
+      total: number
+      pending: number
+      under_review: number
+      approved: number
+      rejected: number
+      requires_documentation: number
+    }
+    recentRegistrations: number
+    averageProcessingDays: number
+    topDioceses: Array<{ diocese: string; count: number }>
+  }> => {
+    loading.value = true
+    error.value = null
+    
+    try {
+      const response = await $fetch<{
+        success: boolean
+        data: any
+      }>('/api/priests/stats')
+
+      return response.data
+    } catch (err: any) {
+      const errorMessage = err.data?.message || err.message || 'Erro ao buscar estatísticas'
+      error.value = errorMessage
+      throw new Error(errorMessage)
+    } finally {
+      loading.value = false
+    }
+  }
+
+  /**
+   * Get approval history for a registration (admin only)
+   */
+  const getApprovalHistory = async (registrationId: string): Promise<{
+    registration: {
+      id: string
+      firstName: string
+      lastName: string
+      email: string
+      status: PriestRegistrationStatus
+      statusUpdatedAt: string
+      createdAt: string
+    }
+    history: Array<{
+      id: string
+      fromStatus: PriestRegistrationStatus
+      toStatus: PriestRegistrationStatus
+      comments?: string
+      adminEmail?: string
+      createdAt: string
+    }>
+  }> => {
+    loading.value = true
+    error.value = null
+    
+    try {
+      const response = await $fetch<{
+        success: boolean
+        data: any
+      }>(`/api/priests/history?registrationId=${registrationId}`)
+
+      return response.data
+    } catch (err: any) {
+      const errorMessage = err.data?.message || err.message || 'Erro ao buscar histórico'
+      error.value = errorMessage
+      throw new Error(errorMessage)
+    } finally {
+      loading.value = false
+    }
+  }
+
+  /**
    * Format document type for display
    */
   const formatDocumentType = (type: DocumentType): string => {
@@ -270,6 +346,8 @@ export const usePriest = () => {
     uploadDocument,
     getRegistrations,
     updateStatus,
+    getStats,
+    getApprovalHistory,
     formatDocumentType,
     formatStatus,
     getStatusColor
