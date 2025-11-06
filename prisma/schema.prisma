@@ -80,9 +80,13 @@ model User {
   parishes  ParishPriest[]
   events    Event[]
   registrations EventRegistration[]
+  eventComments EventComment[]
   appointments  Appointment[]
   ministryMembers MinistryMember[]
   emailVerificationTokens EmailVerificationToken[]
+  formSubmissions EventFormSubmission[]
+  waitingLists  EventWaitingList[]
+  notificationLogs EventNotificationLog[]
   
   // Priest Registration
   priestRegistration PriestRegistration?
@@ -396,33 +400,84 @@ model PriestApprovalHistory {
 
 // Event Models
 model Event {
-  id            String      @id @default(cuid())
-  title         String
-  description   String      @db.Text
-  content       String?     @db.LongText
+  id              String      @id @default(cuid())
+  title           String
+  slug            String      @unique
+  description     String      @db.Text
+  content         String?     @db.LongText
   
-  startDate     DateTime
-  endDate       DateTime?
-  location      String
+  // Date and Location
+  startDate       DateTime
+  endDate         DateTime?
+  timezone        String      @default("America/Sao_Paulo")
+  location        String
+  address         String?
+  coordinates     String?     // "lat,lng" format
+  isOnline        Boolean     @default(false)
+  onlineUrl       String?
+  
+  // Event Configuration
   maxParticipants Int?
-  price         Decimal?    @db.Decimal(10,2)
+  minParticipants Int?        @default(1)
+  price           Decimal?    @db.Decimal(10,2)
+  currency        String      @default("BRL")
   
-  status        EventStatus @default(DRAFT)
+  // Categories and Tags
+  category        String
+  tags            Json?       // Array of tags
+  targetAudience  Json?       // Array of target groups
+  ageMin          Int?
+  ageMax          Int?
+  
+  // Registration Configuration
+  registrationRequired Boolean @default(true)
+  registrationStart   DateTime?
+  registrationEnd     DateTime?
+  requiresApproval    Boolean  @default(false)
+  customForm          Json?    // Dynamic form configuration
+  
+  // Event Status and Visibility
+  status          EventStatus @default(DRAFT)
+  isPublic        Boolean     @default(true)
+  isFeatured      Boolean     @default(false)
+  
+  // Media
+  coverImage      String?
+  gallery         Json?       // Array of image URLs
+  attachments     Json?       // Array of file URLs and names
   
   // Relations
-  organizerId   String
-  organizer     User        @relation(fields: [organizerId], references: [id])
-  parishId      String?
-  parish        Parish?     @relation(fields: [parishId], references: [id])
-  cityId        String?
-  city          City?       @relation(fields: [cityId], references: [id])
+  organizerId     String
+  organizer       User        @relation(fields: [organizerId], references: [id])
+  parishId        String?
+  parish          Parish?     @relation(fields: [parishId], references: [id])
+  cityId          String?
+  city            City?       @relation(fields: [cityId], references: [id])
   
-  registrations EventRegistration[]
-  products      EventProduct[]
+  registrations   EventRegistration[]
+  products        EventProduct[]
+  comments        EventComment[]
+  form            EventForm?
+  waitingList     EventWaitingList[]
+  notificationTemplates EventNotificationTemplate[]
   
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  // SEO and Metadata
+  metaTitle       String?
+  metaDescription String?
   
+  // Tracking
+  viewCount       Int         @default(0)
+  shareCount      Int         @default(0)
+  
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  publishedAt     DateTime?
+  
+  @@index([status])
+  @@index([category])
+  @@index([startDate])
+  @@index([organizerId])
+  @@index([parishId])
   @@map("events")
 }
 
@@ -436,10 +491,35 @@ model EventRegistration {
   status      String @default("confirmed") // confirmed, waiting, cancelled
   data        Json?  // Additional form data
   
+  formSubmission EventFormSubmission?
+  
   createdAt   DateTime @default(now())
   
   @@unique([eventId, userId])
   @@map("event_registrations")
+}
+
+model EventComment {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  content   String   @db.Text
+  isPublic  Boolean  @default(true)
+  
+  // Moderation
+  isApproved Boolean @default(true)
+  moderatedBy String?
+  moderatedAt DateTime?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([eventId])
+  @@index([userId])
+  @@map("event_comments")
 }
 
 // Mini Bar Models
@@ -554,4 +634,244 @@ model Appointment {
   updatedAt   DateTime          @updatedAt
   
   @@map("appointments")
+}
+
+// Event Registration Form Models
+model EventForm {
+  id          String @id @default(cuid())
+  eventId     String @unique
+  event       Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  
+  title       String @default("Formulário de Inscrição")
+  description String? @db.Text
+  
+  // Form configuration
+  isActive    Boolean @default(true)
+  allowMultipleSubmissions Boolean @default(false)
+  requiresApproval Boolean @default(false)
+  
+  // Timing
+  opensAt     DateTime?
+  closesAt    DateTime?
+  
+  fields      EventFormField[]
+  submissions EventFormSubmission[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("event_forms")
+}
+
+model EventFormField {
+  id          String @id @default(cuid())
+  formId      String
+  form        EventForm @relation(fields: [formId], references: [id], onDelete: Cascade)
+  
+  // Field definition
+  type        EventFormFieldType
+  name        String // internal name (slug)
+  label       String // display label
+  placeholder String?
+  helpText    String?
+  
+  // Validation
+  isRequired  Boolean @default(false)
+  minLength   Int?
+  maxLength   Int?
+  pattern     String? // regex pattern
+  
+  // Options for select/radio/checkbox
+  options     Json? // array of {value, label}
+  
+  // Conditional logic
+  showIfField String? // show this field if another field has specific value
+  showIfValue String? // the value that triggers showing this field
+  
+  // Order and grouping
+  order       Int     @default(0)
+  group       String? // group fields together
+  
+  responses   EventFormResponse[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([formId])
+  @@map("event_form_fields")
+}
+
+model EventFormSubmission {
+  id            String @id @default(cuid())
+  formId        String
+  form          EventForm @relation(fields: [formId], references: [id], onDelete: Cascade)
+  userId        String?
+  user          User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  // Anonymous submissions
+  email         String?
+  name          String?
+  phone         String?
+  
+  // Status
+  status        EventFormSubmissionStatus @default(PENDING)
+  approvedBy    String?
+  approvedAt    DateTime?
+  rejectedReason String?
+  
+  responses     EventFormResponse[]
+  
+  // Registration connection
+  registrationId String? @unique
+  registration   EventRegistration? @relation(fields: [registrationId], references: [id])
+  
+  submittedAt   DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@index([formId])
+  @@index([userId])
+  @@map("event_form_submissions")
+}
+
+model EventFormResponse {
+  id           String @id @default(cuid())
+  submissionId String
+  submission   EventFormSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  fieldId      String
+  field        EventFormField @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+  
+  // Response value (stored as JSON to handle any type)
+  value        Json
+  
+  createdAt    DateTime @default(now())
+  
+  @@unique([submissionId, fieldId])
+  @@map("event_form_responses")
+}
+
+// Event waiting list model
+model EventWaitingList {
+  id           String @id @default(cuid())
+  eventId      String
+  event        Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId       String
+  user         User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  position     Int // position in waiting list
+  priority     Int @default(0) // higher number = higher priority
+  
+  // Notification preferences
+  notifyEmail  Boolean @default(true)
+  notifySms    Boolean @default(false)
+  
+  // Status
+  isActive     Boolean @default(true)
+  promotedAt   DateTime? // when promoted from waiting list
+  
+  joinedAt     DateTime @default(now())
+  
+  @@unique([eventId, userId])
+  @@index([eventId, position])
+  @@map("event_waiting_list")
+}
+
+// Communication templates
+model EventNotificationTemplate {
+  id          String @id @default(cuid())
+  eventId     String
+  event       Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  
+  type        EventNotificationType
+  name        String
+  
+  // Email template
+  subject     String?
+  htmlContent String? @db.Text
+  textContent String? @db.Text
+  
+  // SMS template
+  smsContent  String?
+  
+  // In-app notification
+  title       String?
+  message     String? @db.Text
+  
+  // Timing
+  isActive    Boolean @default(true)
+  sendAt      EventNotificationTiming
+  hoursOffset Int? // hours before/after event
+  
+  sentLogs    EventNotificationLog[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("event_notification_templates")
+}
+
+model EventNotificationLog {
+  id         String @id @default(cuid())
+  templateId String
+  template   EventNotificationTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  type       String // email, sms, push, inapp
+  status     String // sent, failed, delivered, read
+  
+  error      String?
+  metadata   Json? // tracking info, message ids, etc.
+  
+  sentAt     DateTime @default(now())
+  
+  @@map("event_notification_logs")
+}
+
+// Enums for form system
+enum EventFormFieldType {
+  TEXT
+  EMAIL
+  PHONE
+  NUMBER
+  DATE
+  DATETIME
+  TIME
+  SELECT
+  RADIO
+  CHECKBOX
+  MULTISELECT
+  TEXTAREA
+  FILE
+  BOOLEAN
+  CPF
+  RG
+  CEP
+}
+
+enum EventFormSubmissionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  INCOMPLETE
+}
+
+enum EventNotificationType {
+  REGISTRATION_CONFIRMATION
+  REGISTRATION_APPROVED
+  REGISTRATION_REJECTED
+  EVENT_REMINDER
+  EVENT_UPDATE
+  EVENT_CANCELLED
+  WAITING_LIST_PROMOTION
+  CUSTOM
+}
+
+enum EventNotificationTiming {
+  IMMEDIATE
+  HOURS_BEFORE
+  DAYS_BEFORE
+  WEEKS_BEFORE
+  AT_EVENT_TIME
+  HOURS_AFTER
+  DAYS_AFTER
 }

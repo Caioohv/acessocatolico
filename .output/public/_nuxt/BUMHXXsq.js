@@ -1,1 +1,0 @@
-import{c0 as l,C as c,O as i}from"./CuMR5YMQ.js";const n=l(o=>{const{user:r}=c(),e=o.query.requireRole;if(e&&r.value){const t=r.value.role,s={VISITOR:1,MEMBER:2,ORGANIZER:3,PRIEST:4,ADMIN:5},u=s[t]||0,a=s[e]||0;if(u<a)throw i({statusCode:403,statusMessage:`Acesso restrito a ${e}s`})}});export{n as default};

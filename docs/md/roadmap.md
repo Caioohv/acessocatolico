@@ -22,7 +22,7 @@ Este roadmap detalha o desenvolvimento completo da plataforma AcessoCató### ⚠
 - **Coordenadas**: Adicionar coordenadas reais às paróquias no banco
 - **Polish e refinamentos**: Melhorar experiência de usuário
 - **PWA**: Transformar em Progressive Web App
-- **Prioridade**: 🟡 BAIXAses estratégicas para garantir uma implementação eficiente e escalável.
+- **Prioridade**: 🟡 BAIXASes estratégicas para garantir uma implementação eficiente e escalável.
 
 **Estado Atual: ✅ Fase 1 Completa + ✅ Fase 2.1 Completa + ✅ Fase 2.2 Completa + ✅ Fase 2.3 Completa + 🗺️ Mapa Interativo Implementado**
 
@@ -212,34 +212,71 @@ Este roadmap detalha o desenvolvimento completo da plataforma AcessoCató### ⚠
 
 ## 🎉 Fase 3: Módulo de Eventos (Semanas 9-14)
 
-### 📅 3.1 Criação e Gestão de Eventos
-- [ ] **CRUD de Eventos**
-  - [ ] Formulário de criação de eventos
-  - [ ] Editor rich text para descrições
-  - [ ] Upload de imagens/documentos
-  - [ ] Configuração de categorias e tags
-  - [ ] Sistema de rascunhos
+### 📅 3.1 Criação e Gestão de Eventos ✅ COMPLETA
+- [x] **CRUD de Eventos**
+  - [x] Formulário de criação de eventos
+  - [x] Editor rich text para descrições
+  - [x] Upload de imagens/documentos
+  - [x] Configuração de categorias e tags
+  - [x] Sistema de rascunhos
   
-- [ ] **Configurações Avançadas**
-  - [ ] Controle de vagas e limites
-  - [ ] Categorização de público-alvo
-  - [ ] Definição de responsáveis
-  - [ ] Configuração de preços/taxas
-  - [ ] Data e local flexíveis
+- [x] **Configurações Avançadas**
+  - [x] Controle de vagas e limites
+  - [x] Categorização de público-alvo
+  - [x] Definição de responsáveis
+  - [x] Configuração de preços/taxas
+  - [x] Data e local flexíveis
+  
+- [x] **Frontend Completo**
+  - [x] Página de listagem com filtros e visualizações (grade/lista/calendário)
+  - [x] Página de detalhes do evento com galeria e comentários
+  - [x] Página de criação com todos os campos
+  - [x] Página de edição completa
+  - [x] Componentes reutilizáveis (EventCard, EventListItem, EventCalendarView)
+  
+- [x] **Backend APIs**
+  - [x] CRUD completo de eventos (/api/events)
+  - [x] Sistema de inscrições (/api/events/[id]/register)
+  - [x] Sistema de comentários (/api/events/[id]/comments)
+  - [x] Upload de arquivos (/api/events/upload)
+  - [x] Categorias e filtros (/api/events/categories)
+  
+- [x] **Recursos Avançados**
+  - [x] Sistema de permissões (apenas admin/padre podem criar)
+  - [x] Integração com autenticação
+  - [x] Validações de servidor e cliente
+  - [x] SEO e metadata dinâmica
+  - [x] Rich text editor personalizado
 
-### 📝 3.2 Sistema de Inscrições
-- [ ] **Formulários Dinâmicos**
-  - [ ] Builder de formulários customizáveis
-  - [ ] Campos condicionais
-  - [ ] Validações personalizadas
-  - [ ] Preview do formulário
-  
+### 📝 3.2 Sistema de Inscrições (EM PROGRESSO)
+- [~] **Formulários Dinâmicos** (implementação inicial)
+  - [x] Modelagem Prisma para formulários dinâmicos (`EventForm`, `EventFormField`, `EventFormSubmission`, `EventFormResponse`)
+  - [x] Endpoints iniciais para gerenciar formulários e campos:
+    - `/api/events/[eventId]/form` (GET/POST/PUT/DELETE)
+    - `/api/forms/[formId]/fields` (POST)
+    - `/api/events/[eventId]/form/submit` (POST)
+  - [x] Composable `useEventForms` implementado para criação, edição e submissão de formulários
+  - [ ] UI do builder (drag-and-drop) — Pendente (próxima iteração)
+  - [ ] Campos condicionais avançados na UI — Pendente
+
 - [ ] **Gestão de Inscrições**
-  - [ ] Inscrições online automáticas
-  - [ ] Inscrições presenciais (por admin)
-  - [ ] Dashboard de inscritos
-  - [ ] Export para Excel/CSV
-  - [ ] Comunicação com inscritos
+  - [x] Armazenamento de submissões com respostas individuais
+  - [x] Fluxo básico de aprovação/reprovação (server-side)
+  - [ ] Dashboard de inscritos (listagem, filtros, export) — Parcial
+  - [ ] Export CSV/XLSX (endpoint pronto na composable, implementação no backend em breve)
+
+- [ ] **Comunicação com inscritos**
+  - [x] Modelagem de templates de notificação (`EventNotificationTemplate`, `EventNotificationLog`)
+  - [ ] Fluxo de envio de emails e notificações automáticas — Pendente (integração Nodemailer/Background jobs)
+  - [ ] Notificações por fila/cron para lembretes — Pendente
+
+- [ ] **Filas de Espera**
+  - [x] Modelo `EventWaitingList` criado
+  - [ ] Promoção automática da fila com notificações — Pendente
+
+- Observações:
+  - Implementação inicial focada em estabilidade do backend e modelagem; UI do builder será desenvolvida em seguida.
+  - Próxima sprint: finalizar UI do builder, endpoints de gestão de submissões (list, update status, export) e integração com sistema de emails.
 
 ### 👥 3.3 Sistema de Classificação de Participantes
 - [ ] **Perfis de Participantes**

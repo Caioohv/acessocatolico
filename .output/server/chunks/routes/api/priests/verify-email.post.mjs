@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { d as defineEventHandler, g as getMethod, c as createError, r as readBody, f as sendEmail } from '../../../nitro/nitro.mjs';
+import { d as defineEventHandler, g as getMethod, c as createError, r as readBody, i as sendEmail } from '../../../nitro/nitro.mjs';
 import 'bcryptjs';
 import 'nodemailer';
 import 'node:http';
