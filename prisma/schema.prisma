@@ -27,9 +27,9 @@ enum EventStatus {
 }
 
 enum ParticipantLevel {
-  NOVICE    // Novato
-  SERVANT   // Servo
-  LEADER    // Líder
+  NOVICE // Novato
+  SERVANT // Servo
+  LEADER // Líder
 }
 
 enum AppointmentStatus {
@@ -62,38 +62,65 @@ enum DocumentStatus {
   REQUIRES_REPLACEMENT
 }
 
+// Novos enums para Sistema de Classificação de Participantes
+enum ParticipantRole {
+  MEMBER // Membro comum
+  SERVANT // Servo
+  LEADER // Líder/Coordenador
+  MINISTRY_HEAD // Responsável de ministério
+}
+
+enum BadgeType {
+  PARTICIPATION // Badge de participação
+  ACHIEVEMENT // Conquista específica
+  LEADERSHIP // Liderança
+  SERVICE // Serviço/Voluntariado
+  SPECIAL // Reconhecimento especial
+}
+
+enum AvailabilityStatus {
+  AVAILABLE // Disponível
+  UNAVAILABLE // Indisponível
+  MAYBE // Talvez/Condicional
+}
+
 // User and Authentication
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  role      UserRole @default(VISITOR)
-  isActive  Boolean  @default(true)
-  emailVerified Boolean @default(false)
+  id              String    @id @default(cuid())
+  email           String    @unique
+  password        String
+  role            UserRole  @default(VISITOR)
+  isActive        Boolean   @default(true)
+  emailVerified   Boolean   @default(false)
   emailVerifiedAt DateTime?
-  lastLoginAt DateTime?
-  
+  lastLoginAt     DateTime?
+
   // Profile
-  profile   UserProfile?
-  
+  profile UserProfile?
+
   // Relations
-  parishes  ParishPriest[]
-  events    Event[]
-  registrations EventRegistration[]
-  eventComments EventComment[]
-  appointments  Appointment[]
-  ministryMembers MinistryMember[]
+  parishes                ParishPriest[]
+  events                  Event[]
+  registrations           EventRegistration[]
+  eventComments           EventComment[]
+  appointments            Appointment[]
+  ministryMembers         MinistryMember[]
   emailVerificationTokens EmailVerificationToken[]
-  formSubmissions EventFormSubmission[]
-  waitingLists  EventWaitingList[]
-  notificationLogs EventNotificationLog[]
-  
+  formSubmissions         EventFormSubmission[]
+  waitingLists            EventWaitingList[]
+  notificationLogs        EventNotificationLog[]
+
+  // Sistema de Classificação
+  participantProfile ParticipantProfile?
+  leadMinistries     Ministry[]          @relation("MinistryLeader")
+  awardedBadges      ParticipantBadge[]
+
   // Priest Registration
   priestRegistration PriestRegistration?
-  
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   @@index([role])
   @@index([isActive])
   @@index([email])
@@ -101,30 +128,30 @@ model User {
 }
 
 model UserProfile {
-  id          String  @id @default(cuid())
-  userId      String  @unique
-  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  firstName   String
-  lastName    String
-  phone       String?
-  avatar      String?
-  bio         String? @db.Text
-  
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  firstName String
+  lastName  String
+  phone     String?
+  avatar    String?
+  bio       String? @db.Text
+
   // Location
-  stateId     String?
-  state       State?  @relation(fields: [stateId], references: [id])
-  cityId      String?
-  city        City?   @relation(fields: [cityId], references: [id])
+  stateId        String?
+  state          State?        @relation(fields: [stateId], references: [id])
+  cityId         String?
+  city           City?         @relation(fields: [cityId], references: [id])
   neighborhoodId String?
   neighborhood   Neighborhood? @relation(fields: [neighborhoodId], references: [id])
-  
+
   // Participant data
-  level       ParticipantLevel @default(NOVICE)
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
+  level ParticipantLevel @default(NOVICE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("user_profiles")
 }
 
@@ -134,9 +161,9 @@ model PasswordResetToken {
   token     String   @unique
   expiresAt DateTime
   used      Boolean  @default(false)
-  
+
   createdAt DateTime @default(now())
-  
+
   @@index([email])
   @@index([token])
   @@index([expiresAt])
@@ -150,9 +177,9 @@ model EmailVerificationToken {
   token     String   @unique
   expiresAt DateTime
   used      Boolean  @default(false)
-  
+
   createdAt DateTime @default(now())
-  
+
   @@index([userId])
   @@index([token])
   @@map("email_verification_tokens")
@@ -160,92 +187,92 @@ model EmailVerificationToken {
 
 // Location Models
 model State {
-  id          String @id @default(cuid())
-  name        String
-  code        String @unique // SP, RJ, etc.
-  
-  cities      City[]
-  parishes    Parish[]
-  profiles    UserProfile[]
-  
+  id   String @id @default(cuid())
+  name String
+  code String @unique // SP, RJ, etc.
+
+  cities   City[]
+  parishes Parish[]
+  profiles UserProfile[]
+
   @@map("states")
 }
 
 model City {
-  id          String @id @default(cuid())
-  name        String
-  stateId     String
-  state       State  @relation(fields: [stateId], references: [id])
-  
+  id      String @id @default(cuid())
+  name    String
+  stateId String
+  state   State  @relation(fields: [stateId], references: [id])
+
   neighborhoods Neighborhood[]
-  parishes    Parish[]
-  profiles    UserProfile[]
-  events      Event[]
-  
+  parishes      Parish[]
+  profiles      UserProfile[]
+  events        Event[]
+
   @@map("cities")
 }
 
 model Neighborhood {
-  id          String @id @default(cuid())
-  name        String
-  cityId      String
-  city        City   @relation(fields: [cityId], references: [id])
-  
-  parishes    Parish[]
-  profiles    UserProfile[]
-  
+  id     String @id @default(cuid())
+  name   String
+  cityId String
+  city   City   @relation(fields: [cityId], references: [id])
+
+  parishes Parish[]
+  profiles UserProfile[]
+
   @@map("neighborhoods")
 }
 
 // Parish Models
 model Diocese {
-  id        String   @id @default(cuid())
-  name      String
-  
-  parishes  Parish[]
-  priestRegistrations     PriestRegistration[]
-  
+  id   String @id @default(cuid())
+  name String
+
+  parishes            Parish[]
+  priestRegistrations PriestRegistration[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   @@map("dioceses")
 }
 
 model Parish {
-  id          String @id @default(cuid())
+  id          String  @id @default(cuid())
   name        String
   address     String
   description String? @db.Text
   phone       String?
   email       String?
   website     String?
-  
+
   // Location
-  stateId     String
-  state       State  @relation(fields: [stateId], references: [id])
-  cityId      String
-  city        City   @relation(fields: [cityId], references: [id])
+  stateId        String
+  state          State         @relation(fields: [stateId], references: [id])
+  cityId         String
+  city           City          @relation(fields: [cityId], references: [id])
   neighborhoodId String?
   neighborhood   Neighborhood? @relation(fields: [neighborhoodId], references: [id])
-  
+
   // Geographic coordinates
-  latitude    Float?
-  longitude   Float?
-  
+  latitude  Float?
+  longitude Float?
+
   // Diocese
-  dioceseId   String
-  diocese     Diocese @relation(fields: [dioceseId], references: [id])
-  
+  dioceseId String
+  diocese   Diocese @relation(fields: [dioceseId], references: [id])
+
   // Relations
-  priests     ParishPriest[]
-  contacts    ParishContact[]
-  masses      Mass[]
-  events      Event[]
-  ministries  Ministry[]
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
+  priests    ParishPriest[]
+  contacts   ParishContact[]
+  masses     Mass[]
+  events     Event[]
+  ministries Ministry[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@index([stateId])
   @@index([cityId])
   @@index([neighborhoodId])
@@ -255,97 +282,97 @@ model Parish {
 }
 
 model ParishPriest {
-  id        String  @id @default(cuid())
-  parishId  String
-  parish    Parish  @relation(fields: [parishId], references: [id], onDelete: Cascade)
-  userId    String
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  isMain    Boolean @default(false) // Pároco principal
-  
+  id       String @id @default(cuid())
+  parishId String
+  parish   Parish @relation(fields: [parishId], references: [id], onDelete: Cascade)
+  userId   String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  isMain Boolean @default(false) // Pároco principal
+
   createdAt DateTime @default(now())
-  
+
   @@unique([parishId, userId])
   @@map("parish_priests")
 }
 
 model ParishContact {
-  id        String @id @default(cuid())
-  parishId  String
-  parish    Parish @relation(fields: [parishId], references: [id], onDelete: Cascade)
-  
-  type      String // facebook, instagram, whatsapp, etc.
-  value     String
-  
+  id       String @id @default(cuid())
+  parishId String
+  parish   Parish @relation(fields: [parishId], references: [id], onDelete: Cascade)
+
+  type  String // facebook, instagram, whatsapp, etc.
+  value String
+
   @@map("parish_contacts")
 }
 
 model Mass {
-  id          String @id @default(cuid())
-  parishId    String
-  parish      Parish @relation(fields: [parishId], references: [id], onDelete: Cascade)
-  
-  dayOfWeek   Int    // 0 = Sunday, 1 = Monday, etc.
+  id       String @id @default(cuid())
+  parishId String
+  parish   Parish @relation(fields: [parishId], references: [id], onDelete: Cascade)
+
+  dayOfWeek   Int // 0 = Sunday, 1 = Monday, etc.
   time        String // "08:00", "19:30", etc.
-  type        String @default("normal") // normal, children, wedding, etc.
-  language    String @default("pt") // pt, en, es, etc.
+  type        String  @default("normal") // normal, children, wedding, etc.
+  language    String  @default("pt") // pt, en, es, etc.
   description String?
-  
-  isActive    Boolean @default(true)
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("masses")
 }
 
 // Priest Registration Models
 model PriestRegistration {
-  id                  String                   @id @default(cuid())
-  userId              String?                  @unique
-  user                User?                    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+  id     String  @id @default(cuid())
+  userId String? @unique
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   // Personal Information
-  firstName           String
-  lastName            String
-  email               String                   @unique
-  phone               String
-  birthDate           DateTime
-  cpf                 String                   @unique
-  bio                 String?                  @db.Text
-  
+  firstName String
+  lastName  String
+  email     String   @unique
+  phone     String
+  birthDate DateTime
+  cpf       String   @unique
+  bio       String?  @db.Text
+
   // Ecclesiastical Information
-  ordinationNumber    String                   @unique
+  ordinationNumber    String   @unique
   ordinationDate      DateTime
   ordinationDioceseId String
-  ordinationDiocese   Diocese                  @relation(fields: [ordinationDioceseId], references: [id])
+  ordinationDiocese   Diocese  @relation(fields: [ordinationDioceseId], references: [id])
   seminary            String?
-  specializations     Json?                    // Array of specializations
-  languages           Json?                    // Array of languages
-  
+  specializations     Json? // Array of specializations
+  languages           Json? // Array of languages
+
   // Registration Status
-  status              PriestRegistrationStatus @default(PENDING)
-  statusUpdatedAt     DateTime                 @default(now())
-  statusUpdatedBy     String?                  // Admin user ID
-  
+  status          PriestRegistrationStatus @default(PENDING)
+  statusUpdatedAt DateTime                 @default(now())
+  statusUpdatedBy String? // Admin user ID
+
   // Review and Comments
-  reviewComments      String?                  @db.Text
-  internalNotes       String?                  @db.Text
-  
+  reviewComments String? @db.Text
+  internalNotes  String? @db.Text
+
   // Documents
-  documents           PriestDocument[]
-  
+  documents PriestDocument[]
+
   // Approval History
-  approvalHistory     PriestApprovalHistory[]
-  
+  approvalHistory PriestApprovalHistory[]
+
   // Email verification
-  emailVerified       Boolean                  @default(false)
-  emailVerificationToken String?               @unique
+  emailVerified           Boolean   @default(false)
+  emailVerificationToken  String?   @unique
   emailVerificationSentAt DateTime?
-  
-  createdAt           DateTime                 @default(now())
-  updatedAt           DateTime                 @updatedAt
-  
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@index([status])
   @@index([email])
   @@index([cpf])
@@ -354,25 +381,25 @@ model PriestRegistration {
 }
 
 model PriestDocument {
-  id                    String                 @id @default(cuid())
-  registrationId        String
-  registration          PriestRegistration     @relation(fields: [registrationId], references: [id], onDelete: Cascade)
-  
-  type                  DocumentType
-  fileName              String
-  originalFileName      String
-  filePath              String
-  fileSize              Int
-  mimeType              String
-  
-  status                DocumentStatus         @default(PENDING)
-  statusUpdatedAt       DateTime               @default(now())
-  statusUpdatedBy       String?                // Admin user ID
-  
-  reviewComments        String?                @db.Text
-  
-  uploadedAt            DateTime               @default(now())
-  
+  id             String             @id @default(cuid())
+  registrationId String
+  registration   PriestRegistration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+
+  type             DocumentType
+  fileName         String
+  originalFileName String
+  filePath         String
+  fileSize         Int
+  mimeType         String
+
+  status          DocumentStatus @default(PENDING)
+  statusUpdatedAt DateTime       @default(now())
+  statusUpdatedBy String? // Admin user ID
+
+  reviewComments String? @db.Text
+
+  uploadedAt DateTime @default(now())
+
   @@index([registrationId])
   @@index([type])
   @@index([status])
@@ -380,99 +407,99 @@ model PriestDocument {
 }
 
 model PriestApprovalHistory {
-  id                String               @id @default(cuid())
-  registrationId    String
-  registration      PriestRegistration   @relation(fields: [registrationId], references: [id], onDelete: Cascade)
-  
-  fromStatus        PriestRegistrationStatus
-  toStatus          PriestRegistrationStatus
-  comments          String?              @db.Text
-  
+  id             String             @id @default(cuid())
+  registrationId String
+  registration   PriestRegistration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+
+  fromStatus PriestRegistrationStatus
+  toStatus   PriestRegistrationStatus
+  comments   String?                  @db.Text
+
   // Admin who made the change
-  adminId           String?
-  adminEmail        String?
-  
-  createdAt         DateTime             @default(now())
-  
+  adminId    String?
+  adminEmail String?
+
+  createdAt DateTime @default(now())
+
   @@index([registrationId])
   @@map("priest_approval_history")
 }
 
 // Event Models
 model Event {
-  id              String      @id @default(cuid())
-  title           String
-  slug            String      @unique
-  description     String      @db.Text
-  content         String?     @db.LongText
-  
+  id          String  @id @default(cuid())
+  title       String
+  slug        String  @unique
+  description String  @db.Text
+  content     String? @db.LongText
+
   // Date and Location
-  startDate       DateTime
-  endDate         DateTime?
-  timezone        String      @default("America/Sao_Paulo")
-  location        String
-  address         String?
-  coordinates     String?     // "lat,lng" format
-  isOnline        Boolean     @default(false)
-  onlineUrl       String?
-  
+  startDate   DateTime
+  endDate     DateTime?
+  timezone    String    @default("America/Sao_Paulo")
+  location    String
+  address     String?
+  coordinates String? // "lat,lng" format
+  isOnline    Boolean   @default(false)
+  onlineUrl   String?
+
   // Event Configuration
   maxParticipants Int?
-  minParticipants Int?        @default(1)
-  price           Decimal?    @db.Decimal(10,2)
-  currency        String      @default("BRL")
-  
+  minParticipants Int?     @default(1)
+  price           Decimal? @db.Decimal(10, 2)
+  currency        String   @default("BRL")
+
   // Categories and Tags
-  category        String
-  tags            Json?       // Array of tags
-  targetAudience  Json?       // Array of target groups
-  ageMin          Int?
-  ageMax          Int?
-  
+  category       String
+  tags           Json? // Array of tags
+  targetAudience Json? // Array of target groups
+  ageMin         Int?
+  ageMax         Int?
+
   // Registration Configuration
-  registrationRequired Boolean @default(true)
-  registrationStart   DateTime?
-  registrationEnd     DateTime?
-  requiresApproval    Boolean  @default(false)
-  customForm          Json?    // Dynamic form configuration
-  
+  registrationRequired Boolean   @default(true)
+  registrationStart    DateTime?
+  registrationEnd      DateTime?
+  requiresApproval     Boolean   @default(false)
+  customForm           Json? // Dynamic form configuration
+
   // Event Status and Visibility
-  status          EventStatus @default(DRAFT)
-  isPublic        Boolean     @default(true)
-  isFeatured      Boolean     @default(false)
-  
+  status     EventStatus @default(DRAFT)
+  isPublic   Boolean     @default(true)
+  isFeatured Boolean     @default(false)
+
   // Media
-  coverImage      String?
-  gallery         Json?       // Array of image URLs
-  attachments     Json?       // Array of file URLs and names
-  
+  coverImage  String?
+  gallery     Json? // Array of image URLs
+  attachments Json? // Array of file URLs and names
+
   // Relations
-  organizerId     String
-  organizer       User        @relation(fields: [organizerId], references: [id])
-  parishId        String?
-  parish          Parish?     @relation(fields: [parishId], references: [id])
-  cityId          String?
-  city            City?       @relation(fields: [cityId], references: [id])
-  
-  registrations   EventRegistration[]
-  products        EventProduct[]
-  comments        EventComment[]
-  form            EventForm?
-  waitingList     EventWaitingList[]
+  organizerId String
+  organizer   User    @relation(fields: [organizerId], references: [id])
+  parishId    String?
+  parish      Parish? @relation(fields: [parishId], references: [id])
+  cityId      String?
+  city        City?   @relation(fields: [cityId], references: [id])
+
+  registrations         EventRegistration[]
+  products              EventProduct[]
+  comments              EventComment[]
+  form                  EventForm?
+  waitingList           EventWaitingList[]
   notificationTemplates EventNotificationTemplate[]
-  
+
   // SEO and Metadata
   metaTitle       String?
   metaDescription String?
-  
+
   // Tracking
-  viewCount       Int         @default(0)
-  shareCount      Int         @default(0)
-  
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-  publishedAt     DateTime?
-  
+  viewCount  Int @default(0)
+  shareCount Int @default(0)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  publishedAt DateTime?
+
   @@index([status])
   @@index([category])
   @@index([startDate])
@@ -482,41 +509,41 @@ model Event {
 }
 
 model EventRegistration {
-  id          String @id @default(cuid())
-  eventId     String
-  event       Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  userId      String
-  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  status      String @default("confirmed") // confirmed, waiting, cancelled
-  data        Json?  // Additional form data
-  
+  id      String @id @default(cuid())
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  status String @default("confirmed") // confirmed, waiting, cancelled
+  data   Json? // Additional form data
+
   formSubmission EventFormSubmission?
-  
-  createdAt   DateTime @default(now())
-  
+
+  createdAt DateTime @default(now())
+
   @@unique([eventId, userId])
   @@map("event_registrations")
 }
 
 model EventComment {
-  id        String   @id @default(cuid())
-  eventId   String
-  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  content   String   @db.Text
-  isPublic  Boolean  @default(true)
-  
+  id      String @id @default(cuid())
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  content  String  @db.Text
+  isPublic Boolean @default(true)
+
   // Moderation
-  isApproved Boolean @default(true)
+  isApproved  Boolean   @default(true)
   moderatedBy String?
   moderatedAt DateTime?
-  
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   @@index([eventId])
   @@index([userId])
   @@map("event_comments")
@@ -524,252 +551,272 @@ model EventComment {
 
 // Mini Bar Models
 model EventProduct {
-  id          String @id @default(cuid())
-  eventId     String
-  event       Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  
+  id      String @id @default(cuid())
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
   name        String
   description String?
-  price       Decimal @db.Decimal(10,2)
+  price       Decimal @db.Decimal(10, 2)
   stock       Int     @default(0)
   category    String
   image       String?
-  
-  orders      ProductOrder[]
-  
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
+
+  orders ProductOrder[]
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("event_products")
 }
 
 model ProductOrder {
-  id          String       @id @default(cuid())
-  productId   String
-  product     EventProduct @relation(fields: [productId], references: [id])
-  userId      String
-  
-  quantity    Int
-  unitPrice   Decimal      @db.Decimal(10,2)
-  totalPrice  Decimal      @db.Decimal(10,2)
-  
-  createdAt   DateTime     @default(now())
-  
+  id        String       @id @default(cuid())
+  productId String
+  product   EventProduct @relation(fields: [productId], references: [id])
+  userId    String
+
+  quantity   Int
+  unitPrice  Decimal @db.Decimal(10, 2)
+  totalPrice Decimal @db.Decimal(10, 2)
+
+  createdAt DateTime @default(now())
+
   @@map("product_orders")
 }
 
 // Ministry Models
 model Ministry {
-  id          String @id @default(cuid())
+  id          String  @id @default(cuid())
   name        String
   description String? @db.Text
-  
-  parishId    String
-  parish      Parish @relation(fields: [parishId], references: [id], onDelete: Cascade)
-  
+
+  // Configurações expandidas
+  isActive         Boolean          @default(true)
+  requiresApproval Boolean          @default(false)
+  minLevel         ParticipantLevel @default(NOVICE)
+
+  parishId String
+  parish   Parish @relation(fields: [parishId], references: [id], onDelete: Cascade)
+
+  // Responsável/Líder
+  leaderId String?
+  leader   User?   @relation("MinistryLeader", fields: [leaderId], references: [id])
+
   members     MinistryMember[]
   schedules   MinistrySchedule[]
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
+  services    Service[]
+  assignments ServiceAssignment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("ministries")
 }
 
 model MinistryMember {
-  id          String   @id @default(cuid())
-  ministryId  String
-  ministry    Ministry @relation(fields: [ministryId], references: [id], onDelete: Cascade)
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  role        String   @default("member") // leader, assistant, member
-  isActive    Boolean  @default(true)
-  
-  schedules   MinistrySchedule[]
-  
-  joinedAt    DateTime @default(now())
-  
+  id         String   @id @default(cuid())
+  ministryId String
+  ministry   Ministry @relation(fields: [ministryId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Referência ao perfil de participante
+  participantId String?
+  participant   ParticipantProfile? @relation(fields: [participantId], references: [id], onDelete: SetNull)
+
+  role            String          @default("member") // leader, assistant, member
+  participantRole ParticipantRole @default(MEMBER)
+  isActive        Boolean         @default(true)
+
+  schedules MinistrySchedule[]
+
+  joinedAt DateTime  @default(now())
+  leftAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@unique([ministryId, userId])
   @@map("ministry_members")
 }
 
 model MinistrySchedule {
-  id          String         @id @default(cuid())
-  ministryId  String
-  ministry    Ministry       @relation(fields: [ministryId], references: [id], onDelete: Cascade)
-  memberId    String
-  member      MinistryMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
-  
+  id         String         @id @default(cuid())
+  ministryId String
+  ministry   Ministry       @relation(fields: [ministryId], references: [id], onDelete: Cascade)
+  memberId   String
+  member     MinistryMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
   date        DateTime
   time        String
   description String?
   type        String // mass, event, meeting, etc.
-  
-  confirmed   Boolean @default(false)
-  
-  createdAt   DateTime @default(now())
-  
+
+  confirmed Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
   @@map("ministry_schedules")
 }
 
 // Appointment Models
 model Appointment {
-  id          String            @id @default(cuid())
-  userId      String
-  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  type        String            // confession, counseling, meeting
-  date        DateTime
-  time        String
-  duration    Int               @default(30) // minutes
-  
-  description String?           @db.Text
-  notes       String?           @db.Text
-  
-  status      AppointmentStatus @default(PENDING)
-  
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @updatedAt
-  
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type     String // confession, counseling, meeting
+  date     DateTime
+  time     String
+  duration Int      @default(30) // minutes
+
+  description String? @db.Text
+  notes       String? @db.Text
+
+  status AppointmentStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("appointments")
 }
 
 // Event Registration Form Models
 model EventForm {
-  id          String @id @default(cuid())
-  eventId     String @unique
-  event       Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  
-  title       String @default("Formulário de Inscrição")
+  id      String @id @default(cuid())
+  eventId String @unique
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  title       String  @default("Formulário de Inscrição")
   description String? @db.Text
-  
+
   // Form configuration
-  isActive    Boolean @default(true)
+  isActive                 Boolean @default(true)
   allowMultipleSubmissions Boolean @default(false)
-  requiresApproval Boolean @default(false)
-  
+  requiresApproval         Boolean @default(false)
+
   // Timing
-  opensAt     DateTime?
-  closesAt    DateTime?
-  
+  opensAt  DateTime?
+  closesAt DateTime?
+
   fields      EventFormField[]
   submissions EventFormSubmission[]
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("event_forms")
 }
 
 model EventFormField {
-  id          String @id @default(cuid())
-  formId      String
-  form        EventForm @relation(fields: [formId], references: [id], onDelete: Cascade)
-  
+  id     String    @id @default(cuid())
+  formId String
+  form   EventForm @relation(fields: [formId], references: [id], onDelete: Cascade)
+
   // Field definition
   type        EventFormFieldType
   name        String // internal name (slug)
   label       String // display label
   placeholder String?
   helpText    String?
-  
+
   // Validation
-  isRequired  Boolean @default(false)
-  minLength   Int?
-  maxLength   Int?
-  pattern     String? // regex pattern
-  
+  isRequired Boolean @default(false)
+  minLength  Int?
+  maxLength  Int?
+  pattern    String? // regex pattern
+
   // Options for select/radio/checkbox
-  options     Json? // array of {value, label}
-  
+  options Json? // array of {value, label}
+
   // Conditional logic
   showIfField String? // show this field if another field has specific value
   showIfValue String? // the value that triggers showing this field
-  
+
   // Order and grouping
-  order       Int     @default(0)
-  group       String? // group fields together
-  
-  responses   EventFormResponse[]
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
+  order Int     @default(0)
+  group String? // group fields together
+
+  responses EventFormResponse[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@index([formId])
   @@map("event_form_fields")
 }
 
 model EventFormSubmission {
-  id            String @id @default(cuid())
-  formId        String
-  form          EventForm @relation(fields: [formId], references: [id], onDelete: Cascade)
-  userId        String?
-  user          User? @relation(fields: [userId], references: [id], onDelete: SetNull)
-  
+  id     String    @id @default(cuid())
+  formId String
+  form   EventForm @relation(fields: [formId], references: [id], onDelete: Cascade)
+  userId String?
+  user   User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+
   // Anonymous submissions
-  email         String?
-  name          String?
-  phone         String?
-  
+  email String?
+  name  String?
+  phone String?
+
   // Status
-  status        EventFormSubmissionStatus @default(PENDING)
-  approvedBy    String?
-  approvedAt    DateTime?
+  status         EventFormSubmissionStatus @default(PENDING)
+  approvedBy     String?
+  approvedAt     DateTime?
   rejectedReason String?
-  
-  responses     EventFormResponse[]
-  
+
+  responses EventFormResponse[]
+
   // Registration connection
-  registrationId String? @unique
+  registrationId String?            @unique
   registration   EventRegistration? @relation(fields: [registrationId], references: [id])
-  
-  submittedAt   DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  
+
+  submittedAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
   @@index([formId])
   @@index([userId])
   @@map("event_form_submissions")
 }
 
 model EventFormResponse {
-  id           String @id @default(cuid())
+  id           String              @id @default(cuid())
   submissionId String
   submission   EventFormSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
   fieldId      String
-  field        EventFormField @relation(fields: [fieldId], references: [id], onDelete: Cascade)
-  
+  field        EventFormField      @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+
   // Response value (stored as JSON to handle any type)
-  value        Json
-  
-  createdAt    DateTime @default(now())
-  
+  value Json
+
+  createdAt DateTime @default(now())
+
   @@unique([submissionId, fieldId])
   @@map("event_form_responses")
 }
 
 // Event waiting list model
 model EventWaitingList {
-  id           String @id @default(cuid())
-  eventId      String
-  event        Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  userId       String
-  user         User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  position     Int // position in waiting list
-  priority     Int @default(0) // higher number = higher priority
-  
+  id      String @id @default(cuid())
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  position Int // position in waiting list
+  priority Int @default(0) // higher number = higher priority
+
   // Notification preferences
-  notifyEmail  Boolean @default(true)
-  notifySms    Boolean @default(false)
-  
+  notifyEmail Boolean @default(true)
+  notifySms   Boolean @default(false)
+
   // Status
-  isActive     Boolean @default(true)
-  promotedAt   DateTime? // when promoted from waiting list
-  
-  joinedAt     DateTime @default(now())
-  
+  isActive   Boolean   @default(true)
+  promotedAt DateTime? // when promoted from waiting list
+
+  joinedAt DateTime @default(now())
+
   @@unique([eventId, userId])
   @@index([eventId, position])
   @@map("event_waiting_list")
@@ -777,53 +824,53 @@ model EventWaitingList {
 
 // Communication templates
 model EventNotificationTemplate {
-  id          String @id @default(cuid())
-  eventId     String
-  event       Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  
-  type        EventNotificationType
-  name        String
-  
+  id      String @id @default(cuid())
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  type EventNotificationType
+  name String
+
   // Email template
   subject     String?
   htmlContent String? @db.Text
   textContent String? @db.Text
-  
+
   // SMS template
-  smsContent  String?
-  
+  smsContent String?
+
   // In-app notification
-  title       String?
-  message     String? @db.Text
-  
+  title   String?
+  message String? @db.Text
+
   // Timing
-  isActive    Boolean @default(true)
+  isActive    Boolean                 @default(true)
   sendAt      EventNotificationTiming
   hoursOffset Int? // hours before/after event
-  
-  sentLogs    EventNotificationLog[]
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
+
+  sentLogs EventNotificationLog[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("event_notification_templates")
 }
 
 model EventNotificationLog {
-  id         String @id @default(cuid())
+  id         String                    @id @default(cuid())
   templateId String
   template   EventNotificationTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
   userId     String
-  user       User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  type       String // email, sms, push, inapp
-  status     String // sent, failed, delivered, read
-  
-  error      String?
-  metadata   Json? // tracking info, message ids, etc.
-  
-  sentAt     DateTime @default(now())
-  
+  user       User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type   String // email, sms, push, inapp
+  status String // sent, failed, delivered, read
+
+  error    String?
+  metadata Json? // tracking info, message ids, etc.
+
+  sentAt DateTime @default(now())
+
   @@map("event_notification_logs")
 }
 
@@ -875,3 +922,198 @@ enum EventNotificationTiming {
   HOURS_AFTER
   DAYS_AFTER
 }
+
+// === SISTEMA DE CLASSIFICAÇÃO DE PARTICIPANTES ===
+
+// Perfil expandido do participante
+model ParticipantProfile {
+  id     String           @id @default(cuid())
+  userId String           @unique
+  level  ParticipantLevel @default(NOVICE)
+  role   ParticipantRole  @default(MEMBER)
+
+  // Informações de participação
+  totalEvents  Int      @default(0)
+  totalHours   Int      @default(0) // Horas de participação
+  joinedAt     DateTime @default(now())
+  lastActivity DateTime @default(now())
+
+  // Pontuação e ranking
+  points Int  @default(0)
+  rank   Int? // Posição no ranking geral
+
+  // Biografia e informações extras
+  bio       String? @db.Text
+  skills    String? @db.Text // JSON array de habilidades
+  interests String? @db.Text // JSON array de interesses
+
+  // Relacionamentos
+  user              User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badges            ParticipantBadge[]
+  ministryMembers   MinistryMember[]
+  availabilitySlots AvailabilitySlot[]
+  assignments       ServiceAssignment[]
+  history           ParticipationHistory[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("participant_profiles")
+}
+
+// Sistema de badges e conquistas
+model Badge {
+  id          String    @id @default(cuid())
+  name        String
+  description String    @db.Text
+  type        BadgeType
+  iconUrl     String?
+  color       String    @default("#6B7280") // Cor hex
+
+  // Critérios para conquista
+  criteria      String  @db.Text // JSON com critérios
+  isActive      Boolean @default(true)
+  isAutoAwarded Boolean @default(false) // Conquista automática
+
+  // Estatísticas
+  totalAwarded Int @default(0)
+
+  // Relacionamentos
+  participants ParticipantBadge[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("badges")
+}
+
+// Relação many-to-many entre participantes e badges
+model ParticipantBadge {
+  id            String @id @default(cuid())
+  participantId String
+  badgeId       String
+
+  // Informações da conquista
+  awardedAt DateTime @default(now())
+  awardedBy String? // ID do usuário que concedeu (se manual)
+  reason    String?  @db.Text
+
+  // Relacionamentos
+  participant   ParticipantProfile @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  badge         Badge              @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+  awardedByUser User?              @relation(fields: [awardedBy], references: [id])
+
+  @@unique([participantId, badgeId])
+  @@map("participant_badges")
+}
+
+// Serviços/funções disponíveis
+model Service {
+  id          String @id @default(cuid())
+  ministryId  String
+  name        String
+  description String @db.Text
+
+  // Requisitos
+  requiredLevel  ParticipantLevel @default(NOVICE)
+  requiredSkills String?          @db.Text // JSON array
+  maxAssignments Int? // Limite de pessoas por serviço
+
+  // Configurações
+  isActive Boolean @default(true)
+  duration Int? // Duração em minutos
+
+  // Relacionamentos
+  ministry    Ministry            @relation(fields: [ministryId], references: [id], onDelete: Cascade)
+  assignments ServiceAssignment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("services")
+}
+
+// Atribuições de serviços
+model ServiceAssignment {
+  id            String @id @default(cuid())
+  serviceId     String
+  participantId String
+  ministryId    String
+
+  // Agendamento
+  scheduledFor DateTime
+  duration     Int? // Duração em minutos
+
+  // Status
+  status      AppointmentStatus @default(PENDING)
+  isConfirmed Boolean           @default(false)
+  confirmedAt DateTime?
+
+  // Notas
+  notes    String? @db.Text
+  feedback String? @db.Text // Feedback pós-execução
+  rating   Int? // Avaliação 1-5
+
+  // Relacionamentos
+  service     Service            @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  participant ParticipantProfile @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  ministry    Ministry           @relation(fields: [ministryId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("service_assignments")
+}
+
+// Disponibilidades dos participantes
+model AvailabilitySlot {
+  id            String @id @default(cuid())
+  participantId String
+
+  // Horário
+  dayOfWeek Int // 0-6 (domingo a sábado)
+  startTime String // HH:MM
+  endTime   String // HH:MM
+
+  // Status e configurações
+  status      AvailabilityStatus @default(AVAILABLE)
+  isRecurring Boolean            @default(true)
+
+  // Datas específicas (se não for recorrente)
+  specificDate DateTime?
+
+  // Relacionamentos
+  participant ParticipantProfile @relation(fields: [participantId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("availability_slots")
+}
+
+// Histórico de participações
+model ParticipationHistory {
+  id            String @id @default(cuid())
+  participantId String
+
+  // Detalhes da participação
+  type          String // "event", "service", "ministry"
+  referenceId   String // ID do evento/serviço/etc
+  referenceName String // Nome do evento/serviço
+
+  // Métricas
+  hoursParticipated Int?
+  pointsEarned      Int  @default(0)
+
+  // Data
+  participatedAt DateTime
+
+  // Relacionamentos
+  participant ParticipantProfile @relation(fields: [participantId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@map("participation_history")
+}
+
+// Relacionamentos adicionais para modelos existentes

@@ -429,24 +429,28 @@ const unhead_k2P3m_ZDyjlr2mMYnoDPwavjsDN8hBlk9cFai0bbopU = /* @__PURE__ */ defin
 function toArray$1(value) {
   return Array.isArray(value) ? value : [value];
 }
-const __nuxt_page_meta$8 = {
+const __nuxt_page_meta$9 = {
   layout: false
 };
-const __nuxt_page_meta$7 = {
+const __nuxt_page_meta$8 = {
   layout: "default"
 };
-const __nuxt_page_meta$6 = {
+const __nuxt_page_meta$7 = {
   layout: "default",
   title: "Paróquias Católicas - AcessoCatólico",
   description: "Encontre paróquias católicas em todo o Brasil. Descubra horários de missa, eventos, ministérios e entre em contato com a comunidade local."
 };
-const __nuxt_page_meta$5 = {
+const __nuxt_page_meta$6 = {
   title: "Painel Administrativo - Cadastro de Padres",
   description: "Gerencie e aprove cadastros de padres na plataforma AcessoCatólico."
   // Adicionar middleware de autenticação quando implementado
 };
-const __nuxt_page_meta$4 = {
+const __nuxt_page_meta$5 = {
   layout: "admin"
+};
+const __nuxt_page_meta$4 = {
+  layout: "admin",
+  title: "Sistema de Participantes - Admin"
 };
 const __nuxt_page_meta$3 = {
   layout: "guest",
@@ -473,8 +477,8 @@ const _routes = [
   {
     name: "login",
     path: "/login",
-    meta: __nuxt_page_meta$8 || {},
-    component: () => import('./login-DrYRLDaq.mjs')
+    meta: __nuxt_page_meta$9 || {},
+    component: () => import('./login-C_m5ho5B.mjs')
   },
   {
     name: "register",
@@ -486,7 +490,7 @@ const _routes = [
     name: "dashboard",
     path: "/dashboard",
     meta: { "middleware": "auth" },
-    component: () => import('./dashboard-DgnuD-yY.mjs')
+    component: () => import('./dashboard-CZGT3slj.mjs')
   },
   {
     name: "eventos-criar",
@@ -515,8 +519,8 @@ const _routes = [
   {
     name: "paroquias-id",
     path: "/paroquias/:id()",
-    meta: __nuxt_page_meta$7 || {},
-    component: () => import('./_id_-BXo_ian7.mjs')
+    meta: __nuxt_page_meta$8 || {},
+    component: () => import('./_id_-CHOSWIju.mjs')
   },
   {
     name: "reset-password",
@@ -533,54 +537,60 @@ const _routes = [
   {
     name: "paroquias",
     path: "/paroquias",
-    meta: __nuxt_page_meta$6 || {},
-    component: () => import('./index-CowgvvTL.mjs')
+    meta: __nuxt_page_meta$7 || {},
+    component: () => import('./index-VLH-JuJY.mjs')
   },
   {
     name: "admin-padres",
     path: "/admin/padres",
-    meta: { ...__nuxt_page_meta$5 || {}, ...{ "middleware": "auth" } },
-    component: () => import('./index-DIppF1d5.mjs')
+    meta: { ...__nuxt_page_meta$6 || {}, ...{ "middleware": "auth" } },
+    component: () => import('./index-B0SAKZBn.mjs')
   },
   {
     name: "admin-eventos",
     path: "/admin/eventos",
+    meta: { ...__nuxt_page_meta$5 || {}, ...{ "middleware": "auth" } },
+    component: () => import('./index-C4LRELeX.mjs')
+  },
+  {
+    name: "admin-participantes",
+    path: "/admin/participantes",
     meta: { ...__nuxt_page_meta$4 || {}, ...{ "middleware": "auth" } },
-    component: () => import('./index-BZUIotcL.mjs')
+    component: () => import('./participantes-DPVhSCA2.mjs')
   },
   {
     name: "cadastro-padre",
     path: "/cadastro/padre",
     meta: __nuxt_page_meta$3 || {},
-    component: () => import('./index-9TLcawry.mjs')
+    component: () => import('./index-ByeNr0VF.mjs')
   },
   {
     name: "cadastro-padre-status",
     path: "/cadastro/padre/status",
-    component: () => import('./status-DH2fj938.mjs')
+    component: () => import('./status-CJnwt1oU.mjs')
   },
   {
     name: "cadastro-padre-sucesso",
     path: "/cadastro/padre/sucesso",
     meta: __nuxt_page_meta$2 || {},
-    component: () => import('./sucesso-Z0rvZhqW.mjs')
+    component: () => import('./sucesso-DA5ccoAX.mjs')
   },
   {
     name: "cadastro-padre-verificar-email",
     path: "/cadastro/padre/verificar-email",
-    component: () => import('./verificar-email-DAWPfmvz.mjs')
+    component: () => import('./verificar-email-BC-XfNxo.mjs')
   },
   {
     name: "admin-eventos-eventId-formulario",
     path: "/admin/eventos/:eventId()/formulario",
     meta: { ...__nuxt_page_meta$1 || {}, ...{ "middleware": "auth" } },
-    component: () => import('./formulario-B66nrxSP.mjs')
+    component: () => import('./formulario-B3Dd01CF.mjs')
   },
   {
     name: "admin-eventos-eventId-inscricoes",
     path: "/admin/eventos/:eventId()/inscricoes",
     meta: { ...__nuxt_page_meta || {}, ...{ "middleware": "auth" } },
-    component: () => import('./inscricoes-C_Zb477z.mjs')
+    component: () => import('./inscricoes-DGRmqoRb.mjs')
   }
 ];
 const _wrapInTransition = (props, children) => {
@@ -1443,7 +1453,7 @@ const plugins = [
   prerender_server_sqIxOBipVr4FbVMA9kqWL0wT8FPop6sKAXLVfifsJzk
 ];
 const layouts = {
-  admin: defineAsyncComponent(() => import('./admin-moRdNSKM.mjs').then((m) => m.default || m)),
+  admin: defineAsyncComponent(() => import('./admin-BQsxGxE3.mjs').then((m) => m.default || m)),
   dashboard: defineAsyncComponent(() => import('./dashboard-CIYUTS3i.mjs').then((m) => m.default || m)),
   default: defineAsyncComponent(() => import('./default-mrUCSHJS.mjs').then((m) => m.default || m))
 };
