@@ -1,4 +1,4 @@
-import { d as defineEventHandler, h as getRouterParam, c as createError } from '../../../../nitro/nitro.mjs';
+import { d as defineEventHandler, e as getRouterParam, c as createError } from '../../../../nitro/nitro.mjs';
 import { PrismaClient } from '@prisma/client';
 import 'bcryptjs';
 import 'nodemailer';

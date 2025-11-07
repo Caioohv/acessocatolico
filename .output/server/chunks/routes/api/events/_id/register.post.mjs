@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { d as defineEventHandler, g as getHeader, c as createError, h as getRouterParam } from '../../../../nitro/nitro.mjs';
+import { d as defineEventHandler, g as getHeader, c as createError, e as getRouterParam } from '../../../../nitro/nitro.mjs';
 import * as jwt from 'jsonwebtoken';
 import 'bcryptjs';
 import 'nodemailer';

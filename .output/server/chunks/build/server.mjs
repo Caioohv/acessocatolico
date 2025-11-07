@@ -1,5 +1,5 @@
 import { hasInjectionContext, inject, toRef, isRef, getCurrentInstance, defineComponent, createElementBlock, shallowRef, provide, cloneVNode, defineAsyncComponent, h, computed, unref, shallowReactive, ref, Suspense, Fragment, createApp, onErrorCaptured, onServerPrefetch, createVNode, resolveDynamicComponent, reactive, effectScope, isReadonly, isShallow, isReactive, toRaw, mergeProps, getCurrentScope, withCtx, nextTick, useSSRContext } from 'vue';
-import { x as defuFn, c as createError$1, y as klona, z as hasProtocol, A as isScriptProtocol, B as joinURL, C as withQuery, D as sanitizeStatusCode, E as getContext, $ as $fetch$1, F as baseURL, G as createHooks, H as executeAsync, I as toRouteMatcher, J as createRouter$1, K as defu } from '../nitro/nitro.mjs';
+import { z as defuFn, c as createError$1, A as klona, B as hasProtocol, C as isScriptProtocol, D as joinURL, E as withQuery, F as sanitizeStatusCode, G as getContext, $ as $fetch$1, H as baseURL, I as createHooks, J as executeAsync, K as toRouteMatcher, L as createRouter$1, M as defu } from '../nitro/nitro.mjs';
 import { createPinia, setActivePinia, shouldHydrate } from 'pinia';
 import { useRoute as useRoute$1, RouterView, createMemoryHistory, createRouter, START_LOCATION } from 'vue-router';
 import colors from 'tailwindcss/colors';
@@ -429,38 +429,41 @@ const unhead_k2P3m_ZDyjlr2mMYnoDPwavjsDN8hBlk9cFai0bbopU = /* @__PURE__ */ defin
 function toArray$1(value) {
   return Array.isArray(value) ? value : [value];
 }
-const __nuxt_page_meta$9 = {
+const __nuxt_page_meta$a = {
   layout: false
 };
-const __nuxt_page_meta$8 = {
+const __nuxt_page_meta$9 = {
   layout: "default"
 };
-const __nuxt_page_meta$7 = {
+const __nuxt_page_meta$8 = {
   layout: "default",
   title: "Paróquias Católicas - AcessoCatólico",
   description: "Encontre paróquias católicas em todo o Brasil. Descubra horários de missa, eventos, ministérios e entre em contato com a comunidade local."
 };
-const __nuxt_page_meta$6 = {
+const __nuxt_page_meta$7 = {
   title: "Painel Administrativo - Cadastro de Padres",
   description: "Gerencie e aprove cadastros de padres na plataforma AcessoCatólico."
   // Adicionar middleware de autenticação quando implementado
 };
-const __nuxt_page_meta$5 = {
+const __nuxt_page_meta$6 = {
   layout: "admin"
 };
-const __nuxt_page_meta$4 = {
+const __nuxt_page_meta$5 = {
   layout: "admin",
   title: "Sistema de Participantes - Admin"
 };
-const __nuxt_page_meta$3 = {
+const __nuxt_page_meta$4 = {
   layout: "guest",
   title: "Cadastro de Padre - AcessoCatólico",
   description: "Cadastre-se como padre na plataforma AcessoCatólico e conecte sua paróquia com fiéis de todo o Brasil."
 };
-const __nuxt_page_meta$2 = {
+const __nuxt_page_meta$3 = {
   layout: "guest",
   title: "Cadastro Enviado - AcessoCatólico",
   description: "Seu cadastro de padre foi enviado com sucesso e está sendo analisado pela nossa equipe."
+};
+const __nuxt_page_meta$2 = {
+  layout: "admin"
 };
 const __nuxt_page_meta$1 = {
   layout: "admin"
@@ -477,7 +480,7 @@ const _routes = [
   {
     name: "login",
     path: "/login",
-    meta: __nuxt_page_meta$9 || {},
+    meta: __nuxt_page_meta$a || {},
     component: () => import('./login-C_m5ho5B.mjs')
   },
   {
@@ -519,7 +522,7 @@ const _routes = [
   {
     name: "paroquias-id",
     path: "/paroquias/:id()",
-    meta: __nuxt_page_meta$8 || {},
+    meta: __nuxt_page_meta$9 || {},
     component: () => import('./_id_-CHOSWIju.mjs')
   },
   {
@@ -537,31 +540,31 @@ const _routes = [
   {
     name: "paroquias",
     path: "/paroquias",
-    meta: __nuxt_page_meta$7 || {},
+    meta: __nuxt_page_meta$8 || {},
     component: () => import('./index-VLH-JuJY.mjs')
   },
   {
     name: "admin-padres",
     path: "/admin/padres",
-    meta: { ...__nuxt_page_meta$6 || {}, ...{ "middleware": "auth" } },
+    meta: { ...__nuxt_page_meta$7 || {}, ...{ "middleware": "auth" } },
     component: () => import('./index-B0SAKZBn.mjs')
   },
   {
     name: "admin-eventos",
     path: "/admin/eventos",
-    meta: { ...__nuxt_page_meta$5 || {}, ...{ "middleware": "auth" } },
+    meta: { ...__nuxt_page_meta$6 || {}, ...{ "middleware": "auth" } },
     component: () => import('./index-C4LRELeX.mjs')
   },
   {
     name: "admin-participantes",
     path: "/admin/participantes",
-    meta: { ...__nuxt_page_meta$4 || {}, ...{ "middleware": "auth" } },
+    meta: { ...__nuxt_page_meta$5 || {}, ...{ "middleware": "auth" } },
     component: () => import('./participantes-DPVhSCA2.mjs')
   },
   {
     name: "cadastro-padre",
     path: "/cadastro/padre",
-    meta: __nuxt_page_meta$3 || {},
+    meta: __nuxt_page_meta$4 || {},
     component: () => import('./index-ByeNr0VF.mjs')
   },
   {
@@ -572,8 +575,14 @@ const _routes = [
   {
     name: "cadastro-padre-sucesso",
     path: "/cadastro/padre/sucesso",
-    meta: __nuxt_page_meta$2 || {},
+    meta: __nuxt_page_meta$3 || {},
     component: () => import('./sucesso-DA5ccoAX.mjs')
+  },
+  {
+    name: "admin-eventos-id-fila-espera",
+    path: "/admin/eventos/:id()/fila-espera",
+    meta: { ...__nuxt_page_meta$2 || {}, ...{ "middleware": "auth" } },
+    component: () => import('./fila-espera-DJPsb_U2.mjs')
   },
   {
     name: "cadastro-padre-verificar-email",

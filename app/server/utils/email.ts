@@ -83,6 +83,22 @@ export async function sendEmail(emailData: EmailData): Promise<void> {
 }
 
 /**
+ * Função auxiliar para enviar notificações específicas de eventos
+ */
+export async function sendNotificationEmail(options: {
+  to: string
+  type: string
+  data: Record<string, any>
+}): Promise<void> {
+  await sendEmail({
+    to: options.to,
+    subject: '', // Will be set by template
+    template: options.type,
+    data: options.data
+  })
+}
+
+/**
  * Professional HTML email templates
  */
 export const emailTemplates = {
@@ -263,6 +279,160 @@ export const emailTemplates = {
             <p><strong>Tempo estimado:</strong> 2-3 dias úteis</p>
             <p>Você receberá um email assim que a análise for concluída.</p>
             <p>Agradecemos sua paciência!</p>
+          </div>
+          <div class="footer">
+            <p>© 2024 AcessoCatólico - Conectando a Comunidade Católica</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `
+  },
+  'waiting_list_promotion': {
+    subject: 'Vaga Disponível! Você foi promovido da fila de espera',
+    html: (data: any) => `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <title>Promoção da Fila de Espera</title>
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background: #10B981; color: white; padding: 20px; text-align: center; }
+          .content { padding: 20px; background: #f9f9f9; }
+          .button { display: inline-block; padding: 12px 24px; background: #10B981; color: white; text-decoration: none; border-radius: 5px; margin: 10px 0; }
+          .highlight { background: #d1fae5; padding: 15px; border-left: 4px solid #10B981; margin: 15px 0; }
+          .footer { padding: 20px; text-align: center; color: #666; font-size: 12px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>🎉 Boa Notícia!</h1>
+            <p>Uma vaga ficou disponível!</p>
+          </div>
+          <div class="content">
+            <h2>Olá, ${data.name}!</h2>
+            <p>Temos uma excelente notícia! Uma vaga ficou disponível no evento e você foi automaticamente promovido da fila de espera.</p>
+            
+            <div class="highlight">
+              <h3>📅 ${data.eventTitle}</h3>
+              <p><strong>Data:</strong> ${new Date(data.eventDate).toLocaleDateString('pt-BR', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+              })}</p>
+              <p><strong>Sua posição anterior:</strong> #${data.previousPosition} na fila</p>
+            </div>
+            
+            <p>Sua inscrição foi automaticamente aprovada. Você receberá em breve mais informações sobre o evento.</p>
+            
+            <p>Agradecemos sua paciência e esperamos vê-lo no evento!</p>
+          </div>
+          <div class="footer">
+            <p>© 2024 AcessoCatólico - Conectando a Comunidade Católica</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `
+  },
+  'event_reminder_24h': {
+    subject: 'Lembrete: Seu evento é amanhã!',
+    html: (data: any) => `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <title>Lembrete de Evento</title>
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background: #F59E0B; color: white; padding: 20px; text-align: center; }
+          .content { padding: 20px; background: #f9f9f9; }
+          .event-details { background: #fef3c7; padding: 15px; border-left: 4px solid #F59E0B; margin: 15px 0; }
+          .footer { padding: 20px; text-align: center; color: #666; font-size: 12px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>⏰ Lembrete</h1>
+            <p>Seu evento é amanhã!</p>
+          </div>
+          <div class="content">
+            <h2>Olá, ${data.name}!</h2>
+            <p>Esperamos que esteja ansioso! Seu evento é amanhã.</p>
+            
+            <div class="event-details">
+              <h3>📅 ${data.eventTitle}</h3>
+              <p><strong>Data:</strong> ${new Date(data.eventDate).toLocaleDateString('pt-BR', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+              })}</p>
+              ${data.eventLocation ? `<p><strong>Local:</strong> ${data.eventLocation}</p>` : ''}
+            </div>
+            
+            <p>Não esqueça de chegar um pouco mais cedo. Até lá!</p>
+          </div>
+          <div class="footer">
+            <p>© 2024 AcessoCatólico - Conectando a Comunidade Católica</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `
+  },
+  'event_reminder_7d': {
+    subject: 'Lembrete: Seu evento é na próxima semana',
+    html: (data: any) => `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <title>Lembrete de Evento</title>
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background: #6366F1; color: white; padding: 20px; text-align: center; }
+          .content { padding: 20px; background: #f9f9f9; }
+          .event-details { background: #e0e7ff; padding: 15px; border-left: 4px solid #6366F1; margin: 15px 0; }
+          .footer { padding: 20px; text-align: center; color: #666; font-size: 12px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>📆 Lembrete</h1>
+            <p>Seu evento se aproxima!</p>
+          </div>
+          <div class="content">
+            <h2>Olá, ${data.name}!</h2>
+            <p>Queremos lembrar que seu evento está chegando!</p>
+            
+            <div class="event-details">
+              <h3>📅 ${data.eventTitle}</h3>
+              <p><strong>Data:</strong> ${new Date(data.eventDate).toLocaleDateString('pt-BR', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+              })}</p>
+              ${data.eventLocation ? `<p><strong>Local:</strong> ${data.eventLocation}</p>` : ''}
+              <p><strong>Faltam:</strong> ${data.daysUntilEvent} dias</p>
+            </div>
+            
+            <p>Comece a se preparar! Enviaremos outro lembrete mais próximo à data.</p>
           </div>
           <div class="footer">
             <p>© 2024 AcessoCatólico - Conectando a Comunidade Católica</p>

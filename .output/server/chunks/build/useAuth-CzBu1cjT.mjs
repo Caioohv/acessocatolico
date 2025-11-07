@@ -1,6 +1,6 @@
 import { k as useState, n as navigateTo, e as useNuxtApp, j as useRequestEvent } from './server.mjs';
 import { computed, readonly, ref } from 'vue';
-import { Q as destr, y as klona, R as parse, S as getRequestHeader, M as isEqual, e as setCookie, f as getCookie, T as deleteCookie } from '../nitro/nitro.mjs';
+import { S as destr, A as klona, T as parse, U as getRequestHeader, O as isEqual, i as setCookie, j as getCookie, V as deleteCookie } from '../nitro/nitro.mjs';
 
 const CookieDefaults = {
   path: "/",

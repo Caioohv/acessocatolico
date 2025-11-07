@@ -1,7 +1,7 @@
 import { toRef, inject, computed, unref, isRef, ref } from 'vue';
 import { createSharedComposable } from '@vueuse/core';
 import { i as get } from './Button-BeuMp5nt.mjs';
-import { K as defu } from '../nitro/nitro.mjs';
+import { M as defu } from '../nitro/nitro.mjs';
 
 function buildTranslator(locale) {
   return (path, option) => translate(path, option, unref(locale));

@@ -4,6 +4,7 @@ import { ssrRenderAttrs, ssrInterpolate, ssrRenderComponent } from 'vue/server-r
 import { _ as _export_sfc, u as useHead } from './server.mjs';
 import '../nitro/nitro.mjs';
 import 'bcryptjs';
+import '@prisma/client';
 import 'nodemailer';
 import 'node:http';
 import 'node:https';
@@ -13,7 +14,6 @@ import 'node:fs';
 import 'node:path';
 import 'node:crypto';
 import 'node:url';
-import '@prisma/client';
 import 'jsonwebtoken';
 import '@iconify/utils';
 import 'consola';

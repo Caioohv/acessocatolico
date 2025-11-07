@@ -1,6 +1,7 @@
 import { d as defineEventHandler, b as getMethod, c as createError, r as readBody } from '../../../../nitro/nitro.mjs';
 import * as nodemailer from 'nodemailer';
 import 'bcryptjs';
+import '@prisma/client';
 import 'node:http';
 import 'node:https';
 import 'node:events';
@@ -9,7 +10,6 @@ import 'node:fs';
 import 'node:path';
 import 'node:crypto';
 import 'node:url';
-import '@prisma/client';
 import 'jsonwebtoken';
 import '@iconify/utils';
 import 'consola';

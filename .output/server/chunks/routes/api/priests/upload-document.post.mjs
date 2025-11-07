@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { promises } from 'fs';
-import { d as defineEventHandler, b as getMethod, c as createError, m as readMultipartFormData } from '../../../nitro/nitro.mjs';
+import { d as defineEventHandler, b as getMethod, c as createError, o as readMultipartFormData } from '../../../nitro/nitro.mjs';
 import * as path from 'path';
 import 'bcryptjs';
 import 'nodemailer';

@@ -487,6 +487,7 @@ model Event {
   form                  EventForm?
   waitingList           EventWaitingList[]
   notificationTemplates EventNotificationTemplate[]
+  notificationLogs      EventNotificationLog[]
 
   // SEO and Metadata
   metaTitle       String?
@@ -858,13 +859,16 @@ model EventNotificationTemplate {
 
 model EventNotificationLog {
   id         String                    @id @default(cuid())
-  templateId String
-  template   EventNotificationTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
-  userId     String
-  user       User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  templateId String?
+  template   EventNotificationTemplate? @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  userId     String?
+  user       User?                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  eventId    String?
+  event      Event?                    @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
-  type   String // email, sms, push, inapp
-  status String // sent, failed, delivered, read
+  type          String // email, sms, push, inapp
+  status        String // sent, failed, delivered, read
+  recipientEmail String? // Para logs bulk
 
   error    String?
   metadata Json? // tracking info, message ids, etc.

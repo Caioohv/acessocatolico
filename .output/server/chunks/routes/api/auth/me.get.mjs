@@ -1,4 +1,4 @@
-import { d as defineEventHandler, f as getCookie, c as createError, u as useRuntimeConfig } from '../../../nitro/nitro.mjs';
+import { d as defineEventHandler, j as getCookie, c as createError, u as useRuntimeConfig } from '../../../nitro/nitro.mjs';
 import { PrismaClient } from '@prisma/client';
 import jwt__default from 'jsonwebtoken';
 import 'bcryptjs';
