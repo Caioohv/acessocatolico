@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import { d as defineEventHandler, e as getHeader, c as createError, h as readFormData } from '../../../nitro/nitro.mjs';
-import * as jsonwebtoken from 'jsonwebtoken';
+import { d as defineEventHandler, g as getHeader, c as createError, i as readFormData } from '../../../nitro/nitro.mjs';
+import * as jwt from 'jsonwebtoken';
 import { mkdir, writeFile } from 'fs/promises';
 import { join } from 'path';
 import { v4 } from 'uuid';
@@ -30,7 +30,7 @@ const upload_post = defineEventHandler(async (event) => {
       });
     }
     const token = authHeader.substring(7);
-    const payload = jsonwebtoken.verify(token, process.env.JWT_SECRET);
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
     const user = await prisma.user.findUnique({
       where: { id: payload.userId }
     });

@@ -1,1 +1,0 @@
-import{_ as o,c as s,a as t,o as n}from"./DOw91aXk.js";const a={},c={class:"myContainer"};function r(_,e){return n(),s("div",c,e[0]||(e[0]=[t("h1",null,"Hello world :)",-1)]))}const l=o(a,[["render",r],["__scopeId","data-v-4c181f93"]]);export{l as default};

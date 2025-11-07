@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import { d as defineEventHandler, e as getHeader, c as createError, b as getRouterParam } from '../../../../nitro/nitro.mjs';
-import * as jsonwebtoken from 'jsonwebtoken';
+import { d as defineEventHandler, g as getHeader, c as createError, h as getRouterParam } from '../../../../nitro/nitro.mjs';
+import * as jwt from 'jsonwebtoken';
 import 'bcryptjs';
 import 'nodemailer';
 import 'node:http';
@@ -27,7 +27,7 @@ const register_post = defineEventHandler(async (event) => {
       });
     }
     const token = authHeader.substring(7);
-    const payload = jsonwebtoken.verify(token, process.env.JWT_SECRET);
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
     const user = await prisma.user.findUnique({
       where: { id: payload.userId }
     });

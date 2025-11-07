@@ -1,7 +1,7 @@
-import { d as defineEventHandler, g as getMethod, c as createError, r as readBody, u as useRuntimeConfig, s as setCookie } from '../../../nitro/nitro.mjs';
+import { d as defineEventHandler, b as getMethod, c as createError, r as readBody, u as useRuntimeConfig, e as setCookie } from '../../../nitro/nitro.mjs';
 import { PrismaClient } from '@prisma/client';
 import bcryptjs__default from 'bcryptjs';
-import jsonwebtoken__default from 'jsonwebtoken';
+import jwt__default from 'jsonwebtoken';
 import { z } from 'zod';
 import 'nodemailer';
 import 'node:http';
@@ -68,7 +68,7 @@ const login_post = defineEventHandler(async (event) => {
       data: { lastLoginAt: /* @__PURE__ */ new Date() }
     });
     const config = useRuntimeConfig();
-    const token = jsonwebtoken__default.sign(
+    const token = jwt__default.sign(
       {
         userId: user.id,
         email: user.email,

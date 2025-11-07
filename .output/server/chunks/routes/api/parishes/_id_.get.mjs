@@ -1,4 +1,4 @@
-import { d as defineEventHandler, g as getMethod, c as createError, b as getRouterParam } from '../../../nitro/nitro.mjs';
+import { d as defineEventHandler, b as getMethod, c as createError, h as getRouterParam } from '../../../nitro/nitro.mjs';
 import 'bcryptjs';
 import 'nodemailer';
 import 'node:http';

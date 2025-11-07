@@ -1,5 +1,5 @@
 import { hasInjectionContext, inject, toRef, isRef, getCurrentInstance, defineComponent, createElementBlock, shallowRef, provide, cloneVNode, defineAsyncComponent, h, computed, unref, shallowReactive, ref, Suspense, Fragment, createApp, onErrorCaptured, onServerPrefetch, createVNode, resolveDynamicComponent, reactive, effectScope, isReadonly, isShallow, isReactive, toRaw, mergeProps, getCurrentScope, withCtx, nextTick, useSSRContext } from 'vue';
-import { w as defuFn, x as klona, c as createError$1, y as hasProtocol, z as isScriptProtocol, A as joinURL, B as withQuery, C as sanitizeStatusCode, D as getContext, $ as $fetch$1, E as baseURL, F as createHooks, G as executeAsync, H as toRouteMatcher, I as createRouter$1, J as defu } from '../nitro/nitro.mjs';
+import { x as defuFn, c as createError$1, y as klona, z as hasProtocol, A as isScriptProtocol, B as joinURL, C as withQuery, D as sanitizeStatusCode, E as getContext, $ as $fetch$1, F as baseURL, G as createHooks, H as executeAsync, I as toRouteMatcher, J as createRouter$1, K as defu } from '../nitro/nitro.mjs';
 import { createPinia, setActivePinia, shouldHydrate } from 'pinia';
 import { useRoute as useRoute$1, RouterView, createMemoryHistory, createRouter, START_LOCATION } from 'vue-router';
 import colors from 'tailwindcss/colors';
@@ -429,31 +429,40 @@ const unhead_k2P3m_ZDyjlr2mMYnoDPwavjsDN8hBlk9cFai0bbopU = /* @__PURE__ */ defin
 function toArray$1(value) {
   return Array.isArray(value) ? value : [value];
 }
-const __nuxt_page_meta$5 = {
+const __nuxt_page_meta$8 = {
   layout: false
 };
-const __nuxt_page_meta$4 = {
+const __nuxt_page_meta$7 = {
   layout: "default"
 };
-const __nuxt_page_meta$3 = {
+const __nuxt_page_meta$6 = {
   layout: "default",
   title: "Paróquias Católicas - AcessoCatólico",
   description: "Encontre paróquias católicas em todo o Brasil. Descubra horários de missa, eventos, ministérios e entre em contato com a comunidade local."
 };
-const __nuxt_page_meta$2 = {
+const __nuxt_page_meta$5 = {
   title: "Painel Administrativo - Cadastro de Padres",
   description: "Gerencie e aprove cadastros de padres na plataforma AcessoCatólico."
   // Adicionar middleware de autenticação quando implementado
 };
-const __nuxt_page_meta$1 = {
+const __nuxt_page_meta$4 = {
+  layout: "admin"
+};
+const __nuxt_page_meta$3 = {
   layout: "guest",
   title: "Cadastro de Padre - AcessoCatólico",
   description: "Cadastre-se como padre na plataforma AcessoCatólico e conecte sua paróquia com fiéis de todo o Brasil."
 };
-const __nuxt_page_meta = {
+const __nuxt_page_meta$2 = {
   layout: "guest",
   title: "Cadastro Enviado - AcessoCatólico",
   description: "Seu cadastro de padre foi enviado com sucesso e está sendo analisado pela nossa equipe."
+};
+const __nuxt_page_meta$1 = {
+  layout: "admin"
+};
+const __nuxt_page_meta = {
+  layout: "admin"
 };
 const _routes = [
   {
@@ -464,96 +473,114 @@ const _routes = [
   {
     name: "login",
     path: "/login",
-    meta: __nuxt_page_meta$5 || {},
-    component: () => import('./login-DEIMWXJl.mjs')
+    meta: __nuxt_page_meta$8 || {},
+    component: () => import('./login-DrYRLDaq.mjs')
   },
   {
     name: "register",
     path: "/register",
     meta: { "middleware": "guest" },
-    component: () => import('./register-OWm3eLSc.mjs')
+    component: () => import('./register-Dpa0SWeO.mjs')
   },
   {
     name: "dashboard",
     path: "/dashboard",
     meta: { "middleware": "auth" },
-    component: () => import('./dashboard-BgAHMPh0.mjs')
+    component: () => import('./dashboard-DgnuD-yY.mjs')
   },
   {
     name: "eventos-criar",
     path: "/eventos/criar",
     meta: { "middleware": "auth" },
-    component: () => import('./criar-BsSEZsi6.mjs')
+    component: () => import('./criar-ZV6Nq-jX.mjs')
   },
   {
     name: "eventos",
     path: "/eventos",
-    component: () => import('./index-DTiSNOZm.mjs')
+    component: () => import('./index-CqyjEfi7.mjs')
   },
   {
     name: "eventos-slug",
     path: "/eventos/:slug()",
-    component: () => import('./_slug_-CKYzU0dQ.mjs'),
+    component: () => import('./_slug_-CJAUTTYm.mjs'),
     children: [
       {
         name: "eventos-slug-editar",
         path: "editar",
         meta: { "middleware": "auth" },
-        component: () => import('./editar-nJpFQQhs.mjs')
+        component: () => import('./editar-BdQFRxbu.mjs')
       }
     ]
   },
   {
     name: "paroquias-id",
     path: "/paroquias/:id()",
-    meta: __nuxt_page_meta$4 || {},
-    component: () => import('./_id_-CgavUdxH.mjs')
+    meta: __nuxt_page_meta$7 || {},
+    component: () => import('./_id_-BXo_ian7.mjs')
   },
   {
     name: "reset-password",
     path: "/reset-password",
     meta: { "middleware": "guest" },
-    component: () => import('./reset-password-CuOguaIT.mjs')
+    component: () => import('./reset-password-CXSJNIlO.mjs')
   },
   {
     name: "forgot-password",
     path: "/forgot-password",
     meta: { "middleware": "guest" },
-    component: () => import('./forgot-password-GlO7RNcb.mjs')
+    component: () => import('./forgot-password-D_W_ziF2.mjs')
   },
   {
     name: "paroquias",
     path: "/paroquias",
-    meta: __nuxt_page_meta$3 || {},
-    component: () => import('./index-toBP7K7t.mjs')
+    meta: __nuxt_page_meta$6 || {},
+    component: () => import('./index-CowgvvTL.mjs')
   },
   {
     name: "admin-padres",
     path: "/admin/padres",
-    meta: { ...__nuxt_page_meta$2 || {}, ...{ "middleware": "auth" } },
-    component: () => import('./index-Ce-vZdF6.mjs')
+    meta: { ...__nuxt_page_meta$5 || {}, ...{ "middleware": "auth" } },
+    component: () => import('./index-DIppF1d5.mjs')
+  },
+  {
+    name: "admin-eventos",
+    path: "/admin/eventos",
+    meta: { ...__nuxt_page_meta$4 || {}, ...{ "middleware": "auth" } },
+    component: () => import('./index-BZUIotcL.mjs')
   },
   {
     name: "cadastro-padre",
     path: "/cadastro/padre",
-    meta: __nuxt_page_meta$1 || {},
-    component: () => import('./index-Br8051th.mjs')
+    meta: __nuxt_page_meta$3 || {},
+    component: () => import('./index-9TLcawry.mjs')
   },
   {
     name: "cadastro-padre-status",
     path: "/cadastro/padre/status",
-    component: () => import('./status-CsDCkzAI.mjs')
+    component: () => import('./status-DH2fj938.mjs')
   },
   {
     name: "cadastro-padre-sucesso",
     path: "/cadastro/padre/sucesso",
-    meta: __nuxt_page_meta || {},
-    component: () => import('./sucesso-CCoDCqXx.mjs')
+    meta: __nuxt_page_meta$2 || {},
+    component: () => import('./sucesso-Z0rvZhqW.mjs')
   },
   {
     name: "cadastro-padre-verificar-email",
     path: "/cadastro/padre/verificar-email",
-    component: () => import('./verificar-email-CS4TcXZs.mjs')
+    component: () => import('./verificar-email-DAWPfmvz.mjs')
+  },
+  {
+    name: "admin-eventos-eventId-formulario",
+    path: "/admin/eventos/:eventId()/formulario",
+    meta: { ...__nuxt_page_meta$1 || {}, ...{ "middleware": "auth" } },
+    component: () => import('./formulario-B66nrxSP.mjs')
+  },
+  {
+    name: "admin-eventos-eventId-inscricoes",
+    path: "/admin/eventos/:eventId()/inscricoes",
+    meta: { ...__nuxt_page_meta || {}, ...{ "middleware": "auth" } },
+    component: () => import('./inscricoes-C_Zb477z.mjs')
   }
 ];
 const _wrapInTransition = (props, children) => {
@@ -685,10 +712,10 @@ const globalMiddleware = [
   manifest_45route_45rule
 ];
 const namedMiddleware = {
-  auth: () => import('./auth-gFzgVs_X.mjs'),
-  guest: () => import('./guest-C2gaQb3D.mjs'),
-  "require-role": () => import('./require-role-CIboS57Z.mjs'),
-  role: () => import('./role-BYY_eEie.mjs')
+  auth: () => import('./auth-DT0Los5B.mjs'),
+  guest: () => import('./guest-BPD4jjDI.mjs'),
+  "require-role": () => import('./require-role-C47jRmEd.mjs'),
+  role: () => import('./role-CvfhgJWF.mjs')
 };
 const plugin$1 = /* @__PURE__ */ defineNuxtPlugin({
   name: "nuxt:router",
@@ -1220,18 +1247,18 @@ const plugin = /* @__PURE__ */ defineNuxtPlugin({
     };
   }
 });
-const LazyProseA = defineAsyncComponent(() => import('./ProseA-CuBHDsWR.mjs').then((r) => r["default"] || r.default || r));
+const LazyProseA = defineAsyncComponent(() => import('./ProseA-Dfhacew2.mjs').then((r) => r["default"] || r.default || r));
 const LazyProseBlockquote = defineAsyncComponent(() => import('./ProseBlockquote-C77XBghO.mjs').then((r) => r["default"] || r.default || r));
 const LazyProseCode = defineAsyncComponent(() => import('./ProseCode-D23XdKnn.mjs').then((r) => r["default"] || r.default || r));
 const LazyProseEm = defineAsyncComponent(() => import('./ProseEm-CPfzysoo.mjs').then((r) => r["default"] || r.default || r));
-const LazyProseH1 = defineAsyncComponent(() => import('./ProseH1-NL8IHgY1.mjs').then((r) => r["default"] || r.default || r));
-const LazyProseH2 = defineAsyncComponent(() => import('./ProseH2-mymcaKlL.mjs').then((r) => r["default"] || r.default || r));
-const LazyProseH3 = defineAsyncComponent(() => import('./ProseH3-C3CRhTy9.mjs').then((r) => r["default"] || r.default || r));
-const LazyProseH4 = defineAsyncComponent(() => import('./ProseH4-CwS1yLy2.mjs').then((r) => r["default"] || r.default || r));
-const LazyProseH5 = defineAsyncComponent(() => import('./ProseH5-CLs2r1DI.mjs').then((r) => r["default"] || r.default || r));
-const LazyProseH6 = defineAsyncComponent(() => import('./ProseH6-FU8alSjG.mjs').then((r) => r["default"] || r.default || r));
+const LazyProseH1 = defineAsyncComponent(() => import('./ProseH1-BenUTFIf.mjs').then((r) => r["default"] || r.default || r));
+const LazyProseH2 = defineAsyncComponent(() => import('./ProseH2-DNh0NCWr.mjs').then((r) => r["default"] || r.default || r));
+const LazyProseH3 = defineAsyncComponent(() => import('./ProseH3-U4YIxWK5.mjs').then((r) => r["default"] || r.default || r));
+const LazyProseH4 = defineAsyncComponent(() => import('./ProseH4-mtN4n5dy.mjs').then((r) => r["default"] || r.default || r));
+const LazyProseH5 = defineAsyncComponent(() => import('./ProseH5-d9v1eRXm.mjs').then((r) => r["default"] || r.default || r));
+const LazyProseH6 = defineAsyncComponent(() => import('./ProseH6-0YNVvcjM.mjs').then((r) => r["default"] || r.default || r));
 const LazyProseHr = defineAsyncComponent(() => import('./ProseHr-BUuC70Og.mjs').then((r) => r["default"] || r.default || r));
-const LazyProseImg = defineAsyncComponent(() => import('./ProseImg-fWHhE3nV.mjs').then((r) => r["default"] || r.default || r));
+const LazyProseImg = defineAsyncComponent(() => import('./ProseImg-BDeHwFQz.mjs').then((r) => r["default"] || r.default || r));
 const LazyProseLi = defineAsyncComponent(() => import('./ProseLi-CJimCenE.mjs').then((r) => r["default"] || r.default || r));
 const LazyProseOl = defineAsyncComponent(() => import('./ProseOl-C8r2W6ro.mjs').then((r) => r["default"] || r.default || r));
 const LazyProseP = defineAsyncComponent(() => import('./ProseP-CGpDUcFH.mjs').then((r) => r["default"] || r.default || r));
@@ -1245,7 +1272,7 @@ const LazyProseTh = defineAsyncComponent(() => import('./ProseTh-DZC07e69.mjs').
 const LazyProseThead = defineAsyncComponent(() => import('./ProseThead-hql00XOu.mjs').then((r) => r["default"] || r.default || r));
 const LazyProseTr = defineAsyncComponent(() => import('./ProseTr-Z0QA4O3-.mjs').then((r) => r["default"] || r.default || r));
 const LazyProseUl = defineAsyncComponent(() => import('./ProseUl-T6_xgjqh.mjs').then((r) => r["default"] || r.default || r));
-const LazyIcon = defineAsyncComponent(() => import('./index-CaK0uLlx.mjs').then((r) => r["default"] || r.default || r));
+const LazyIcon = defineAsyncComponent(() => import('./index-B5rpN8hp.mjs').then((r) => r["default"] || r.default || r));
 const lazyGlobalComponents = [
   ["ProseA", LazyProseA],
   ["ProseBlockquote", LazyProseBlockquote],
@@ -1416,8 +1443,9 @@ const plugins = [
   prerender_server_sqIxOBipVr4FbVMA9kqWL0wT8FPop6sKAXLVfifsJzk
 ];
 const layouts = {
-  dashboard: defineAsyncComponent(() => import('./dashboard-BgkInOxZ.mjs').then((m) => m.default || m)),
-  default: defineAsyncComponent(() => import('./default-DH8A5q0H.mjs').then((m) => m.default || m))
+  admin: defineAsyncComponent(() => import('./admin-moRdNSKM.mjs').then((m) => m.default || m)),
+  dashboard: defineAsyncComponent(() => import('./dashboard-CIYUTS3i.mjs').then((m) => m.default || m)),
+  default: defineAsyncComponent(() => import('./default-mrUCSHJS.mjs').then((m) => m.default || m))
 };
 const LayoutLoader = defineComponent({
   name: "LayoutLoader",
@@ -1682,7 +1710,7 @@ const _sfc_main$1 = {
     const statusMessage = _error.statusMessage ?? (is404 ? "Page Not Found" : "Internal Server Error");
     const description = _error.message || _error.toString();
     const stack = void 0;
-    const _Error404 = defineAsyncComponent(() => import('./error-404-DTLaFfZr.mjs'));
+    const _Error404 = defineAsyncComponent(() => import('./error-404-Blm8xYJ8.mjs'));
     const _Error = defineAsyncComponent(() => import('./error-500-BdPJN4VE.mjs'));
     const ErrorTemplate = is404 ? _Error404 : _Error;
     return (_ctx, _push, _parent, _attrs) => {
@@ -1765,5 +1793,5 @@ let entry;
 }
 const entry$1 = (ssrContext) => entry(ssrContext);
 
-export { _export_sfc as _, useAppConfig as a, useRouter as b, useSeoMeta as c, createError as d, entry$1 as default, useRoute as e, useNuxtApp as f, useRuntimeConfig as g, nuxtLinkDefaults as h, appConfig as i, useRequestEvent as j, useState as k, asyncDataDefaults as l, defineNuxtRouteMiddleware as m, navigateTo as n, resolveRouteObject as r, useHead as u };
+export { _export_sfc as _, useRouter as a, useSeoMeta as b, createError as c, useRoute as d, entry$1 as default, useNuxtApp as e, useRuntimeConfig as f, nuxtLinkDefaults as g, appConfig as h, useAppConfig as i, useRequestEvent as j, useState as k, asyncDataDefaults as l, defineNuxtRouteMiddleware as m, navigateTo as n, resolveRouteObject as r, useHead as u };
 //# sourceMappingURL=server.mjs.map

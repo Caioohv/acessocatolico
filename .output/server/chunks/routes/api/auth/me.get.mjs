@@ -1,6 +1,6 @@
-import { d as defineEventHandler, a as getCookie, c as createError, u as useRuntimeConfig } from '../../../nitro/nitro.mjs';
+import { d as defineEventHandler, f as getCookie, c as createError, u as useRuntimeConfig } from '../../../nitro/nitro.mjs';
 import { PrismaClient } from '@prisma/client';
-import jsonwebtoken__default from 'jsonwebtoken';
+import jwt__default from 'jsonwebtoken';
 import 'bcryptjs';
 import 'nodemailer';
 import 'node:http';
@@ -27,7 +27,7 @@ const me_get = defineEventHandler(async (event) => {
       });
     }
     const config = useRuntimeConfig();
-    const decoded = jsonwebtoken__default.verify(token, config.jwtSecret);
+    const decoded = jwt__default.verify(token, config.jwtSecret);
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
       include: {

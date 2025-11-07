@@ -1,4 +1,4 @@
-import { d as defineEventHandler, g as getMethod, c as createError, r as readBody } from '../../../nitro/nitro.mjs';
+import { d as defineEventHandler, b as getMethod, c as createError, r as readBody } from '../../../nitro/nitro.mjs';
 import { PrismaClient } from '@prisma/client';
 import { randomBytes } from 'crypto';
 import { z } from 'zod';
