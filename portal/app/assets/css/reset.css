@@ -18,16 +18,21 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
+  /* Shell: nunca deixa vazar scroll horizontal (garantia em 360px) */
+  overflow-x: hidden;
 }
 
 body {
   min-height: 100vh;
+  /* --surface-page => --paper-50 | --text-body => --ink-700 (tokens, sem valor bruto) */
   font-family: var(--font-sans);
   font-size: var(--text-base);
   line-height: var(--leading-normal);
   color: var(--text-body);
   background-color: var(--surface-page);
   text-rendering: optimizeLegibility;
+  /* Shell: complementa o html; contém filhos largos sem barra horizontal */
+  overflow-x: hidden;
 }
 
 h1,
