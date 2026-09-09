@@ -13,7 +13,7 @@ interface Props {
   /** Categoria atualmente selecionada, ou `null`/ausente para "Todos". */
   active?: string | null
 }
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   active: null,
 })
 

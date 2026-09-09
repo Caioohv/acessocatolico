@@ -11,7 +11,7 @@ import type { Post } from '../molecules/PostCard.vue'
 
 interface Props {
   /** Posts a serem exibidos na grade. */
-  posts: Post[]
+  posts?: Post[]
 }
 withDefaults(defineProps<Props>(), {
   posts: () => [],
