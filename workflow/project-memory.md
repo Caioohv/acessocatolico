@@ -9,6 +9,11 @@
 
 ## Entries
 
+### 2026-09-09 — Schema de content (step 20): `z` vem de `@nuxt/content`; resumo = `description` nativo
+**Context:** Definir o schema da collection de blog em `portal/content.config.ts` (Nuxt Content 3).
+**Gotcha:** `zod` não está em `package.json`, mas o `@nuxt/content` re-exporta `z` (`import { defineContentConfig, defineCollection, z } from '@nuxt/content'`) — não instalar zod à parte. Com `type: 'page'`, os campos `title`, `description`, `path`, `body`, `seo` e `navigation` já são nativos; o "resumo" do post mapeia para o `description` nativo (que o `PostCard` consome), então não se cria um campo `resumo` separado.
+**Resolution:** Schema declara só os campos extras: `category`, `tags` (default `[]`), `date` (`z.string().date()`), `cover`, `coverAlt`, `slug`. Rodar `npx nuxi prepare` (em `portal/`) regenera `.nuxt/content/types.d.ts` para conferir a tipagem de `queryCollection('blog')`. Source da collection: `blog/**` (posts vivem em `portal/content/blog/`).
+
 ### 2026-09-09 — PostCard (step 18) compõe PostMeta (step 19), criado depois
 **Context:** `PostCard.vue` foi criado antes de `PostMeta.vue` na ordem dos steps.
 **Gotcha:** `PostCard` referencia `<PostMeta :category :date />`, mas essa molécula só é criada no step 19. Até lá o componente resolve como elemento desconhecido (warning), não quebra a renderização; o build (step 34) só passa depois do 19.
