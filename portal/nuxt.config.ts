@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
   ],
   devtools: { enabled: true },
+  css: ['~/assets/css/main.css'],
   app: {
     head: {
       viewport: 'width=device-width, initial-scale=1',
