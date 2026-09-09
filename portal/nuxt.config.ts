@@ -9,6 +9,16 @@ export default defineNuxtConfig({
   ],
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
+  // Webfonts self-hospedadas pelo @nuxt/fonts (baixa do Google no build,
+  // serve local — sem request externo render-blocking). Famílias e pesos
+  // espelham os tokens em app/assets/css/tokens/typography.css.
+  fonts: {
+    families: [
+      { name: 'Spectral', provider: 'google', weights: [400, 500, 600, 700], styles: ['normal', 'italic'] },
+      { name: 'Figtree', provider: 'google', weights: [400, 500, 600, 700, 800] },
+      { name: 'JetBrains Mono', provider: 'google', weights: [400, 500] },
+    ],
+  },
   app: {
     head: {
       viewport: 'width=device-width, initial-scale=1',

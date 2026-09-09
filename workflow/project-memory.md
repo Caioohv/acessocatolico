@@ -9,6 +9,11 @@
 
 ## Entries
 
+### 2026-09-09 — @nuxt/fonts detecta famílias em custom properties e self-hospeda
+**Context:** Configurar as webfonts (Spectral, Figtree, JetBrains Mono).
+**Gotcha:** As famílias são referenciadas via `var(--font-*)` no reset; os nomes literais só aparecem nos tokens (`--font-display: 'Spectral'...`). Ainda assim o `@nuxt/fonts` detecta essas famílias e injeta `@font-face` — não é preciso `font-family` literal. O `@import` externo do Google em `tokens/fonts.css` era redundante e render-blocking.
+**Resolution:** Declarar as famílias/pesos em `nuxt.config.ts` → `fonts.families` (provider `google`) e remover o `@import` externo. O build baixa e serve local em `.output/public/_fonts` (woff2).
+
 <!--
 Template for each entry:
 
