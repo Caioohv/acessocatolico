@@ -25,11 +25,7 @@ useSeoMeta({
       </p>
     </header>
 
-    <ul v-if="posts && posts.length" class="blog-index__grid">
-      <li v-for="post in posts" :key="post.path" class="blog-index__item">
-        <PostCard :post="post" />
-      </li>
-    </ul>
+    <PostGrid v-if="posts && posts.length" :posts="posts" />
 
     <p v-else class="blog-index__empty">Nenhum post publicado ainda.</p>
   </AppContainer>
@@ -56,40 +52,10 @@ useSeoMeta({
   line-height: var(--leading-normal);
 }
 
-.blog-index__grid {
-  display: grid;
-  gap: var(--space-6);
-  grid-template-columns: 1fr;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.blog-index__item {
-  display: flex;
-}
-
-.blog-index__item > * {
-  width: 100%;
-}
-
 .blog-index__empty {
   margin: 0;
   color: var(--text-muted);
   font-family: var(--font-sans);
   font-size: var(--text-base);
-}
-
-/* --- Telas maiores -------------------------------------------------------- */
-@media (min-width: 48rem) {
-  .blog-index__grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 64rem) {
-  .blog-index__grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
 }
 </style>
