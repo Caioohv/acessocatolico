@@ -18,4 +18,7 @@ Template for each entry:
 **Resolution:** what to do about it.
 -->
 
-_No entries yet._
+### 2026-09-09 — App Nuxt vive em `portal/`, não na raiz
+**Context:** Steps/tarefas costumam citar caminhos como `app/components/...` ou `content/...`.
+**Gotcha:** Esses caminhos são relativos ao app Nuxt, que fica em `portal/` (com `nuxt.config.ts`, `package.json`, `content/`, `app/`), não na raiz do repositório.
+**Resolution:** Rodar `npm`/`npx nuxi` a partir de `portal/` e prefixar os caminhos de arquivo do app com `portal/`.
