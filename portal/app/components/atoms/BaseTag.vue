@@ -64,6 +64,8 @@ const isLink = computed(() => Boolean(props.to || props.href))
 
 /* --- Variante clicável (categoria/tag como link) -------------------------- */
 .base-tag--link {
+  min-height: 44px;
+  box-sizing: border-box;
   text-decoration: none;
   cursor: pointer;
   transition:
