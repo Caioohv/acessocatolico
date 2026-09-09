@@ -9,6 +9,11 @@
 
 ## Entries
 
+### 2026-09-09 — PostCard (step 18) compõe PostMeta (step 19), criado depois
+**Context:** `PostCard.vue` foi criado antes de `PostMeta.vue` na ordem dos steps.
+**Gotcha:** `PostCard` referencia `<PostMeta :category :date />`, mas essa molécula só é criada no step 19. Até lá o componente resolve como elemento desconhecido (warning), não quebra a renderização; o build (step 34) só passa depois do 19.
+**Resolution:** Manter a composição; concluir o step 19 fecha a dependência. O tipo `Post` (path, title, description, category, date, cover, coverAlt) é exportado de `PostCard.vue` — reaproveitar ao configurar o schema de content (step 20) e no grid (step 23).
+
 ### 2026-09-09 — @nuxt/icon sem collection instalada; usar SVG inline
 **Context:** `TheHeader` precisava de ícones (hambúrguer/fechar).
 **Gotcha:** `@nuxt/icon` está nos módulos, mas não há `@iconify-json/*` instalado. Sem collection local, `<Icon>` busca o SVG pela API do Iconify em runtime — dependência de rede frágil.
