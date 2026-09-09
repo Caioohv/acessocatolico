@@ -9,6 +9,16 @@
 
 ## Entries
 
+### 2026-09-09 — @nuxt/icon sem collection instalada; usar SVG inline
+**Context:** `TheHeader` precisava de ícones (hambúrguer/fechar).
+**Gotcha:** `@nuxt/icon` está nos módulos, mas não há `@iconify-json/*` instalado. Sem collection local, `<Icon>` busca o SVG pela API do Iconify em runtime — dependência de rede frágil.
+**Resolution:** Para ícones simples de UI, usar SVG inline (`stroke="currentColor"`) no componente. Só instalar uma collection `@iconify-json/<set>` quando o volume de ícones justificar.
+
+### 2026-09-09 — Breakpoints são literais, não var()
+**Context:** Media queries em componentes (ex.: nav inline no desktop).
+**Gotcha:** Custom properties não funcionam dentro de media queries. Os `--bp-*` são só CONVENÇÃO documentada em `app/assets/css/main.css`.
+**Resolution:** Usar os valores literais em `min-width`: `--bp-md` = `48rem`, `--bp-lg` = `64rem`, `--bp-sm` = `30rem`. Mobile-first sempre.
+
 ### 2026-09-09 — @nuxt/fonts detecta famílias em custom properties e self-hospeda
 **Context:** Configurar as webfonts (Spectral, Figtree, JetBrains Mono).
 **Gotcha:** As famílias são referenciadas via `var(--font-*)` no reset; os nomes literais só aparecem nos tokens (`--font-display: 'Spectral'...`). Ainda assim o `@nuxt/fonts` detecta essas famílias e injeta `@font-face` — não é preciso `font-family` literal. O `@import` externo do Google em `tokens/fonts.css` era redundante e render-blocking.

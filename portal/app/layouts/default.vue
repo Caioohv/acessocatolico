@@ -1,5 +1,6 @@
 <template>
   <div class="layout-default">
+    <TheHeader />
     <AppContainer as="main">
       <slot />
     </AppContainer>
