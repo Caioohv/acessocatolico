@@ -4,6 +4,7 @@
     <AppContainer as="main">
       <slot />
     </AppContainer>
+    <TheFooter />
   </div>
 </template>
 
