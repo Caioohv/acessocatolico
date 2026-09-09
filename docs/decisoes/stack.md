@@ -16,6 +16,27 @@ Uma stack só para o projeto todo (dev solo → familiaridade > stack "ótima" f
 
 ---
 
+## UI — CSS próprio + Atomic Design + Mobile-first ✅
+
+A interface é construída com **CSS próprio** — **sem Tailwind** nem framework de utilitários. O
+sistema de design vive em [`design-system/`](../../design-system/): os tokens (`tokens/colors.css`,
+`spacing.css`, `typography.css`, `effects.css`, `fonts.css`) e os **aliases semânticos**
+(`--brand`, `--accent`, `--text-body`, `--radius-lg`…). **Regra:** usar sempre os aliases no produto,
+nunca valores brutos hardcoded.
+
+- **Componentes reaproveitáveis, Atomic Design:** átomos → moléculas → organisms → sections. Reuso
+  antes de criar novo componente.
+- **Mobile-first (regra transversal):** projetar e estilizar primeiro para telas pequenas (~360px). O
+  CSS-base é o do mobile; adaptar para telas maiores com media queries **`min-width`** — nunca
+  `max-width` como padrão. Alvos de toque ≥ 44px, sem overflow horizontal, imagens fluidas
+  (`max-width: 100%`). UI só está pronta depois de conferida no viewport mobile **e** desktop.
+- **Breakpoints** como convenção `min-width` documentada no CSS global (ex.: `--bp-sm: 30rem`,
+  `--bp-md: 48rem`, `--bp-lg: 64rem`).
+
+Os primeiros passos concretos de implementação (Home + Blog) estão em [`../../todo.md`](../../todo.md).
+
+---
+
 ## Blog — Nuxt Content + git ✅
 
 - Posts escritos em **Obsidian** (markdown), publicados via `git push`.

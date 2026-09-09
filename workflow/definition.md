@@ -106,6 +106,11 @@ Uma stack só para o projeto todo (dev solo → familiaridade > stack "ótima" f
   histórico (`feat:`, `fix:`, `chore:`).
 - **Layout de componentes:** Atomic Design em Vue SFC (`<script setup>`); reuso antes de criar novo;
   nada de valores hardcoded que existam como token de design.
+- **CSS próprio, sem Tailwind:** estilos com os tokens/aliases de `design-system/` (`--brand`,
+  `--radius-lg`…), nunca valores brutos.
+- **Mobile-first:** estilizar primeiro para ~360px; adaptar a telas maiores com media queries
+  `min-width` (nunca `max-width` como padrão); alvos de toque ≥44px; sem overflow horizontal. Decisão
+  em [`../docs/decisoes/stack.md`](../docs/decisoes/stack.md).
 - **Testes:** **pragmático / conforme a necessidade** — sem mandato geral na Fase 1; adicionar testes
   onde a lógica for não-trivial (server routes Nitro, lógica de domínio nas fases seguintes). A skill
   `testing-jest` orienta o que testar/mockar por camada quando testes forem escritos.
