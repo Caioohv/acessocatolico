@@ -9,6 +9,11 @@
 
 ## Entries
 
+### 2026-09-09 — Filtro de categoria (step 26): estado na query string + re-consulta nativa
+**Context:** `CategoryFilter.vue` filtra o índice do blog por categoria.
+**Gotcha:** O `CollectionQueryBuilder` do Nuxt Content 3 (confirmado em `node_modules/@nuxt/content/dist/module.d.mts:380`) expõe `.select(...fields)`, `.order(field, 'ASC'|'DESC')`, `.where(field, operator, value)`, `.all()`, `.first()`, `.count()`. `'='` é `SQLOperator` válido. Para o filtro reativo com SSR, o estado vive em `route.query.categoria`; o `useAsyncData` do índice usa `{ watch: [activeCategory] }` para re-consultar `queryCollection('blog').where('category','=', valor)`. Não há `distinct` no builder para listar categorias — buscar `.select('category').all()` e derivar um `Set`.
+**Resolution:** `CategoryFilter` (molécula) só recebe `categories`/`active` por prop e renderiza `BaseTag` como link (`?categoria=<valor>`); um chip "Todos" aponta para `/blog`. Adicionada prop `active` ao átomo `BaseTag` (estado preenchido + `aria-current`). Sem typechecker instalado no projeto (`nuxi typecheck` pede `vue-tsc`); validação via `nuxi prepare` + inspeção dos `.d.ts`.
+
 ### 2026-09-09 — Posts de exemplo (step 21): `date` precisa ser string YAML entre aspas
 **Context:** Criar posts em `portal/content/blog/*.md` conforme o schema do step 20.
 **Gotcha:** O schema define `date: z.string().date()`. Em YAML, `date: 2026-09-01` sem aspas é interpretado como tipo date/timestamp, não string, e pode falhar a validação Zod. Escrever sempre entre aspas: `date: '2026-09-01'`. O "resumo" vai no `description` nativo (não existe campo `resumo`); `title`/`description` são nativos, os demais (`category`, `tags`, `date`, `cover`, `coverAlt`, `slug`) são do schema.

@@ -5,7 +5,8 @@
  * (`--brand-tint`) e cantos totalmente arredondados (`--radius-pill`).
  * O texto vem do slot ou, na sua ausência, da prop `label`. Se receber
  * `to`/`href` vira link navegável (categoria/tag clicável) com foco visível;
- * caso contrário é um <span> puramente decorativo. Só tokens de design.
+ * caso contrário é um <span> puramente decorativo. A prop `active` marca o
+ * chip como selecionado (ex.: filtro de categoria ativo). Só tokens de design.
  */
 interface Props {
   /** Texto do chip quando o slot não é usado. */
@@ -14,11 +15,14 @@ interface Props {
   to?: string
   /** URL externa — renderiza como <a>. */
   href?: string
+  /** Marca o chip como selecionado/ativo (estado preenchido). */
+  active?: boolean
 }
 const props = withDefaults(defineProps<Props>(), {
   label: undefined,
   to: undefined,
   href: undefined,
+  active: false,
 })
 
 const tag = computed(() => {
@@ -33,9 +37,10 @@ const isLink = computed(() => Boolean(props.to || props.href))
   <component
     :is="tag"
     class="base-tag"
-    :class="{ 'base-tag--link': isLink }"
+    :class="{ 'base-tag--link': isLink, 'base-tag--active': active }"
     :to="to"
     :href="href"
+    :aria-current="active && isLink ? 'true' : undefined"
   >
     <slot>{{ label }}</slot>
   </component>
@@ -74,5 +79,16 @@ const isLink = computed(() => Boolean(props.to || props.href))
 .base-tag--link:focus-visible {
   outline: none;
   box-shadow: var(--shadow-focus);
+}
+
+/* --- Variante ativa/selecionada (filtro aplicado) ------------------------- */
+.base-tag--active {
+  background: var(--brand);
+  color: var(--text-on-brand);
+}
+
+.base-tag--active.base-tag--link:hover {
+  background: var(--brand-strong);
+  color: var(--text-on-brand);
 }
 </style>
