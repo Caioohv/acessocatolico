@@ -9,6 +9,9 @@ export default defineNuxtConfig({
   ],
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
+  // Atomic Design: componentes auto-importados pelo nome puro (<AppContainer>),
+  // sem prefixo de diretório (atoms/molecules/organisms/sections).
+  components: [{ path: '~/components', pathPrefix: false }],
   // Webfonts self-hospedadas pelo @nuxt/fonts (baixa do Google no build,
   // serve local — sem request externo render-blocking). Famílias e pesos
   // espelham os tokens em app/assets/css/tokens/typography.css.
