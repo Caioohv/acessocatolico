@@ -1,0 +1,27 @@
+{
+  "header": {
+    "brandFirst": "Acesso",
+    "brandSecond": "Católico",
+    "logoAlt": "Acesso Católico",
+    "links": [
+      {
+        "label": "Início",
+        "to": "/"
+      },
+      {
+        "label": "Blog",
+        "to": "/blog"
+      }
+    ],
+    "cta": {
+      "label": "Sou paróquia",
+      "to": "#",
+      "soon": true
+    }
+  },
+  "footer": {
+    "copy": "acessocatolico.com.br · gratuito e em apoio à comunidade",
+    "reportText": "⚑ Reportar erro",
+    "reportTo": "#"
+  }
+}

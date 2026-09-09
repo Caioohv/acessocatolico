@@ -1,19 +1,12 @@
 <script setup lang="ts">
 /**
  * TheHeader — organism de cabeçalho do portal.
- * Espelha exatamente o design em design-system/Home Portal.dc.html.
- * Logo (marca em SVG + typography Spectral "Acesso Católico") + navegação.
- * Mobile-first: nav colapsável no mobile via botão hambúrguer acessível.
+ * Totalmente JSON driven via ~/data/navigation.json.
  */
+import navData from '~/data/navigation.json'
+
 const isOpen = ref(false)
 const route = useRoute()
-
-const navLinks = [
-  { to: '#', label: 'Onde tem missa' },
-  { to: '#', label: 'Comunidades' },
-  { to: '/blog', label: 'Blog' },
-  { to: '#', label: 'Lojinha' },
-]
 
 function toggle() {
   isOpen.value = !isOpen.value
@@ -32,12 +25,12 @@ watch(() => route.fullPath, close)
       <NuxtLink to="/" class="the-header__brand" @click="close">
         <img
           src="/assets/logo-mark.svg"
-          alt="Acesso Católico"
+          :alt="navData.header.logoAlt"
           class="the-header__logo"
         />
         <span class="the-header__brand-text">
-          <b class="the-header__brand-first">Acesso</b>
-          <b class="the-header__brand-second"> Católico</b>
+          <b class="the-header__brand-first">{{ navData.header.brandFirst }}</b>
+          <b class="the-header__brand-second"> {{ navData.header.brandSecond }}</b>
         </span>
       </NuxtLink>
 
@@ -88,14 +81,14 @@ watch(() => route.fullPath, close)
         @keydown.esc="close"
       >
         <ul class="the-header__list">
-          <li v-for="link in navLinks" :key="link.label">
+          <li v-for="link in navData.header.links" :key="link.label">
             <NuxtLink :to="link.to" class="the-header__link">
               {{ link.label }}
             </NuxtLink>
           </li>
-          <li>
-            <NuxtLink to="#" class="the-header__cta-btn">
-              Sou paróquia
+          <li v-if="navData.header.cta">
+            <NuxtLink :to="navData.header.cta.to" class="the-header__cta-btn">
+              {{ navData.header.cta.label }}
             </NuxtLink>
           </li>
         </ul>

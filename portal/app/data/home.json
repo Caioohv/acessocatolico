@@ -1,0 +1,74 @@
+{
+  "seo": {
+    "title": "Acesso Católico",
+    "description": "Conteúdos, guias e informações da comunidade católica reunidos em um portal gratuito e sempre atualizado."
+  },
+  "hero": {
+    "badge": "Gratuito · feito para a comunidade",
+    "title": "A sua fé, perto de você",
+    "lead": "Conteúdos, guias e informações da comunidade católica reunidos em um portal gratuito e sempre atualizado.",
+    "cta": {
+      "label": "Ler o blog",
+      "to": "/blog"
+    }
+  },
+  "shortcuts": {
+    "title": "Comece por aqui",
+    "subtitle": "Atalhos para o que a comunidade mais procura.",
+    "items": [
+      {
+        "icon": "✝",
+        "title": "Blog",
+        "desc": "Reflexões, guias e conteúdo para viver e aprofundar a fé no dia a dia.",
+        "to": "/blog",
+        "active": true
+      },
+      {
+        "icon": "◷",
+        "title": "Onde tem missa",
+        "desc": "Horários de missa e confissão das paróquias.",
+        "to": "#",
+        "active": false,
+        "badge": "Em breve"
+      },
+      {
+        "icon": "☾",
+        "title": "Eventos",
+        "desc": "Retiros, encontros e celebrações da comunidade.",
+        "to": "#",
+        "active": false,
+        "badge": "Em breve"
+      },
+      {
+        "icon": "♥",
+        "title": "Comunidades",
+        "desc": "EJC, EAC, ECC e movimentos jovens e de casais.",
+        "to": "#",
+        "active": false,
+        "badge": "Em breve"
+      }
+    ]
+  },
+  "blog": {
+    "title": "Do blog",
+    "seeAllText": "Ver tudo",
+    "seeAllTo": "/blog",
+    "emptyText": "Nenhum post publicado ainda."
+  },
+  "lojinha": {
+    "title": "Da lojinha",
+    "products": [
+      {
+        "id": "1",
+        "name": "Terço de madeira",
+        "price": "R$ 29,90"
+      },
+      {
+        "id": "2",
+        "name": "Bíblia de estudo",
+        "price": "R$ 89,90"
+      }
+    ],
+    "affiliateNote": "Comprando por aqui você ajuda a manter o Acesso Católico gratuito 🙏"
+  }
+}

@@ -1,63 +1,41 @@
 <script setup lang="ts">
 /**
  * ShortcutsHome — section de atalhos da home (`/`).
- * Espelha exatamente o design em design-system/Home Portal.dc.html.
- * Cartões para as 4 áreas principais do portal: Onde tem missa, Confissões, Eventos e Comunidades.
+ * JSON driven via ~/data/home.json.
+ * Exibe os atalhos com indicação clara dos que estão funcionais vs em breve.
  */
-interface Shortcut {
-  icon: string
-  title: string
-  desc: string
-  to: string
-}
-
-const shortcuts: Shortcut[] = [
-  {
-    icon: '✝',
-    title: 'Onde tem missa',
-    desc: 'Busque horários por cidade e paróquia.',
-    to: '#',
-  },
-  {
-    icon: '◷',
-    title: 'Confissões',
-    desc: 'Dias e horários de reconciliação.',
-    to: '#',
-  },
-  {
-    icon: '☾',
-    title: 'Eventos',
-    desc: 'Retiros, encontros e celebrações.',
-    to: '#',
-  },
-  {
-    icon: '♥',
-    title: 'Comunidades',
-    desc: 'EJC, EAC, ECC e movimentos.',
-    to: '#',
-  },
-]
+import homeData from '~/data/home.json'
 </script>
 
 <template>
   <section class="shortcuts-home">
     <div class="shortcuts-home__inner">
-      <h2 class="shortcuts-home__title">Comece por aqui</h2>
+      <h2 class="shortcuts-home__title">{{ homeData.shortcuts.title }}</h2>
       <p class="shortcuts-home__subtitle">
-        Atalhos para o que a comunidade mais procura.
+        {{ homeData.shortcuts.subtitle }}
       </p>
 
       <div class="shortcuts-home__grid">
-        <NuxtLink
-          v-for="s in shortcuts"
-          :key="s.title"
-          :to="s.to"
-          class="shortcut-card"
-        >
-          <span class="shortcut-card__icon">{{ s.icon }}</span>
-          <span class="shortcut-card__title">{{ s.title }}</span>
-          <span class="shortcut-card__desc">{{ s.desc }}</span>
-        </NuxtLink>
+        <template v-for="s in homeData.shortcuts.items" :key="s.title">
+          <NuxtLink
+            v-if="s.active && s.to !== '#'"
+            :to="s.to"
+            class="shortcut-card shortcut-card--active"
+          >
+            <span class="shortcut-card__icon">{{ s.icon }}</span>
+            <span class="shortcut-card__title">{{ s.title }}</span>
+            <span class="shortcut-card__desc">{{ s.desc }}</span>
+          </NuxtLink>
+
+          <div v-else class="shortcut-card shortcut-card--soon">
+            <div class="shortcut-card__header">
+              <span class="shortcut-card__icon">{{ s.icon }}</span>
+              <span v-if="s.badge" class="shortcut-card__badge">{{ s.badge }}</span>
+            </div>
+            <span class="shortcut-card__title">{{ s.title }}</span>
+            <span class="shortcut-card__desc">{{ s.desc }}</span>
+          </div>
+        </template>
       </div>
     </div>
   </section>
@@ -105,14 +83,28 @@ const shortcuts: Shortcut[] = [
   box-shadow: var(--shadow-sm);
   text-decoration: none;
   color: inherit;
+}
+
+.shortcut-card--active {
   transition:
     box-shadow var(--dur-fast) var(--ease-standard),
     border-color var(--dur-fast) var(--ease-standard);
 }
 
-.shortcut-card:hover {
+.shortcut-card--active:hover {
   border-color: var(--brand);
   box-shadow: var(--shadow-md);
+}
+
+.shortcut-card--soon {
+  background: var(--surface-sunken);
+  opacity: 0.8;
+}
+
+.shortcut-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .shortcut-card__icon {
@@ -125,6 +117,23 @@ const shortcuts: Shortcut[] = [
   justify-content: center;
   color: var(--brand);
   font-size: 1.25rem;
+}
+
+.shortcut-card--soon .shortcut-card__icon {
+  background: var(--surface-100);
+  color: var(--text-muted);
+}
+
+.shortcut-card__badge {
+  padding: var(--space-1) var(--space-2);
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
 }
 
 .shortcut-card__title {

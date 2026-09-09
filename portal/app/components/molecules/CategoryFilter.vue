@@ -4,8 +4,8 @@
  * Renderiza uma faixa de chips (`BaseTag`) navegáveis: um "Todos" que limpa o
  * filtro e um por categoria. O chip da categoria ativa fica marcado (`active`).
  * O estado vive na query string da rota (`?categoria=<valor>`), então o filtro
- * é compartilhável, sobrevive ao SSR e o índice re-consulta o Nuxt Content
- * nativamente. Não busca dados: recebe as categorias por prop. Só tokens de design.
+ * é compartilhável e preserva outros parâmetros (como a busca textual `?busca=`).
+ * Não busca dados: recebe as categorias por prop. Só tokens de design.
  */
 interface Props {
   /** Categorias disponíveis (valores exatos do frontmatter). */
@@ -17,9 +17,18 @@ withDefaults(defineProps<Props>(), {
   active: null,
 })
 
-/** Rota da chip de uma categoria (ou `/blog` para "Todos"). */
-function linkTo(category?: string): string {
-  return category ? `/blog?categoria=${encodeURIComponent(category)}` : '/blog'
+const route = useRoute()
+
+/** Rota da chip de uma categoria, preservando busca textual ativa se houver. */
+function linkTo(category?: string): { path: string; query: Record<string, string> } {
+  const query: Record<string, string> = {}
+  if (route.query.busca && typeof route.query.busca === 'string') {
+    query.busca = route.query.busca
+  }
+  if (category) {
+    query.categoria = category
+  }
+  return { path: '/blog', query }
 }
 </script>
 

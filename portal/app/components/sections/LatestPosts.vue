@@ -1,18 +1,13 @@
 <script setup lang="ts">
 /**
  * LatestPosts — section da home com os posts mais recentes do blog e o destaque da lojinha.
- * Espelha exatamente o design em design-system/Home Portal.dc.html.
+ * JSON driven via ~/data/home.json + Nuxt Content (somente dados reais do blog).
  */
+import homeData from '~/data/home.json'
 
 const { data: postsData } = await useAsyncData('home-latest-posts', () =>
   queryCollection('blog').order('date', 'DESC').limit(3).all(),
 )
-
-const defaultPosts = [
-  { cat: 'Orações', title: 'Como rezar o terço em família', path: '/blog' },
-  { cat: 'Guias', title: 'O que levar para um retiro de EJC', path: '/blog' },
-  { cat: 'Estudos', title: 'O sentido do tempo litúrgico', path: '/blog' },
-]
 
 const posts = computed(() => {
   if (postsData.value && postsData.value.length > 0) {
@@ -23,13 +18,10 @@ const posts = computed(() => {
       cover: p.cover,
     }))
   }
-  return defaultPosts
+  return []
 })
 
-const products = [
-  { name: 'Terço de madeira', price: 'R$ 29,90' },
-  { name: 'Bíblia de estudo', price: 'R$ 89,90' },
-]
+const products = computed(() => homeData.lojinha.products || [])
 </script>
 
 <template>
@@ -39,40 +31,46 @@ const products = [
         <!-- Coluna do Blog -->
         <div class="latest-posts-section__blog-col">
           <div class="latest-posts-section__blog-header">
-            <h3 class="latest-posts-section__h3">Do blog</h3>
-            <NuxtLink to="/blog" class="latest-posts-section__see-all">
-              Ver tudo
+            <h3 class="latest-posts-section__h3">{{ homeData.blog.title }}</h3>
+            <NuxtLink :to="homeData.blog.seeAllTo" class="latest-posts-section__see-all">
+              {{ homeData.blog.seeAllText }}
             </NuxtLink>
           </div>
 
-          <NuxtLink
-            v-for="p in posts"
-            :key="p.title"
-            :to="p.path"
-            class="blog-post-item"
-          >
-            <div
-              class="blog-post-item__thumb"
-              :style="
-                p.cover
-                  ? { backgroundImage: `url(${p.cover})`, backgroundSize: 'cover' }
-                  : {}
-              "
-            />
-            <div class="blog-post-item__content">
-              <span class="blog-post-item__cat">{{ p.cat }}</span>
-              <div class="blog-post-item__title">{{ p.title }}</div>
-            </div>
-          </NuxtLink>
+          <template v-if="posts.length > 0">
+            <NuxtLink
+              v-for="p in posts"
+              :key="p.title"
+              :to="p.path"
+              class="blog-post-item"
+            >
+              <div
+                class="blog-post-item__thumb"
+                :style="
+                  p.cover
+                    ? { backgroundImage: `url(${p.cover})`, backgroundSize: 'cover' }
+                    : {}
+                "
+              />
+              <div class="blog-post-item__content">
+                <span class="blog-post-item__cat">{{ p.cat }}</span>
+                <div class="blog-post-item__title">{{ p.title }}</div>
+              </div>
+            </NuxtLink>
+          </template>
+
+          <p v-else class="latest-posts-section__empty">
+            {{ homeData.blog.emptyText }}
+          </p>
         </div>
 
         <!-- Coluna da Lojinha -->
-        <div class="lojinha-card">
-          <h3 class="latest-posts-section__h3">Da lojinha</h3>
+        <div v-if="products.length > 0" class="lojinha-card">
+          <h3 class="latest-posts-section__h3">{{ homeData.lojinha.title }}</h3>
           <div class="lojinha-card__grid">
             <div
               v-for="prod in products"
-              :key="prod.name"
+              :key="prod.id"
               class="product-item"
             >
               <div class="product-item__thumb" />
@@ -81,7 +79,7 @@ const products = [
             </div>
           </div>
           <p class="lojinha-card__note">
-            Comprando por aqui você ajuda a manter o Acesso Católico gratuito 🙏
+            {{ homeData.lojinha.affiliateNote }}
           </p>
         </div>
       </div>
@@ -131,6 +129,12 @@ const products = [
 
 .latest-posts-section__see-all:hover {
   color: var(--text-link-hover);
+}
+
+.latest-posts-section__empty {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  padding: var(--space-4) 0;
 }
 
 .blog-post-item {

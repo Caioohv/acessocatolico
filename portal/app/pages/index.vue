@@ -1,17 +1,15 @@
 <script setup lang="ts">
 /**
  * / — home do portal.
- * Página raiz que tem prioridade sobre o catch-all `[...slug].vue` no caminho
- * `/`. Abre com a section `HeroHome` (proposta de valor + CTA). Novas sections
- * da home entram abaixo dela nesta página.
+ * Totalmente JSON driven via ~/data/home.json.
  */
+import homeData from '~/data/home.json'
+
 useSeoMeta({
-  title: 'Acesso Católico',
-  description:
-    'Horários de missa e confissão, eventos e comunidades da sua região, reunidos em um portal gratuito e sempre atualizado.',
-  ogTitle: 'Acesso Católico',
-  ogDescription:
-    'Horários de missa e confissão, eventos e comunidades da sua região, reunidos em um portal gratuito e sempre atualizado.',
+  title: homeData.seo.title,
+  description: homeData.seo.description,
+  ogTitle: homeData.seo.title,
+  ogDescription: homeData.seo.description,
   ogType: 'website',
 })
 </script>

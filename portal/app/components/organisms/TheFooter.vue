@@ -1,19 +1,19 @@
 <script setup lang="ts">
 /**
  * TheFooter — organism de rodapé do portal.
- * Espelha exatamente o design em design-system/Home Portal.dc.html.
- * Apresenta a nota de apoio da comunidade e o botão de "Reportar erro".
+ * Totalmente JSON driven via ~/data/navigation.json.
  */
+import navData from '~/data/navigation.json'
 </script>
 
 <template>
   <footer class="the-footer">
     <div class="the-footer__inner">
       <span class="the-footer__copy">
-        acessocatolico.com.br · gratuito e em apoio à comunidade
+        {{ navData.footer.copy }}
       </span>
-      <NuxtLink to="#" class="the-footer__report-btn">
-        ⚑ Reportar erro
+      <NuxtLink :to="navData.footer.reportTo" class="the-footer__report-btn">
+        {{ navData.footer.reportText }}
       </NuxtLink>
     </div>
   </footer>
