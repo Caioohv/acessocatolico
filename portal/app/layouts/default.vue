@@ -1,9 +1,9 @@
 <template>
   <div class="layout-default">
     <TheHeader />
-    <AppContainer as="main" class="layout-default__main">
+    <main class="layout-default__main">
       <slot />
-    </AppContainer>
+    </main>
     <TheFooter />
   </div>
 </template>
@@ -13,6 +13,8 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background-color: var(--surface-page);
+  color: var(--text-body);
 }
 
 /* main ocupa o espaço restante para empurrar o footer ao fim da viewport */

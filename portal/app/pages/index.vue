@@ -28,7 +28,6 @@ useSeoMeta({
 .home {
   display: flex;
   flex-direction: column;
-  gap: var(--space-16);
-  padding-block: var(--space-8) var(--space-16);
+  padding-bottom: var(--space-16);
 }
 </style>
