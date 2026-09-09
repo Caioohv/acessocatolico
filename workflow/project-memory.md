@@ -9,6 +9,11 @@
 
 ## Entries
 
+### 2026-09-09 — Posts de exemplo (step 21): `date` precisa ser string YAML entre aspas
+**Context:** Criar posts em `portal/content/blog/*.md` conforme o schema do step 20.
+**Gotcha:** O schema define `date: z.string().date()`. Em YAML, `date: 2026-09-01` sem aspas é interpretado como tipo date/timestamp, não string, e pode falhar a validação Zod. Escrever sempre entre aspas: `date: '2026-09-01'`. O "resumo" vai no `description` nativo (não existe campo `resumo`); `title`/`description` são nativos, os demais (`category`, `tags`, `date`, `cover`, `coverAlt`, `slug`) são do schema.
+**Resolution:** Frontmatter com `date` como string entre aspas. `npx nuxi prepare` (em `portal/`) roda sem erro. Capas referenciam `/img/blog/*.jpg` (ainda não existem em `public/img/blog/`); o `PostCard` tem fallback de gradiente quando `cover` ausente, mas com `cover` presente a imagem 404 aparece quebrada em runtime até os arquivos serem adicionados.
+
 ### 2026-09-09 — Schema de content (step 20): `z` vem de `@nuxt/content`; resumo = `description` nativo
 **Context:** Definir o schema da collection de blog em `portal/content.config.ts` (Nuxt Content 3).
 **Gotcha:** `zod` não está em `package.json`, mas o `@nuxt/content` re-exporta `z` (`import { defineContentConfig, defineCollection, z } from '@nuxt/content'`) — não instalar zod à parte. Com `type: 'page'`, os campos `title`, `description`, `path`, `body`, `seo` e `navigation` já são nativos; o "resumo" do post mapeia para o `description` nativo (que o `PostCard` consome), então não se cria um campo `resumo` separado.
