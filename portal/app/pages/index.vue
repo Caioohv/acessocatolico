@@ -9,6 +9,10 @@ useSeoMeta({
   title: 'Acesso Católico',
   description:
     'Horários de missa e confissão, eventos e comunidades da sua região, reunidos em um portal gratuito e sempre atualizado.',
+  ogTitle: 'Acesso Católico',
+  ogDescription:
+    'Horários de missa e confissão, eventos e comunidades da sua região, reunidos em um portal gratuito e sempre atualizado.',
+  ogType: 'website',
 })
 </script>
 

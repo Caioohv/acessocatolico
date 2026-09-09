@@ -39,9 +39,13 @@ const { data: posts } = await useAsyncData(
 )
 
 useSeoMeta({
-  title: 'Blog',
+  title: 'Blog — Acesso Católico',
   description:
     'Reflexões, guias e conteúdo católico para viver e aprofundar a fé no dia a dia.',
+  ogTitle: 'Blog — Acesso Católico',
+  ogDescription:
+    'Reflexões, guias e conteúdo católico para viver e aprofundar a fé no dia a dia.',
+  ogType: 'website',
 })
 </script>
 

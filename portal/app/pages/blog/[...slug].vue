@@ -21,7 +21,8 @@ if (!post.value) {
 }
 
 useSeoMeta({
-  title: () => post.value?.title,
+  title: () =>
+    post.value ? `${post.value.title} — Acesso Católico` : 'Acesso Católico',
   description: () => post.value?.description,
   ogTitle: () => post.value?.title,
   ogDescription: () => post.value?.description,
