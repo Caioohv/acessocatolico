@@ -1,0 +1,26 @@
+<!-- @dsCard group="Tipografia" viewport="700x300" name="Escala tipográfica" subtitle="Do hero (56) à legenda (12)" -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  html,body{margin:0}
+  body{background:var(--surface-page);padding:var(--space-6);color:var(--text-strong);
+    display:flex;flex-direction:column;gap:var(--space-3)}
+  .r{display:flex;align-items:baseline;gap:var(--space-4)}
+  .r .tok{font-family:var(--font-mono);font-size:11px;color:var(--text-muted);width:120px;flex:none}
+  .disp{font-family:var(--font-display);font-weight:600;letter-spacing:var(--tracking-tight)}
+  .sans{font-family:var(--font-sans);font-weight:600}
+</style>
+</head>
+<body>
+  <div class="r"><span class="tok">--text-display 56</span><span class="disp" style="font-size:var(--text-display)">Aa</span></div>
+  <div class="r"><span class="tok">--text-h1 40</span><span class="disp" style="font-size:var(--text-h1)">Título de seção</span></div>
+  <div class="r"><span class="tok">--text-h2 30</span><span class="disp" style="font-size:var(--text-h2)">Subtítulo</span></div>
+  <div class="r"><span class="tok">--text-h3 22</span><span class="sans" style="font-size:var(--text-h3)">Cabeçalho de card</span></div>
+  <div class="r"><span class="tok">--text-base 16</span><span class="sans" style="font-size:var(--text-base);font-weight:400">Corpo de texto padrão</span></div>
+  <div class="r"><span class="tok">--text-sm 14</span><span class="sans" style="font-size:var(--text-sm);font-weight:400">Texto denso de painel</span></div>
+  <div class="r"><span class="tok">--text-xs 12</span><span class="sans" style="font-size:var(--text-xs);font-weight:400">Legenda / rótulo</span></div>
+</body>
+</html>

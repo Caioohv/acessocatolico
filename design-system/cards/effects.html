@@ -1,0 +1,26 @@
+<!-- @dsCard group="Espaço & Forma" viewport="700x200" name="Raios & sombras" subtitle="Cantos suaves e sombras quentes discretas" -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  html,body{margin:0}
+  body{background:var(--surface-page);padding:var(--space-6);font-family:var(--font-mono);
+    display:flex;gap:var(--space-6);flex-wrap:wrap;align-items:flex-start}
+  .box{background:var(--surface-card);border:1px solid var(--border);display:flex;align-items:center;
+    justify-content:center;width:90px;height:64px;font-size:10px;color:var(--text-muted)}
+  .col{display:flex;flex-direction:column;gap:8px;align-items:center}
+  .lbl{font-size:10px;color:var(--text-muted)}
+</style>
+</head>
+<body>
+  <div class="col"><div class="box" style="border-radius:var(--radius-sm)">sm</div><span class="lbl">6px</span></div>
+  <div class="col"><div class="box" style="border-radius:var(--radius-md)">md</div><span class="lbl">10px</span></div>
+  <div class="col"><div class="box" style="border-radius:var(--radius-lg)">lg</div><span class="lbl">14px card</span></div>
+  <div class="col"><div class="box" style="border-radius:var(--radius-xl)">xl</div><span class="lbl">20px</span></div>
+  <div class="col"><div class="box" style="border:none;border-radius:var(--radius-lg);box-shadow:var(--shadow-sm)">sm</div><span class="lbl">shadow-sm</span></div>
+  <div class="col"><div class="box" style="border:none;border-radius:var(--radius-lg);box-shadow:var(--shadow-md)">md</div><span class="lbl">shadow-md</span></div>
+  <div class="col"><div class="box" style="border:none;border-radius:var(--radius-lg);box-shadow:var(--shadow-lg)">lg</div><span class="lbl">shadow-lg</span></div>
+</body>
+</html>

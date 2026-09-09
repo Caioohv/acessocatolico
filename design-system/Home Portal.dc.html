@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  *{box-sizing:border-box}
+  a{color:var(--text-link);text-decoration:none}
+  a:hover{color:var(--text-link-hover)}
+</style>
+</helmet>
+<div style="font-family:var(--font-sans);background:var(--surface-page);color:var(--text-body);min-height:100%;padding-bottom:var(--space-16)">
+
+  <header style="display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);max-width:var(--container-portal);margin:0 auto;padding:var(--space-4) var(--space-6)">
+    <a href="#" style="display:flex;align-items:center;gap:var(--space-3);color:inherit">
+      <img src="assets/logo-mark.svg" alt="Acesso Católico" style="width:38px;height:38px;display:block">
+      <span style="font-family:var(--font-display);line-height:1;letter-spacing:var(--tracking-tight)">
+        <b style="font-weight:600;font-size:1.25rem;color:var(--text-strong)">Acesso</b><b style="font-weight:500;font-size:1.25rem;color:var(--brand)"> Católico</b>
+      </span>
+    </a>
+    <nav style="display:flex;align-items:center;gap:var(--space-6);font-size:var(--text-sm);font-weight:500">
+      <a href="#" style="color:var(--text-body)">Onde tem missa</a>
+      <a href="#" style="color:var(--text-body)">Comunidades</a>
+      <a href="#" style="color:var(--text-body)">Blog</a>
+      <a href="#" style="color:var(--text-body)">Lojinha</a>
+      <a href="#" style="background:var(--brand);color:var(--text-on-brand);padding:var(--space-2) var(--space-4);border-radius:var(--radius-pill);font-weight:600">Sou paróquia</a>
+    </nav>
+  </header>
+
+  <section style="background:var(--surface-brand);color:var(--text-on-brand)">
+    <div style="max-width:var(--container-portal);margin:0 auto;padding:var(--space-16) var(--space-6);display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,0.85fr);gap:var(--space-12);align-items:center">
+      <div>
+        <span style="display:inline-flex;align-items:center;gap:8px;font-size:var(--text-xs);font-weight:700;letter-spacing:var(--tracking-wide);text-transform:uppercase;background:rgba(255,255,255,.12);color:var(--amber-500);padding:6px var(--space-3);border-radius:var(--radius-pill)">Gratuito · feito para a comunidade</span>
+        <h1 style="font-family:var(--font-display);font-weight:600;font-size:var(--text-display);line-height:var(--leading-tight);letter-spacing:var(--tracking-tight);margin:var(--space-5) 0 var(--space-4)">A sua fé, perto de você</h1>
+        <p style="font-size:var(--text-lg);line-height:var(--leading-snug);color:rgba(255,255,255,.82);max-width:44ch;margin:0 0 var(--space-8)">Missas, confissões, eventos e comunidades — atualizados e organizados por região.</p>
+        <div style="display:flex;gap:var(--space-3);flex-wrap:wrap;background:var(--surface-card);border-radius:var(--radius-lg);padding:var(--space-2);max-width:520px;box-shadow:var(--shadow-lg)">
+          <input placeholder="Digite sua cidade ou paróquia" style="flex:1;min-width:180px;border:none;background:transparent;font-family:var(--font-sans);font-size:var(--text-base);color:var(--text-strong);padding:0 var(--space-3);outline:none">
+          <button style="border:none;cursor:pointer;background:var(--accent);color:var(--text-on-accent);font-family:var(--font-sans);font-weight:700;font-size:var(--text-base);padding:var(--space-3) var(--space-6);border-radius:var(--radius-md)">Buscar</button>
+        </div>
+      </div>
+      <div style="background:var(--surface-card);border-radius:var(--radius-xl);padding:var(--space-6);box-shadow:var(--shadow-lg);color:var(--text-body)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-4)">
+          <span style="font-family:var(--font-display);font-weight:600;font-size:var(--text-h4);color:var(--text-strong)">Próximas missas · Fortaleza</span>
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:999px;background:var(--fresh)"></span>atualizado hoje</span>
+        </div>
+        <sc-for list="{{ masses }}" as="m" hint-placeholder-count="3">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);padding:var(--space-3) 0;border-top:1px solid var(--border)">
+            <div>
+              <div style="font-weight:600;color:var(--text-strong);font-size:var(--text-sm)">{{ m.church }}</div>
+              <div style="font-size:var(--text-xs);color:var(--text-muted)">{{ m.place }}</div>
+            </div>
+            <span style="font-family:var(--font-mono);font-size:var(--text-meta);color:var(--brand);font-weight:500">{{ m.time }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="max-width:var(--container-portal);margin:0 auto;padding:var(--space-16) var(--space-6) var(--space-8)">
+    <h2 style="font-family:var(--font-display);font-weight:600;font-size:var(--text-h2);color:var(--text-strong);margin:0 0 var(--space-2)">Comece por aqui</h2>
+    <p style="margin:0 0 var(--space-8);color:var(--text-muted)">Atalhos para o que a comunidade mais procura.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--space-4)">
+      <sc-for list="{{ shortcuts }}" as="s" hint-placeholder-count="4">
+        <a href="#" style="display:flex;flex-direction:column;gap:var(--space-2);background:var(--surface-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-5);box-shadow:var(--shadow-sm)">
+          <span style="width:40px;height:40px;border-radius:var(--radius-md);background:var(--brand-tint);display:flex;align-items:center;justify-content:center;color:var(--brand);font-size:1.25rem">{{ s.icon }}</span>
+          <span style="font-family:var(--font-display);font-weight:600;font-size:var(--text-h4);color:var(--text-strong)">{{ s.title }}</span>
+          <span style="font-size:var(--text-sm);color:var(--text-muted);line-height:var(--leading-snug)">{{ s.desc }}</span>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="max-width:var(--container-portal);margin:0 auto;padding:var(--space-8) var(--space-6)">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--space-6)">
+      <div>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:var(--space-4)">
+          <h3 style="font-family:var(--font-display);font-weight:600;font-size:var(--text-h3);color:var(--text-strong);margin:0">Do blog</h3>
+          <a href="#" style="font-size:var(--text-sm);font-weight:600">Ver tudo</a>
+        </div>
+        <sc-for list="{{ posts }}" as="p" hint-placeholder-count="3">
+          <a href="#" style="display:flex;gap:var(--space-4);padding:var(--space-3) 0;border-top:1px solid var(--border);color:inherit">
+            <div style="width:72px;height:56px;flex:none;border-radius:var(--radius-md);background:repeating-linear-gradient(135deg,var(--surface-sunken),var(--surface-sunken) 6px,var(--brand-tint-quiet) 6px,var(--brand-tint-quiet) 12px)"></div>
+            <div>
+              <span style="font-size:var(--text-xs);font-weight:700;letter-spacing:var(--tracking-wide);text-transform:uppercase;color:var(--brand)">{{ p.cat }}</span>
+              <div style="font-family:var(--font-display);font-weight:500;font-size:var(--text-h4);color:var(--text-strong);line-height:var(--leading-snug)">{{ p.title }}</div>
+            </div>
+          </a>
+        </sc-for>
+      </div>
+      <div style="background:var(--amber-50);border:1px solid var(--amber-200);border-radius:var(--radius-xl);padding:var(--space-6);display:flex;flex-direction:column;gap:var(--space-4)">
+        <h3 style="font-family:var(--font-display);font-weight:600;font-size:var(--text-h3);color:var(--text-strong);margin:0">Da lojinha</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3)">
+          <sc-for list="{{ products }}" as="prod" hint-placeholder-count="2">
+            <div style="background:var(--surface-card);border-radius:var(--radius-md);padding:var(--space-3)">
+              <div style="height:72px;border-radius:var(--radius-sm);background:repeating-linear-gradient(135deg,var(--surface-sunken),var(--surface-sunken) 6px,var(--amber-100) 6px,var(--amber-100) 12px);margin-bottom:var(--space-2)"></div>
+              <div style="font-weight:600;font-size:var(--text-sm);color:var(--text-strong)">{{ prod.name }}</div>
+              <div style="font-family:var(--font-mono);font-size:var(--text-meta);color:var(--text-body)">{{ prod.price }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <p style="margin:0;font-size:var(--text-sm);color:var(--amber-700);line-height:var(--leading-snug)">Comprando por aqui você ajuda a manter o Acesso Católico gratuito 🙏</p>
+      </div>
+    </div>
+  </section>
+
+  <footer style="max-width:var(--container-portal);margin:var(--space-12) auto 0;padding:var(--space-8) var(--space-6) 0;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);flex-wrap:wrap">
+    <span style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--text-muted)">acessocatolico.com.br · gratuito e em apoio à comunidade</span>
+    <a href="#" style="display:inline-flex;align-items:center;gap:6px;font-size:var(--text-sm);font-weight:600;color:var(--text-link);border:1px solid var(--border);background:var(--surface-card);border-radius:var(--radius-pill);padding:6px var(--space-3)">⚑ Reportar erro</a>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      masses: [
+        { church: "Catedral Metropolitana", place: "Centro", time: "07h00" },
+        { church: "Paróquia N. Sra. de Fátima", place: "Aldeota", time: "12h10" },
+        { church: "Santuário São José", place: "Benfica", time: "19h00" },
+      ],
+      shortcuts: [
+        { icon: "✝", title: "Onde tem missa", desc: "Busque horários por cidade e paróquia." },
+        { icon: "◷", title: "Confissões", desc: "Dias e horários de reconciliação." },
+        { icon: "☾", title: "Eventos", desc: "Retiros, encontros e celebrações." },
+        { icon: "♥", title: "Comunidades", desc: "EJC, EAC, ECC e movimentos." },
+      ],
+      posts: [
+        { cat: "Orações", title: "Como rezar o terço em família" },
+        { cat: "Guias", title: "O que levar para um retiro de EJC" },
+        { cat: "Estudos", title: "O sentido do tempo litúrgico" },
+      ],
+      products: [
+        { name: "Terço de madeira", price: "R$ 29,90" },
+        { name: "Bíblia de estudo", price: "R$ 89,90" },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!-- @dsCard group="Espaço & Forma" viewport="700x160" name="Escala de espaçamento" subtitle="Base de 4px — space-1 a space-24" -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  html,body{margin:0}
+  body{background:var(--surface-page);padding:var(--space-6);font-family:var(--font-mono);
+    display:flex;align-items:flex-end;gap:var(--space-4);flex-wrap:wrap}
+  .u{display:flex;flex-direction:column;align-items:center;gap:6px}
+  .bar{background:var(--brand);border-radius:2px;width:16px}
+  .lbl{font-size:10px;color:var(--text-muted)}
+</style>
+</head>
+<body>
+  <div class="u"><div class="bar" style="height:var(--space-1)"></div><span class="lbl">1·4</span></div>
+  <div class="u"><div class="bar" style="height:var(--space-2)"></div><span class="lbl">2·8</span></div>
+  <div class="u"><div class="bar" style="height:var(--space-3)"></div><span class="lbl">3·12</span></div>
+  <div class="u"><div class="bar" style="height:var(--space-4)"></div><span class="lbl">4·16</span></div>
+  <div class="u"><div class="bar" style="height:var(--space-6)"></div><span class="lbl">6·24</span></div>
+  <div class="u"><div class="bar" style="height:var(--space-8)"></div><span class="lbl">8·32</span></div>
+  <div class="u"><div class="bar" style="height:var(--space-12)"></div><span class="lbl">12·48</span></div>
+  <div class="u"><div class="bar" style="height:var(--space-16)"></div><span class="lbl">16·64</span></div>
+</body>
+</html>

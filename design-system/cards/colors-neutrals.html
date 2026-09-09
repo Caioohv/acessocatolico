@@ -1,0 +1,28 @@
+<!-- @dsCard group="Cores" viewport="700x200" name="Neutros quentes" subtitle="Papel e tinta — base de todo o portal e painel" -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  html,body{margin:0}
+  body{background:#efe9e1;font-family:var(--font-sans);padding:var(--space-6);
+    display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-3)}
+  .sw{border-radius:var(--radius-md);padding:var(--space-3);min-height:96px;display:flex;
+    flex-direction:column;justify-content:flex-end;border:1px solid var(--line-200)}
+  .name{font-size:var(--text-xs);font-weight:var(--weight-semibold)}
+  .val{font-family:var(--font-mono);font-size:10px;opacity:.85;margin-top:2px}
+  .dark{color:#fff}.light{color:var(--ink-900)}
+</style>
+</head>
+<body>
+  <div class="sw light" style="background:var(--paper-50)"><span class="name">paper-50</span><span class="val">--surface-page</span></div>
+  <div class="sw light" style="background:var(--white)"><span class="name">white</span><span class="val">--surface-card</span></div>
+  <div class="sw light" style="background:var(--surface-100)"><span class="name">surface-100</span><span class="val">--surface-sunken</span></div>
+  <div class="sw light" style="background:var(--line-200)"><span class="name">line-200</span><span class="val">--border</span></div>
+  <div class="sw light" style="background:var(--ink-400)"><span class="name">ink-400</span><span class="val">--text-subtle</span></div>
+  <div class="sw dark" style="background:var(--ink-500)"><span class="name">ink-500</span><span class="val">--text-muted</span></div>
+  <div class="sw dark" style="background:var(--ink-700)"><span class="name">ink-700</span><span class="val">--text-body</span></div>
+  <div class="sw dark" style="background:var(--ink-900)"><span class="name">ink-900</span><span class="val">--text-strong</span></div>
+</body>
+</html>
