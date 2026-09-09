@@ -9,6 +9,11 @@
 
 ## Entries
 
+### 2026-09-09 — HeroHome (step 27): `sections/` novo; `index.vue` assume `/` sobre o catch-all
+**Context:** Colocar a section `HeroHome.vue` no topo de `/`.
+**Gotcha:** Até então `/` era servido pelo catch-all `app/pages/[...slug].vue` a partir de `content/index.md`. Criado o primeiro `app/pages/index.vue`: ele é mais específico e tem prioridade sobre o catch-all no caminho `/`, então a home passa a ser composta em Vue (não mais do markdown). `content/index.md` fica órfão (não removido — fora de escopo), sem conflito de rota. Criada a nova camada atômica `app/components/sections/` (só havia atoms/molecules/organisms); auto-import por `pathPrefix: false` resolve `<HeroHome>` sem prefixo de pasta.
+**Resolution:** Título de hero usa `--text-display` compondo sobre `BaseHeading` nível 1 via `:deep(.base-heading--h1)` — mobile-first começa em `--text-h1` e sobe para `--text-display` em `@media (min-width: 48rem)`. CTA reusa `BaseButton to="/blog"`. `npx nuxi prepare` (em `portal/`) passa.
+
 ### 2026-09-09 — Filtro de categoria (step 26): estado na query string + re-consulta nativa
 **Context:** `CategoryFilter.vue` filtra o índice do blog por categoria.
 **Gotcha:** O `CollectionQueryBuilder` do Nuxt Content 3 (confirmado em `node_modules/@nuxt/content/dist/module.d.mts:380`) expõe `.select(...fields)`, `.order(field, 'ASC'|'DESC')`, `.where(field, operator, value)`, `.all()`, `.first()`, `.count()`. `'='` é `SQLOperator` válido. Para o filtro reativo com SSR, o estado vive em `route.query.categoria`; o `useAsyncData` do índice usa `{ watch: [activeCategory] }` para re-consultar `queryCollection('blog').where('category','=', valor)`. Não há `distinct` no builder para listar categorias — buscar `.select('category').all()` e derivar um `Set`.
