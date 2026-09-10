@@ -9,6 +9,11 @@
 
 ## Entries
 
+### 2026-09-09 — Lint/tipos (step 51): 1 warning pré-existente conhecido em `TheHeader.vue`
+**Context:** Auditoria estática do trabalho de Prisma/loja (steps 36-50) com `npx nuxi prepare` + `npm run lint` a partir de `portal/`.
+**Gotcha:** `eslint .` fica com **0 erros**, mas reporta 1 warning pré-existente: `vue/html-self-closing` no `<img/>` de `app/components/organisms/TheHeader.vue:30`. Ele vem de commits antigos (não dos steps 36-50) e NÃO é do trabalho da lojinha — não perder tempo achando que uma auditoria de step novo o introduziu. Os `.json` de dados (`navigation.json`, `home.json`) são ignorados pelo config do eslint, então mudanças neles não aparecem no lint. Não há typechecker (`vue-tsc` ausente); tipagem validada por `npx nuxi prepare`.
+**Resolution:** Deixado intacto por estar fora do escopo (regra do executor: não expandir escopo). É corrigível trivialmente com `eslint --fix` (`<img ... >` em vez de `<img ... />`) quando um step de limpeza cobrir o header.
+
 ### 2026-09-09 — Navegação/atalhos (step 50): lojinha na nav + limpeza da coluna fake do LatestPosts
 **Context:** Surfacing `/loja` na navegação (`navigation.json`), na home (`home.json` shortcuts) e resolvendo a duplicação sinalizada no step 49.
 **Gotcha:** (1) `TheHeader` e `TheFooter` são 100% JSON driven por `~/data/navigation.json`; o mesmo array `header.links` alimenta desktop e drawer mobile (o mobile é só CSS), então adicionar um link cobre as duas versões sem tocar no SFC. O footer NÃO tem lista de links (só copy + botão "reportar erro"), logo não há link de lojinha a adicionar lá. (2) Aproveitei este step para RESOLVER a duplicação do step 49: removi a coluna fake "Da lojinha" de `sections/LatestPosts.vue` (dados estáticos de `home.json`) — agora o `LatestPosts` mostra só o blog, e a vitrine real vive só em `LatestProducts` (produtos de `/api/products`). Com isso o bloco `lojinha` de `home.json` ficou órfão e foi removido. Order da home em `index.vue`: Hero → Shortcuts (agora com card "Lojinha" ativo → `/loja`) → LatestPosts (só blog) → LatestProducts (lojinha real).
