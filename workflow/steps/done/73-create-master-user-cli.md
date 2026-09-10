@@ -1,6 +1,6 @@
 # Create the master-user CLI script
 
-**Status:** todo
+**Status:** done
 
 ## What to do
 
@@ -13,3 +13,7 @@ Running the script creates/updates the user and login with those credentials wor
 ## Original line
 
 > Criar um script/CLI de criação do usuário master (gera hash da senha e faz upsert do `User`), documentado no README do admin. ✔ Rodar o script cria/atualiza o usuário e o login com essas credenciais funciona.
+
+## Summary
+
+Created `db/scripts/create-master-user.ts`: standalone tsx script that reads email/password/name from CLI args, hashes the password with bcryptjs (cost 12, matching the login endpoint dummy hash), and upserts the `User` record via a direct PrismaClient (same standalone pattern as the seed). Added `bcryptjs` dep and `@types/bcryptjs` devDep to `db/package.json`, plus the `create-user` script (`tsx scripts/create-master-user.ts`). Documented usage (create, update, prerequisites) in `admin/README.md` under a new "Criando o usuário master" section.
