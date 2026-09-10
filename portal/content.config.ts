@@ -12,6 +12,19 @@ import { defineContentConfig, defineCollection, z } from '@nuxt/content'
  */
 export default defineContentConfig({
   collections: {
+    // Páginas avulsas servidas pelo catch-all `app/pages/[...slug].vue` via
+    // `queryCollection('content').path(...)`. PRECISA existir: consultar uma
+    // collection não declarada faz o @nuxt/content buscar uma tabela SQLite
+    // inexistente e lançar erro em CADA URL não-casada (todo tráfego 404 de
+    // bots/scanners), o que vazava heap por request até o OOM. Exclui `blog/**`
+    // para não duplicar os posts (que têm a sua própria collection tipada).
+    content: defineCollection({
+      type: 'page',
+      source: {
+        include: '**',
+        exclude: ['blog/**'],
+      },
+    }),
     blog: defineCollection({
       type: 'page',
       source: 'blog/**',
