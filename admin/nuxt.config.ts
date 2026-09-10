@@ -3,6 +3,7 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/eslint',
     '@nuxt/fonts',
+    'nuxt-auth-utils',
   ],
   devtools: { enabled: true },
   // Design tokens compartilhados (mesma fonte de verdade do portal): cores,
