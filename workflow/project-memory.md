@@ -9,6 +9,11 @@
 
 ## Entries
 
+### 2026-09-09 — ProductCategoryFilter (step 46): mesmo padrão do blog, mas scroll horizontal e rota `/loja`
+**Context:** Molécula de chips de filtro da lojinha, espelhando o `CategoryFilter.vue` do blog.
+**Gotcha:** (1) O endpoint `GET /api/products/categories` devolve `{ data: [{ name, count }] }` (objetos), diferente do blog que passa `string[]`. Fiz a prop aceitar `ProductCategory[]` ({ name, count? }) e renderizar só `name` — a página `/loja` (step 48) pode repassar `data` direto sem `.map`. Exportei a interface do próprio SFC (como `Product` no `ProductCard`). (2) O param de query é `?categoria=` e o endpoint de produtos também aceita `?busca=` — preservo `busca` no `linkTo()` igual ao blog. A rota destino é `/loja` (a página ainda não existe até o step 48). (3) O átomo `BaseTag` já dá `aria-current="true"` + estado preenchido quando `active` e é link; nada a acrescentar no filtro. (4) Scroll horizontal no mobile: `flex-wrap:nowrap; overflow-x:auto; scroll-behavior:smooth` + `flex:0 0 auto` nos itens; some com a scrollbar (`scrollbar-width:none` / `::-webkit-scrollbar{display:none}`) e ganha `padding-bottom:var(--space-1)` pra não cortar o box-shadow de foco. A partir de `48rem` volta a `flex-wrap:wrap`.
+**Resolution:** Validado com `npx nuxi prepare` + `eslint` (limpos). Sem typechecker no projeto.
+
 ### 2026-09-09 — ProductCard (step 45): `priceRef` é string de exibição; `target`/`rel` no BaseButton via fallthrough
 **Context:** Molécula `ProductCard.vue` da lojinha, com CTA para link de afiliado.
 **Gotcha:** (1) No schema Prisma `priceRef` é `String` e o seed grava já formatado (`'R$ 49,90'`), não número — então "preço formatado em BRL" é renderizar o valor direto. Deixei um `Intl.NumberFormat('pt-BR', {currency:'BRL'})` como rede de segurança que só age se o valor vier numérico. (2) `BaseButton` não declara props `target`/`rel`; como o seu root é um único elemento (`<component :is>`), atributos não-prop (`target`, `rel`) caem por **attribute fallthrough** do Vue direto no `<a>` gerado por `href`. Então `<BaseButton href target="_blank" rel="noopener noreferrer nofollow">` funciona sem tocar no átomo. (3) O card NÃO usa link estendido (diferente do `PostCard`): a ação primária é o CTA de afiliado, e um link estendido criaria interativos aninhados.
