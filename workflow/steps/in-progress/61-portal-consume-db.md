@@ -1,6 +1,6 @@
 # Portal consumes `@acesso/db`
 
-**Status:** todo
+**Status:** in-progress
 
 ## What to do
 

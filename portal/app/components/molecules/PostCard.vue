@@ -135,8 +135,10 @@ const hasCover = computed(() => Boolean(props.post.cover))
   box-shadow: var(--shadow-focus);
 }
 
-.post-card:hover .post-card__link {
+.post-card:hover .post-card__link,
+.post-card__link:hover {
   color: var(--text-link);
+  text-decoration: none;
 }
 
 .post-card__excerpt {

@@ -22,11 +22,12 @@ else
   exit 1
 fi
 
-# .env é obrigatório: carrega DATABASE_URL apontando pro Postgres global.
-if [ ! -f .env ]; then
-  echo "✗ .env não encontrado. Rode:  cp .env.example .env  e preencha DATABASE_URL." >&2
-  exit 1
-fi
+# .env é opcional enquanto a integração com o banco / Prisma estiver comentada.
+# if [ ! -f .env ]; then
+#   echo "✗ .env não encontrado. Rode:  cp .env.example .env  e preencha DATABASE_URL." >&2
+#   exit 1
+# fi
+
 
 # A rede externa do Caddy precisa existir (idempotente — não recria se já houver).
 if ! docker network inspect caddy_net >/dev/null 2>&1; then

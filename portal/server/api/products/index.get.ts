@@ -1,5 +1,4 @@
-import type { Prisma } from '@prisma/client'
-import { prisma } from '../../utils/prisma'
+// import { prisma, type Prisma } from '@acesso/db'
 
 /**
  * GET /api/products — lojinha de afiliados (Fase 1).
@@ -12,12 +11,10 @@ import { prisma } from '../../utils/prisma'
  * contrato público de cada produto — campos internos (`active`, `createdAt`,
  * `updatedAt`) não vão para o cliente.
  *
- * Resiliência: se o banco estiver inacessível, registra o erro no servidor e
- * responde com lista vazia (200) em vez de vazar detalhes internos ou derrubar a
- * página. A skill `api-responses` orienta o envelope e a não-exposição de internals.
+ * NOTA: Integração com Prisma temporariamente comentada para foco exclusivo no portal.
  */
 
-// Contrato público de um produto — o que a lojinha consome no frontend.
+/*
 const publicProductSelect = {
   id: true,
   title: true,
@@ -31,8 +28,20 @@ const publicProductSelect = {
 export type PublicProduct = Prisma.ProductGetPayload<{
   select: typeof publicProductSelect
 }>
+*/
 
-export default defineEventHandler(async (event): Promise<{ data: PublicProduct[] }> => {
+export type PublicProduct = {
+  id: string
+  title: string
+  description: string | null
+  priceRef: string | null
+  category: string
+  affiliateUrl: string
+  imageUrl: string | null
+}
+
+export default defineEventHandler(async (_event): Promise<{ data: PublicProduct[] }> => {
+  /*
   const query = getQuery(event)
 
   const categoria = typeof query.categoria === 'string' ? query.categoria.trim() : ''
@@ -65,4 +74,9 @@ export default defineEventHandler(async (event): Promise<{ data: PublicProduct[]
     console.error('[GET /api/products] falha ao consultar produtos:', error)
     return { data: [] }
   }
+  */
+
+  // Retorna lista vazia graciosa enquanto Prisma/banco está comentado/pendente
+  return { data: [] }
 })
+

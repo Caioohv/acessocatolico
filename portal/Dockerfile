@@ -17,12 +17,9 @@ RUN apt-get update \
 COPY package.json package-lock.json ./
 RUN npm ci
 
-# Código + geração do Prisma Client. O build do Nuxt NÃO exige banco vivo:
-# o Prisma é lazy (ver server/utils/prisma.ts), então o prerender não conecta.
-# O placeholder de DATABASE_URL só satisfaz o `env()` do prisma.config.ts no
-# load — `generate` não conecta em banco nenhum.
+# Código + build do Nuxt. Prisma comentado (banco em pendência).
 COPY . .
-RUN DATABASE_URL="postgresql://user:pass@localhost:5432/placeholder" npx prisma generate
+# RUN DATABASE_URL="postgresql://user:pass@localhost:5432/placeholder" npx prisma generate
 RUN npm run build
 
 # ── Runtime ──────────────────────────────────────────────────────────────────
@@ -33,13 +30,11 @@ ENV NODE_ENV=production
 ENV NITRO_HOST=0.0.0.0
 ENV NITRO_PORT=3000
 
-# .output é auto-contido para servir; node_modules + prisma/ ficam para o
-# `prisma db push` no start (não há migrations neste projeto — o schema é
-# sincronizado via push).
+# .output é auto-contido para servir.
 COPY --from=builder /app/.output ./.output
 COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
+# COPY --from=builder /app/prisma ./prisma
+# COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
 COPY --from=builder /app/package.json ./package.json
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
@@ -47,3 +42,4 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 EXPOSE 3000
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["node", ".output/server/index.mjs"]
+

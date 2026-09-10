@@ -36,8 +36,9 @@ services:
       # normal, mas força um OOM rápido (e restart) num vazamento, em vez do
       # thrashing prolongado perto do teto default de ~2GB.
       NODE_OPTIONS: --max-old-space-size=512
-      # String de conexão do Prisma → Postgres global. Obrigatória.
-      DATABASE_URL: ${DATABASE_URL:?defina DATABASE_URL no .env (veja .env.example)}
+      # String de conexão do Prisma → Postgres global (comentada: banco em pendência/foco no portal).
+      # DATABASE_URL: ${DATABASE_URL:?defina DATABASE_URL no .env (veja .env.example)}
+
     networks:
       - caddy_net
 

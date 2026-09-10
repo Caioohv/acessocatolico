@@ -1,4 +1,4 @@
-import { prisma } from '../../utils/prisma'
+// import { prisma } from '@acesso/db'
 
 /**
  * GET /api/products/categories — categorias disponíveis na lojinha (Fase 1).
@@ -11,9 +11,7 @@ import { prisma } from '../../utils/prisma'
  * Ordena por contagem decrescente e, em empate, pelo nome (A→Z) para uma listagem
  * estável dos chips.
  *
- * Resiliência: se o banco estiver inacessível, registra o erro no servidor e
- * responde com lista vazia (200) em vez de vazar detalhes internos ou derrubar a
- * página. A skill `api-responses` orienta o envelope e a não-exposição de internals.
+ * NOTA: Integração com Prisma temporariamente comentada para foco exclusivo no portal.
  */
 
 export type ProductCategory = {
@@ -22,6 +20,7 @@ export type ProductCategory = {
 }
 
 export default defineEventHandler(async (): Promise<{ data: ProductCategory[] }> => {
+  /*
   try {
     const grouped = await prisma.product.groupBy({
       by: ['category'],
@@ -45,4 +44,9 @@ export default defineEventHandler(async (): Promise<{ data: ProductCategory[] }>
     console.error('[GET /api/products/categories] falha ao consultar categorias:', error)
     return { data: [] }
   }
+  */
+
+  // Retorna lista vazia graciosa enquanto Prisma/banco está comentado/pendente
+  return { data: [] }
 })
+

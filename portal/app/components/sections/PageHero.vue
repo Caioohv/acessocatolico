@@ -53,6 +53,7 @@ defineProps<Props>()
   letter-spacing: var(--tracking-tight);
   margin: 0;
   color: var(--text-on-brand);
+  text-decoration: none;
 }
 
 .page-hero__lead {

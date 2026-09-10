@@ -165,5 +165,6 @@ const posts = computed(() => {
   font-size: var(--text-h4);
   color: var(--text-strong);
   line-height: var(--leading-snug);
+  text-decoration: none;
 }
 </style>
