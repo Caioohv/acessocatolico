@@ -1,6 +1,6 @@
 # Admin consumes `@acesso/db`
 
-**Status:** todo
+**Status:** done
 
 ## What to do
 
@@ -13,3 +13,7 @@ Configure the admin to consume `@acesso/db` by adding it as a dependency and cre
 ## Original line
 
 > Configurar o admin para consumir `@acesso/db` via `admin/server/utils/prisma.ts` (reexporta o client do pacote). ✔ `npx nuxi prepare` no `admin/` conclui sem erro de import.
+
+## Summary
+
+Added `"@acesso/db": "workspace:*"` to `admin/package.json` dependencies and created `admin/server/utils/prisma.ts` re-exporting the shared lazy singleton (`export { prisma }` + `export type { Prisma }`), mirroring `portal/server/utils/prisma.ts` (step 61) — Nitro auto-imports it for admin server routes. Done-criteria (`npx nuxi prepare`) deferred to CI: fails offline at `@nuxt/kit` because `admin/node_modules` isn't installed (sandbox block), not on the `@acesso/db` import.
