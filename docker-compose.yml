@@ -17,6 +17,14 @@ services:
     image: acessocatolico_app
     container_name: acessocatolico_app
     restart: unless-stopped
+    # Guarda de memória (defesa em profundidade — ver incidente 2026-09-10 no
+    # JOURNAL da VPS). Operação saudável usa ~80MB (pico ~250MB sob carga). O
+    # teto default do heap do V8 (~2GB) deixava um vazamento inflar por minutos
+    # em GC thrashing antes de morrer. Capamos o old space bem abaixo disso, e o
+    # mem_limit do container fica um pouco acima do heap + overhead (não-heap,
+    # better-sqlite3, buffers): um vazamento futuro reinicia rápido em vez de
+    # travar. `restart: unless-stopped` religa o container após o OOM.
+    mem_limit: 768m
     env_file:
       - path: .env
         required: false
@@ -24,6 +32,10 @@ services:
       NODE_ENV: production
       NITRO_HOST: 0.0.0.0
       NITRO_PORT: 3000
+      # Capa o heap do V8 (old space) em 512MB — folga confortável sobre o uso
+      # normal, mas força um OOM rápido (e restart) num vazamento, em vez do
+      # thrashing prolongado perto do teto default de ~2GB.
+      NODE_OPTIONS: --max-old-space-size=512
       # String de conexão do Prisma → Postgres global. Obrigatória.
       DATABASE_URL: ${DATABASE_URL:?defina DATABASE_URL no .env (veja .env.example)}
     networks:
