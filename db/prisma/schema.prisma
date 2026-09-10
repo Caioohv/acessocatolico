@@ -1,0 +1,16 @@
+// Prisma schema — @acesso/db (fonte única do banco no monorepo).
+//
+// Placeholder mínimo criado no step 54 para o pacote gerar o client sem erro de
+// config. Os models (Product, User, AnalyticsEvent, ...) são movidos para cá no
+// step 55 (move-schema-to-db); NÃO adicionar models aqui.
+//
+// Prisma 7: a `url` NÃO vive no bloco `datasource` — a conexão vem de
+// prisma.config.ts (CLI) e do driver adapter no runtime (src/index.ts).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
