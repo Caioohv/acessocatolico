@@ -1,6 +1,6 @@
 # Add global auth route middleware
 
-**Status:** todo
+**Status:** done
 
 ## What to do
 
@@ -13,3 +13,7 @@ Accessing an internal route without a session redirects to `/login`; with a sess
 ## Original line
 
 > Criar middleware global de rota que protege todo o admin (sem sessão → `/login`). ✔ Acesso a uma rota interna sem sessão redireciona para `/login`; com sessão, permite.
+
+## Summary
+
+Created `admin/app/middleware/auth.global.ts` — a Nuxt global route middleware that allows `/login` through and redirects any unauthenticated navigation to `/login` using `useUserSession` from `nuxt-auth-utils` (already wired in `nuxt.config.ts`).
