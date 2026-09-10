@@ -1,0 +1,29 @@
+// Prisma schema — Acesso Católico
+// Fase 1: lojinha de afiliados (tabela `produtos`).
+// Docs: definição do projeto em workflow/definition.md
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  priceRef    String
+  category    String
+  affiliateUrl String
+  imageUrl    String
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([active])
+  @@index([category])
+  @@index([active, category])
+  @@map("produtos")
+}

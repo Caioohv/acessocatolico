@@ -9,6 +9,11 @@
 
 ## Entries
 
+### 2026-09-09 — Prisma schema (step 38): em Prisma 7 o `url` sai do `datasource`
+**Context:** Criar `portal/prisma/schema.prisma` e validar com `npx prisma validate`.
+**Gotcha:** No Prisma 7 a propriedade `url = env("DATABASE_URL")` dentro do bloco `datasource` **não é mais suportada** — `prisma validate` falha com `P1012` ("The datasource property `url` is no longer supported in schema files"). A connection string vai para um `prisma.config.ts` (para o Migrate) e/ou para um `adapter`/`accelerateUrl` passado ao `PrismaClient`. Ver https://pris.ly/d/prisma7-client-config.
+**Resolution:** Deixar o `datasource db` só com `provider = "postgresql"` (sem `url`). Com isso `npx prisma validate --schema=prisma/schema.prisma` (rodado de `portal/`) passa. A ligação da `DATABASE_URL` deve ser feita em `prisma.config.ts` / no client nos steps seguintes (39/40). O aviso de "update available 8.0.0-rc.13" é a mesma dist-tag RC do step 36 — ignorar, ficar no 7.10.0.
+
 ### 2026-09-09 — Prisma (step 36): tag `latest` da CLI aponta para RC v8; fixar par 7.10.0
 **Context:** Instalar `prisma` (dev) e `@prisma/client` (prod) em `portal/`.
 **Gotcha:** No registro, a dist-tag `latest` de `prisma` está em `8.0.0-rc.13` (release candidate), enquanto a `latest` de `@prisma/client` está no estável `7.10.0`. Um `npm install prisma` + `npm install @prisma/client` sem versão instala CLI v8-rc e client v7 — majors descasados, que quebram `prisma generate`. Além disso, os postinstall scripts (`@prisma/engines`) aparecem como "not covered by allowScripts" no aviso do npm, mas os engines foram baixados e `npx prisma --version` funciona (Schema Engine + Query Compiler presentes).
