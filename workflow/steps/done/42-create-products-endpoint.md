@@ -1,6 +1,6 @@
 # Criar endpoint GET /api/products
 
-**Status:** todo
+**Status:** done
 
 ## What to do
 
@@ -9,3 +9,7 @@ Criar a rota de API `portal/server/api/products/index.get.ts` usando `defineEven
 ## Original line
 
 > - [ ] Criar endpoint `GET /api/products` em `portal/server/api/products/index.get.ts` com filtros por categoria e busca, retornando produtos ativos com fallback resiliente. ✔ Rota registrada e tipada no Nitro (`npx nuxi prepare`).
+
+## Summary
+
+Criado `portal/server/api/products/index.get.ts` com `defineEventHandler`: lê `categoria` (filtro exato) e `busca` (contains case-insensitive em título/descrição) via `getQuery`, consulta `prisma.product.findMany` só de ativos (`where.active = true`) ordenado por `createdAt desc`, retornando envelope `{ data: PublicProduct[] }` com `select` do contrato público (sem `active`/`createdAt`/`updatedAt`). Erro de banco é logado no servidor e cai em fallback gracioso `{ data: [] }` (sem vazar internals). Validado com `npx nuxi prepare` (rota tipada em `.nuxt/types/nitro-routes.d.ts`) e `npx eslint` (limpo).
