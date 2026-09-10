@@ -9,6 +9,11 @@
 
 ## Entries
 
+### 2026-09-09 — Prisma seed (step 41): script standalone precisa do próprio adapter + `process.loadEnvFile()`
+**Context:** Criar `portal/prisma/seed.ts` e o comando de seed no `package.json`.
+**Gotcha:** (1) O singleton `server/utils/prisma.ts` é auto-importado pelo Nitro e não pode ser reusado num script node/tsx puro — o seed precisa instanciar seu próprio `PrismaClient` com `new PrismaPg({ connectionString })` (mesma exigência de driver adapter do Prisma 7, pois o `datasource` não tem `url`). (2) Um script standalone não carrega o `.env` sozinho; `dotenv` não está instalado. Usei `process.loadEnvFile()` (nativo do Node >= 20.6, aqui v24) dentro de try/catch — silencioso se o `.env` não existir. (3) `tsx`/`ts-node` não vinham instalados; instalei `tsx` (devDep). (4) O `prisma.seed` do `package.json` ainda funciona no Prisma 7 (não migrei para `prisma.config.ts`, que ainda não existe). (5) ESLint (`@typescript-eslint/consistent-type-imports`) exige que o namespace `Prisma` (usado só como tipo, `Prisma.ProductCreateInput`) venha como `import type` separado de `PrismaClient` (usado como valor).
+**Resolution:** Seed idempotente com `deleteMany()` + `createMany({ data })`. `category` é string livre (nomes legíveis: "Terços", "Bíblias", "Livros", "Vestuário", "Acessórios de retiro") — o endpoint de categorias (step 43) agrupa por esse valor. Validado com `npx tsc --noEmit --strict ... prisma/seed.ts` (exit 0) e `npx eslint prisma/seed.ts` (limpo). Rodar `npm run db:seed` sem `.env` para no erro esperado `DATABASE_URL não definida`; não testado contra Postgres real neste ambiente.
+
 ### 2026-09-09 — Prisma singleton (step 40): Prisma 7 exige driver adapter (sem `datasourceUrl`)
 **Context:** Criar o singleton `portal/server/utils/prisma.ts` instanciando o `PrismaClient`.
 **Gotcha:** Como o `url` saiu do `datasource` (step 38), o `PrismaClient` do Prisma 7 **não aceita mais** a opção `datasourceUrl`. O `PrismaClientOptions` (ver `node_modules/.prisma/client/index.d.ts`) só oferece `adapter` (obrigatório) ou `accelerateUrl`. Sem adapter, o client não conecta. Para Postgres é preciso `@prisma/adapter-pg` + o driver `pg` — nenhum vinha instalado (só `better-sqlite3`, que é do Nuxt Content).
