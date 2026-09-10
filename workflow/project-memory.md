@@ -9,6 +9,11 @@
 
 ## Entries
 
+### 2026-09-09 — Prisma singleton (step 40): Prisma 7 exige driver adapter (sem `datasourceUrl`)
+**Context:** Criar o singleton `portal/server/utils/prisma.ts` instanciando o `PrismaClient`.
+**Gotcha:** Como o `url` saiu do `datasource` (step 38), o `PrismaClient` do Prisma 7 **não aceita mais** a opção `datasourceUrl`. O `PrismaClientOptions` (ver `node_modules/.prisma/client/index.d.ts`) só oferece `adapter` (obrigatório) ou `accelerateUrl`. Sem adapter, o client não conecta. Para Postgres é preciso `@prisma/adapter-pg` + o driver `pg` — nenhum vinha instalado (só `better-sqlite3`, que é do Nuxt Content).
+**Resolution:** `npm install @prisma/adapter-pg@7.10.0 pg` (+ `@types/pg` dev) em `portal/` — casar a versão do adapter com o par 7.10.0. Singleton: ler `process.env.DATABASE_URL`, construir `const adapter = new PrismaPg({ connectionString })` e `new PrismaClient({ adapter })`; guardar em `globalThis.prisma` e cachear só quando `NODE_ENV !== 'production'` (HMR). `server/utils/*` é auto-importado pelo Nitro, então basta `export const prisma`. Validado com `npx nuxi prepare` + `npx eslint server/utils/prisma.ts` (o projeto não tem typechecker).
+
 ### 2026-09-09 — Prisma schema (step 38): em Prisma 7 o `url` sai do `datasource`
 **Context:** Criar `portal/prisma/schema.prisma` e validar com `npx prisma validate`.
 **Gotcha:** No Prisma 7 a propriedade `url = env("DATABASE_URL")` dentro do bloco `datasource` **não é mais suportada** — `prisma validate` falha com `P1012` ("The datasource property `url` is no longer supported in schema files"). A connection string vai para um `prisma.config.ts` (para o Migrate) e/ou para um `adapter`/`accelerateUrl` passado ao `PrismaClient`. Ver https://pris.ly/d/prisma7-client-config.
