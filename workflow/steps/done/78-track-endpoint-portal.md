@@ -1,6 +1,6 @@
 # Create the `POST /api/track` endpoint in the portal
 
-**Status:** todo
+**Status:** done
 
 ## What to do
 
@@ -13,3 +13,7 @@ A sample POST inserts a row into `AnalyticsEvent`; a database failure does not r
 ## Original line
 
 > Criar `POST /api/track` no portal que grava um `AnalyticsEvent` (deriva `sessionId` por hash rotativo sem PII), resiliente e não-bloqueante. ✔ Um POST de exemplo insere uma linha em `AnalyticsEvent`; falha do banco não retorna erro que quebre a página.
+
+## Summary
+
+Created `portal/server/api/track.post.ts` — accepts JSON body `{ type, path, targetId?, referrer? }`, derives a daily-rotating SHA-256 `sessionId` from IP + User-Agent (no PII stored), calls `prisma.analyticsEvent.create()`; a database failure is caught and logged server-side while the response stays `{ ok: true }`, matching the portal's existing graceful-fallback pattern. Lint passed clean.
