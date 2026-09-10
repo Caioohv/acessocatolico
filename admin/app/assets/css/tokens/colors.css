@@ -1,0 +1,85 @@
+/* ==========================================================================
+   Acesso Católico — Sistema de cores
+   Tom: católico, mas moderno e convidativo. Neutros quentes (papel/tinta),
+   violeta litúrgico como voz da fé, âmbar de vela como calor e generosidade.
+   Valores em oklch para uma paleta harmônica e fácil de estender.
+   ========================================================================== */
+:root {
+  /* --- Violeta litúrgico (marca / primária) --------------------------------
+     Roxo do Advento e da Quaresma: espiritual, sério, mas não datado. */
+  --violet-900: oklch(0.32 0.10 305);
+  --violet-800: oklch(0.38 0.12 305);
+  --violet-700: oklch(0.44 0.13 305);   /* cor de marca base */
+  --violet-600: oklch(0.52 0.14 305);
+  --violet-500: oklch(0.60 0.14 305);
+  --violet-200: oklch(0.88 0.05 305);
+  --violet-100: oklch(0.94 0.03 305);
+  --violet-50:  oklch(0.975 0.014 305);
+
+  /* --- Âmbar de vela (acento / calor / generosidade) ----------------------- */
+  --amber-700: oklch(0.66 0.13 66);
+  --amber-600: oklch(0.74 0.13 72);
+  --amber-500: oklch(0.81 0.13 78);      /* acento base */
+  --amber-200: oklch(0.92 0.06 82);
+  --amber-100: oklch(0.96 0.035 84);
+  --amber-50:  oklch(0.98 0.02 86);
+
+  /* --- Verde esperança (comunidade / confirmação / dado fresco) ------------ */
+  --green-700: oklch(0.52 0.10 152);
+  --green-600: oklch(0.60 0.11 150);
+  --green-100: oklch(0.95 0.03 150);
+
+  /* --- Neutros quentes (papel & tinta) ------------------------------------- */
+  --paper-50:   oklch(0.988 0.008 85);   /* fundo de página */
+  --white:      oklch(1 0 0);
+  --surface-100:oklch(0.975 0.006 82);   /* superfície rebaixada / alternada */
+  --line-200:   oklch(0.905 0.006 78);   /* bordas e divisores */
+  --ink-400:    oklch(0.70 0.008 75);    /* texto desativado / placeholder */
+  --ink-500:    oklch(0.56 0.010 75);    /* texto secundário / meta */
+  --ink-700:    oklch(0.39 0.012 75);    /* corpo de texto */
+  --ink-900:    oklch(0.24 0.014 78);    /* títulos / texto forte */
+
+  /* --- Estados semânticos --------------------------------------------------- */
+  --success-600: oklch(0.60 0.11 150);
+  --success-100: oklch(0.95 0.03 150);
+  --warning-600: oklch(0.74 0.13 72);
+  --warning-100: oklch(0.96 0.035 84);
+  --danger-600:  oklch(0.58 0.16 26);
+  --danger-100:  oklch(0.95 0.04 30);
+  --info-600:    oklch(0.58 0.10 245);
+  --info-100:    oklch(0.95 0.03 245);
+
+  /* =========================================================================
+     Aliases semânticos — use SEMPRE estes no produto, não os valores brutos.
+     ========================================================================= */
+  --brand:            var(--violet-700);
+  --brand-strong:     var(--violet-800);
+  --brand-hover:      var(--violet-600);
+  --brand-tint:       var(--violet-100);
+  --brand-tint-quiet: var(--violet-50);
+
+  --accent:           var(--amber-500);
+  --accent-strong:    var(--amber-600);
+  --accent-tint:      var(--amber-100);
+
+  --text-strong:  var(--ink-900);
+  --text-body:    var(--ink-700);
+  --text-muted:   var(--ink-500);
+  --text-subtle:  var(--ink-400);
+  --text-on-brand:var(--paper-50);
+  --text-on-accent:var(--ink-900);   /* âmbar é claro: tinta escura por cima */
+  --text-link:    var(--violet-700);
+  --text-link-hover: var(--violet-600);
+
+  --surface-page:   var(--paper-50);
+  --surface-card:   var(--white);
+  --surface-sunken: var(--surface-100);
+  --surface-brand:  var(--violet-700);
+  --border:         var(--line-200);
+  --border-strong:  oklch(0.84 0.008 78);
+
+  /* Frescor do dado — assinatura do produto ("atualizado_em") */
+  --fresh:  var(--green-600);   /* atualizado há pouco */
+  --stale:  var(--amber-600);   /* pode estar defasado */
+  --old:    var(--danger-600);  /* provavelmente desatualizado */
+}

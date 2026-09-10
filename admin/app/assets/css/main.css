@@ -1,0 +1,29 @@
+/* ==========================================================================
+   Acesso Católico — CSS agregador
+   Ponto único de entrada dos estilos globais. Ordem importa:
+   fonts → colors → spacing → typography → effects → reset base.
+   Tokens primeiro (definem as custom properties), reset por último
+   (consome os tokens já disponíveis).
+   --------------------------------------------------------------------------
+   BREAKPOINTS (convenção mobile-first, min-width)
+
+   Custom properties do CSS NÃO funcionam dentro de media queries, então os
+   breakpoints não podem ser variáveis reais. Ficam registrados aqui como
+   CONVENÇÃO: toda media query do projeto deve usar estes valores literais em
+   `min-width` (nunca max-width como padrão — ver Conventions em definition.md).
+
+     --bp-sm: 30rem    (480px)   pequenos telefones em paisagem / phablets
+     --bp-md: 48rem    (768px)   tablets
+     --bp-lg: 64rem    (1024px)  desktops
+
+   Uso (literal, não var()):
+     @media (min-width: 48rem) { ... }   // md e acima
+     @media (min-width: 64rem) { ... }   // lg e acima
+   ========================================================================== */
+
+@import url('tokens/fonts.css');
+@import url('tokens/colors.css');
+@import url('tokens/spacing.css');
+@import url('tokens/typography.css');
+@import url('tokens/effects.css');
+@import url('reset.css');
