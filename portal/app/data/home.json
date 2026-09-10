@@ -24,6 +24,13 @@
         "active": true
       },
       {
+        "icon": "❖",
+        "title": "Lojinha",
+        "desc": "Terços, bíblias e presentes de fé selecionados para você.",
+        "to": "/loja",
+        "active": true
+      },
+      {
         "icon": "◷",
         "title": "Onde tem missa",
         "desc": "Horários de missa e confissão das paróquias.",
@@ -54,21 +61,5 @@
     "seeAllText": "Ver tudo",
     "seeAllTo": "/blog",
     "emptyText": "Nenhum post publicado ainda."
-  },
-  "lojinha": {
-    "title": "Da lojinha",
-    "products": [
-      {
-        "id": "1",
-        "name": "Terço de madeira",
-        "price": "R$ 29,90"
-      },
-      {
-        "id": "2",
-        "name": "Bíblia de estudo",
-        "price": "R$ 89,90"
-      }
-    ],
-    "affiliateNote": "Comprando por aqui você ajuda a manter o Acesso Católico gratuito 🙏"
   }
 }

@@ -11,6 +11,10 @@
       {
         "label": "Blog",
         "to": "/blog"
+      },
+      {
+        "label": "Lojinha",
+        "to": "/loja"
       }
     ],
     "cta": {

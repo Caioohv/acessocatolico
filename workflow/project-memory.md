@@ -9,6 +9,11 @@
 
 ## Entries
 
+### 2026-09-09 — Navegação/atalhos (step 50): lojinha na nav + limpeza da coluna fake do LatestPosts
+**Context:** Surfacing `/loja` na navegação (`navigation.json`), na home (`home.json` shortcuts) e resolvendo a duplicação sinalizada no step 49.
+**Gotcha:** (1) `TheHeader` e `TheFooter` são 100% JSON driven por `~/data/navigation.json`; o mesmo array `header.links` alimenta desktop e drawer mobile (o mobile é só CSS), então adicionar um link cobre as duas versões sem tocar no SFC. O footer NÃO tem lista de links (só copy + botão "reportar erro"), logo não há link de lojinha a adicionar lá. (2) Aproveitei este step para RESOLVER a duplicação do step 49: removi a coluna fake "Da lojinha" de `sections/LatestPosts.vue` (dados estáticos de `home.json`) — agora o `LatestPosts` mostra só o blog, e a vitrine real vive só em `LatestProducts` (produtos de `/api/products`). Com isso o bloco `lojinha` de `home.json` ficou órfão e foi removido. Order da home em `index.vue`: Hero → Shortcuts (agora com card "Lojinha" ativo → `/loja`) → LatestPosts (só blog) → LatestProducts (lojinha real).
+**Resolution:** Validado com `npx nuxi prepare` (ok) + `eslint` no `LatestPosts.vue` (limpo; os `.json` são ignorados pelo config do eslint) + `node -e require(...)` nos dois JSON. Sem typechecker no projeto.
+
 ### 2026-09-09 — LatestProducts (step 49): há DUAS áreas de lojinha na home (uma fake, uma real)
 **Context:** Section `sections/LatestProducts.vue` inserida na home após `LatestPosts`.
 **Gotcha:** `sections/LatestPosts.vue` (step 28) já traz uma coluna "Da lojinha" com produtos ESTÁTICOS/FAKE vindos de `~/data/home.json` (`homeData.lojinha.products`, campos `name`/`price`, sem imagem nem CTA de afiliado). A nova `LatestProducts.vue` puxa produtos REAIS de `GET /api/products` e reusa `ProductGrid`/`ProductCard`. Ou seja, a home pode exibir duas vitrines de lojinha ao mesmo tempo. Não removi a coluna fake do `LatestPosts` por estar fora do escopo do step 49 — fica para um step/refactor futuro decidir consolidar (provável: tirar a coluna lojinha do `LatestPosts`, deixando-o só com o blog, e manter só a `LatestProducts` real). A `LatestProducts` usa `v-if="products.length"` para NÃO renderizar bloco vazio quando o banco está indisponível (o endpoint devolve `{ data: [] }` com 200 nesse caso).

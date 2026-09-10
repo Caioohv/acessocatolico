@@ -1,7 +1,8 @@
 <script setup lang="ts">
 /**
- * LatestPosts — section da home com os posts mais recentes do blog e o destaque da lojinha.
+ * LatestPosts — section da home com os posts mais recentes do blog.
  * JSON driven via ~/data/home.json + Nuxt Content (somente dados reais do blog).
+ * A vitrine da lojinha vive na section `LatestProducts` (produtos reais de `/api/products`).
  */
 import homeData from '~/data/home.json'
 
@@ -20,8 +21,6 @@ const posts = computed(() => {
   }
   return []
 })
-
-const products = computed(() => homeData.lojinha.products || [])
 </script>
 
 <template>
@@ -61,25 +60,6 @@ const products = computed(() => homeData.lojinha.products || [])
 
           <p v-else class="latest-posts-section__empty">
             {{ homeData.blog.emptyText }}
-          </p>
-        </div>
-
-        <!-- Coluna da Lojinha -->
-        <div v-if="products.length > 0" class="lojinha-card">
-          <h3 class="latest-posts-section__h3">{{ homeData.lojinha.title }}</h3>
-          <div class="lojinha-card__grid">
-            <div
-              v-for="prod in products"
-              :key="prod.id"
-              class="product-item"
-            >
-              <div class="product-item__thumb" />
-              <div class="product-item__name">{{ prod.name }}</div>
-              <div class="product-item__price">{{ prod.price }}</div>
-            </div>
-          </div>
-          <p class="lojinha-card__note">
-            {{ homeData.lojinha.affiliateNote }}
           </p>
         </div>
       </div>
@@ -184,61 +164,6 @@ const products = computed(() => homeData.lojinha.products || [])
   font-weight: 500;
   font-size: var(--text-h4);
   color: var(--text-strong);
-  line-height: var(--leading-snug);
-}
-
-/* --- Coluna da Lojinha ---------------------------------------------------- */
-.lojinha-card {
-  background: var(--amber-50);
-  border: 1px solid var(--amber-200);
-  border-radius: var(--radius-xl);
-  padding: var(--space-6);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-
-.lojinha-card__grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-3);
-}
-
-.product-item {
-  background: var(--surface-card);
-  border-radius: var(--radius-md);
-  padding: var(--space-3);
-}
-
-.product-item__thumb {
-  height: 72px;
-  border-radius: var(--radius-sm);
-  background: repeating-linear-gradient(
-    135deg,
-    var(--surface-sunken),
-    var(--surface-sunken) 6px,
-    var(--amber-100) 6px,
-    var(--amber-100) 12px
-  );
-  margin-bottom: var(--space-2);
-}
-
-.product-item__name {
-  font-weight: 600;
-  font-size: var(--text-sm);
-  color: var(--text-strong);
-}
-
-.product-item__price {
-  font-family: var(--font-mono);
-  font-size: var(--text-meta);
-  color: var(--text-body);
-}
-
-.lojinha-card__note {
-  margin: 0;
-  font-size: var(--text-sm);
-  color: var(--amber-700);
   line-height: var(--leading-snug);
 }
 </style>
