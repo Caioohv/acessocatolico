@@ -1,6 +1,6 @@
 # Create the product CRUD endpoints
 
-**Status:** todo
+**Status:** done
 
 ## What to do
 
@@ -9,6 +9,10 @@ Create the admin product endpoints, all protected by session: `GET /api/products
 ## Done criteria
 
 Each route returns the correct status and persists to the `produtos` table (verifiable via the listing).
+
+## Summary
+
+Created 5 Nitro server route handlers in `admin/server/api/products/`: `index.get.ts` (list all including inactive, supports `ativo`/`categoria`/`busca` filters), `index.post.ts` (create, 201), `[id].put.ts` (full edit), `[id].patch.ts` (toggle active state), and `[id].delete.ts` (delete, 204). All routes call `requireUserSession` for session protection, follow the `api-responses` envelope (`{ data }` / `{ error: { code, message } }`), handle Prisma P2025 with 404, and log errors server-side without leaking internals. The `prisma` singleton is auto-imported from `admin/server/utils/prisma.ts` (no explicit imports needed in handlers).
 
 ## Original line
 
