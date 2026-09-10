@@ -41,6 +41,9 @@ function formatPrice(raw: string | null | undefined): string {
         <span class="produto-list__eyebrow">Gestão</span>
         <h1 class="produto-list__title">Produtos</h1>
       </div>
+      <NuxtLink to="/produtos/novo" class="produto-list__add-btn">
+        + Novo produto
+      </NuxtLink>
     </header>
 
     <!-- Loading state -->
@@ -88,6 +91,9 @@ function formatPrice(raw: string | null | undefined): string {
             <th scope="col" class="produto-list__th produto-list__th--category">Categoria</th>
             <th scope="col" class="produto-list__th produto-list__th--price">Preço ref.</th>
             <th scope="col" class="produto-list__th produto-list__th--status">Status</th>
+            <th scope="col" class="produto-list__th produto-list__th--actions">
+              <span class="sr-only">Ações</span>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -112,6 +118,15 @@ function formatPrice(raw: string | null | undefined): string {
               >
                 {{ product.active ? 'Ativo' : 'Inativo' }}
               </span>
+            </td>
+            <td class="produto-list__td produto-list__td--actions">
+              <NuxtLink
+                :to="`/produtos/${product.id}/editar`"
+                class="produto-list__edit-link"
+                :aria-label="`Editar ${product.title}`"
+              >
+                Editar
+              </NuxtLink>
             </td>
           </tr>
         </tbody>
@@ -332,6 +347,74 @@ function formatPrice(raw: string | null | undefined): string {
 .produto-list__badge--inactive {
   background: var(--surface-sunken);
   color: var(--text-muted);
+}
+
+/* ---- coluna de ações ---- */
+.produto-list__th--actions {
+  width: 5rem;
+  text-align: center;
+}
+
+.produto-list__td--actions {
+  text-align: center;
+}
+
+.produto-list__edit-link {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--brand);
+  text-decoration: none;
+  text-underline-offset: 2px;
+  white-space: nowrap;
+}
+
+.produto-list__edit-link:hover {
+  text-decoration: underline;
+}
+
+.produto-list__edit-link:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ---- botão "Novo produto" no cabeçalho ---- */
+.produto-list__add-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: var(--space-4);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text-on-brand);
+  background-color: var(--brand);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color var(--dur-fast) var(--ease-standard);
+}
+
+.produto-list__add-btn:hover {
+  background-color: var(--brand-strong);
+}
+
+.produto-list__add-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+/* sr-only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 
 /* ---- rodapé da contagem ---- */
