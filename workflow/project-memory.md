@@ -9,6 +9,11 @@
 
 ## Entries
 
+### 2026-09-09 — Página /loja (step 48): `useFetch` com `query` reativa dispensa `watch` manual
+**Context:** Página `portal/app/pages/loja/index.vue` compondo os pedaços dos steps 43–47.
+**Gotcha:** Diferente do `blog/index.vue` (que usa `useAsyncData` + `{ watch: [...] }` porque consulta o Nuxt Content localmente), a lojinha bate nos endpoints REST `/api/products` e `/api/products/categories`. Usei `useFetch('/api/products', { query: { categoria: activeCategory } })`: quando um valor de `query` é um ref/computed, o `useFetch` já **re-busca automaticamente** ao mudar (sem `watch` explícito) e continua SSR-safe (payload transferido, sem duplo fetch na hidratação). Ponto-chave: fazer `activeCategory` devolver `undefined` (não `null`) quando não há categoria, para o ofetch **omitir** o parâmetro em vez de mandar `categoria=null`. Repassei `activeCategory ?? null` ao `ProductCategoryFilter` (prop `active` aceita `string | null`) e `has-filters="Boolean(activeCategory)"` ao `ProductGrid`. O estado vazio NÃO é duplicado na página — vive no organismo (ver nota do step 47). Os endpoints devolvem `{ data: [...] }`; consumir via `productsResponse.value?.data ?? []`.
+**Resolution:** Validado com `npx nuxi prepare` + `eslint` (limpos). Sem typechecker no projeto.
+
 ### 2026-09-09 — ProductGrid (step 47): estado vazio mora no organismo (diferente do blog)
 **Context:** Organismo `ProductGrid.vue` da lojinha, espelhando o `PostGrid.vue` do blog.
 **Gotcha:** No blog, o `PostGrid` só renderiza a grade e o estado vazio fica na página (`blog/index.vue`). Aqui optei por embutir o estado vazio DENTRO do `ProductGrid` (`v-if` produtos / `v-else` mensagem), como o step 47 pediu. Contrato: `products: Product[]` (interface reusada de `ProductCard.vue`), `hasFilters?: boolean` (ajusta a mensagem e mostra/oculta o botão "Limpar filtros") e `clearTo?: string` (padrão `/loja`). Implicação para o step 48 (página `/loja`): NÃO duplicar o bloco de estado vazio na página — basta passar `:has-filters` (true quando `categoria`/`busca` ativos) e, se quiser, `clear-to`. Grade fluida idêntica ao PostGrid: 1 col, 2 cols em `48rem`, 3 cols em `64rem`.
