@@ -167,4 +167,8 @@ const posts = computed(() => {
   line-height: var(--leading-snug);
   text-decoration: none;
 }
+
+.blog-post-item:hover .blog-post-item__title {
+  text-decoration: none;
+}
 </style>

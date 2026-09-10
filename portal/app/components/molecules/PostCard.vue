@@ -113,6 +113,7 @@ const hasCover = computed(() => Boolean(props.post.cover))
 
 .post-card__title {
   margin: 0;
+  text-decoration: none;
 }
 
 /* Link estendido: torna o cartão inteiro clicável mantendo o texto acessível. */
@@ -136,7 +137,8 @@ const hasCover = computed(() => Boolean(props.post.cover))
 }
 
 .post-card:hover .post-card__link,
-.post-card__link:hover {
+.post-card__link:hover,
+.post-card__link:focus {
   color: var(--text-link);
   text-decoration: none;
 }

@@ -95,6 +95,24 @@ useSeoMeta({
   line-height: var(--leading-relaxed);
 }
 
+.post__body :deep(h1),
+.post__body :deep(h2),
+.post__body :deep(h3),
+.post__body :deep(h4),
+.post__body :deep(h5),
+.post__body :deep(h6) {
+  text-decoration: none;
+}
+
+.post__body :deep(h1 a),
+.post__body :deep(h2 a),
+.post__body :deep(h3 a),
+.post__body :deep(h4 a),
+.post__body :deep(h5 a),
+.post__body :deep(h6 a) {
+  text-decoration: none;
+}
+
 .post__body :deep(h2) {
   margin: var(--space-10) 0 var(--space-3);
   color: var(--text-strong);
@@ -104,6 +122,7 @@ useSeoMeta({
   line-height: var(--leading-tight);
   letter-spacing: var(--tracking-tight);
   text-wrap: balance;
+  text-decoration: none;
 }
 
 .post__body :deep(h3) {
@@ -113,6 +132,7 @@ useSeoMeta({
   font-size: var(--text-h3);
   font-weight: var(--weight-semibold);
   line-height: var(--leading-snug);
+  text-decoration: none;
 }
 
 .post__body :deep(h4) {
@@ -122,6 +142,7 @@ useSeoMeta({
   font-size: var(--text-h4);
   font-weight: var(--weight-semibold);
   line-height: var(--leading-snug);
+  text-decoration: none;
 }
 
 .post__body :deep(p) {

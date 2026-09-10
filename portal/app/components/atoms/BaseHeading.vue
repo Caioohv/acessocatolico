@@ -38,6 +38,12 @@ const tag = computed(() => `h${props.level}` as const)
   font-family: var(--font-display);
   font-weight: var(--weight-bold);
   text-wrap: balance;
+  text-decoration: none;
+}
+
+.base-heading :deep(a),
+.base-heading :deep(a:hover) {
+  text-decoration: none;
 }
 
 .base-heading--h1 {
