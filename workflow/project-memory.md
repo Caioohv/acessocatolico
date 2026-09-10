@@ -139,3 +139,8 @@ Template for each entry:
 **Context:** Steps/tarefas costumam citar caminhos como `app/components/...` ou `content/...`.
 **Gotcha:** Esses caminhos são relativos ao app Nuxt, que fica em `portal/` (com `nuxt.config.ts`, `package.json`, `content/`, `app/`), não na raiz do repositório.
 **Resolution:** Rodar `npm`/`npx nuxi` a partir de `portal/` e prefixar os caminhos de arquivo do app com `portal/`.
+
+### 2026-09-10 — Raiz virou npm workspace (step 53): `npm ls -w <pkg>` só casa diretório existente
+**Context:** Criado o `package.json` na raiz (`private: true`, `workspaces: ["db", "portal", "admin"]`) convertendo o repo em npm workspace.
+**Gotcha:** (1) `npm ls -w db` **falha** com `No workspaces found: --workspace=db` porque `db/` e `admin/` ainda não existem — o npm resolve workspace por diretório-com-`package.json`, não pela string do array. Isso é esperado nesta fase; a validação de que a raiz virou workspace é `npm ls -w portal` (membro existente), que imprime `acessocatolico@0.0.0 <raiz>` resolvendo a raiz, e `npm run` (sem args) resolve a raiz sem erro. (2) `npm query ".workspace"` devolve `[]` enquanto não houver install (sem lockfile/node_modules linkado na raiz) — não confundir com workspace mal declarado. (3) **Pendência para os próximos steps:** existe um `portal/package-lock.json` (679KB) que conflita com a meta de lockfile único na raiz — quando um step rodar `npm install` na raiz (criando o lockfile único), o lockfile de `portal/` deve ser removido. Não mexi nele aqui (fora do escopo do step 53, que só declara o workspace, sem instalar).
+**Resolution:** Deixado o `package.json` raiz mínimo (name/version/private/description/workspaces), sem scripts. `portal/` intacto.

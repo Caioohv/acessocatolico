@@ -16,6 +16,9 @@ Docs completos em [`docs/`](../docs/): visão em [`conceito.md`](../docs/conceit
 critério de pronto em [`roadmap.md`](../docs/roadmap.md), stack em
 [`decisoes/stack.md`](../docs/decisoes/stack.md), detalhe de cada fase em
 [`produtos/`](../docs/produtos/). **Esses docs são a fonte de verdade** — esta definição os resume.
+O **painel admin** (login, gestão da lojinha, métricas) está em
+[`produtos/admin.md`](../docs/produtos/admin.md); a estratégia de banco no monorepo (pacote
+compartilhado `@acesso/db`) em [`decisoes/banco-monorepo.md`](../docs/decisoes/banco-monorepo.md).
 
 ## Problem
 

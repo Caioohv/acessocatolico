@@ -1,0 +1,11 @@
+{
+  "name": "acessocatolico",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Monorepo Acesso Católico — portal público, painel admin e pacote de banco compartilhado (@acesso/db)",
+  "workspaces": [
+    "db",
+    "portal",
+    "admin"
+  ]
+}
