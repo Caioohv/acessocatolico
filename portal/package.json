@@ -7,11 +7,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "lint": "eslint .",
-    "preview": "nuxt preview",
-    "db:seed": "tsx prisma/seed.ts"
-  },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
+    "preview": "nuxt preview"
   },
   "dependencies": {
     "@nuxt/content": "^3.16.0",

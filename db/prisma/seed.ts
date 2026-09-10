@@ -4,13 +4,18 @@
  * Popula produtos católicos de exemplo nas categorias previstas
  * (Terços, Bíblias, Livros, Vestuário e Acessórios de retiro).
  *
+ * Vive no pacote compartilhado `@acesso/db` (fonte única do banco). É um script
+ * standalone rodado por `tsx`: NÃO reusa o singleton `prisma` de `src/index.ts`
+ * (aquele é auto-importado pelos apps via Nitro), e sim instancia seu próprio
+ * `PrismaClient` com o driver adapter a partir de `DATABASE_URL`.
+ *
  * Prisma 7: a connection string não vive no bloco `datasource` do schema; ela é
  * passada em runtime por um driver adapter (`@prisma/adapter-pg`) construído a partir
  * de `DATABASE_URL`. Ver https://pris.ly/d/prisma7-client-config.
  *
  * Execução:
- *   - `npm run db:seed`      (usa o script do package.json)
- *   - `npx prisma db seed`   (usa a chave `prisma.seed` do package.json)
+ *   - `npm run -w db seed`   (usa o script do package.json)
+ *   - `npx prisma db seed`   (a partir de `db/`, usa a chave `prisma.seed`)
  *
  * A `DATABASE_URL` é lida do `.env` (carregado abaixo com o loader nativo do Node).
  */
