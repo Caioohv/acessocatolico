@@ -15,7 +15,7 @@ interface AdminProduct {
 
 useHead({ title: 'Produtos — Painel Acesso Católico' })
 
-const { data, status, error } = await useFetch<{ data: AdminProduct[] }>('/api/products', {
+const { data, status, error, refresh } = await useFetch<{ data: AdminProduct[] }>('/api/products', {
   default: () => ({ data: [] }),
 })
 
@@ -23,14 +23,71 @@ const products = computed(() => data.value?.data ?? [])
 
 function formatPrice(raw: string | null | undefined): string {
   if (!raw) return '—'
-  // If already formatted (e.g. 'R$ 49,90'), return as-is.
   if (/^R\$/.test(raw)) return raw
-  // Try to parse as number and format.
   const n = Number(raw)
   if (Number.isFinite(n)) {
     return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(n)
   }
   return raw
+}
+
+// ——————————————————————————————————————————
+// Toggle active/inactive
+// ——————————————————————————————————————————
+const togglingIds = ref<Set<string>>(new Set())
+
+async function toggleActive(product: AdminProduct) {
+  if (togglingIds.value.has(product.id)) return
+  togglingIds.value = new Set([...togglingIds.value, product.id])
+
+  try {
+    await $fetch(`/api/products/${product.id}`, {
+      method: 'PATCH',
+      body: { active: !product.active },
+    })
+    await refresh()
+  }
+  catch {
+    // Silently ignore — UI stays as-is, user can retry.
+  }
+  finally {
+    const next = new Set(togglingIds.value)
+    next.delete(product.id)
+    togglingIds.value = next
+  }
+}
+
+// ——————————————————————————————————————————
+// Delete with confirmation modal
+// ——————————————————————————————————————————
+const pendingDelete = ref<AdminProduct | null>(null)
+const isDeleting = ref(false)
+const deleteDialogRef = ref<HTMLDialogElement | null>(null)
+
+function openDeleteModal(product: AdminProduct) {
+  pendingDelete.value = product
+  nextTick(() => deleteDialogRef.value?.showModal())
+}
+
+function closeDeleteModal() {
+  deleteDialogRef.value?.close()
+  pendingDelete.value = null
+  isDeleting.value = false
+}
+
+async function confirmDelete() {
+  if (!pendingDelete.value || isDeleting.value) return
+  isDeleting.value = true
+
+  try {
+    await $fetch(`/api/products/${pendingDelete.value.id}`, { method: 'DELETE' })
+    closeDeleteModal()
+    await refresh()
+  }
+  catch {
+    // Silently ignore — modal stays open, user can retry or cancel.
+    isDeleting.value = false
+  }
 }
 </script>
 
@@ -120,13 +177,40 @@ function formatPrice(raw: string | null | undefined): string {
               </span>
             </td>
             <td class="produto-list__td produto-list__td--actions">
-              <NuxtLink
-                :to="`/produtos/${product.id}/editar`"
-                class="produto-list__edit-link"
-                :aria-label="`Editar ${product.title}`"
-              >
-                Editar
-              </NuxtLink>
+              <div class="produto-list__actions">
+                <NuxtLink
+                  :to="`/produtos/${product.id}/editar`"
+                  class="produto-list__action-btn produto-list__action-btn--edit"
+                  :aria-label="`Editar ${product.title}`"
+                >
+                  Editar
+                </NuxtLink>
+
+                <button
+                  type="button"
+                  class="produto-list__action-btn produto-list__action-btn--toggle"
+                  :class="{ 'produto-list__action-btn--busy': togglingIds.has(product.id) }"
+                  :disabled="togglingIds.has(product.id)"
+                  :aria-label="product.active ? `Desativar ${product.title}` : `Ativar ${product.title}`"
+                  @click="toggleActive(product)"
+                >
+                  <span
+                    v-if="togglingIds.has(product.id)"
+                    class="produto-list__mini-spinner"
+                    aria-hidden="true"
+                  />
+                  <span v-else>{{ product.active ? 'Desativar' : 'Ativar' }}</span>
+                </button>
+
+                <button
+                  type="button"
+                  class="produto-list__action-btn produto-list__action-btn--delete"
+                  :aria-label="`Excluir ${product.title}`"
+                  @click="openDeleteModal(product)"
+                >
+                  Excluir
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -135,6 +219,49 @@ function formatPrice(raw: string | null | undefined): string {
         {{ products.length }} {{ products.length === 1 ? 'produto' : 'produtos' }}
       </p>
     </div>
+
+    <!-- Delete confirmation modal -->
+    <dialog
+      ref="deleteDialogRef"
+      class="produto-list__dialog"
+      aria-labelledby="delete-dialog-title"
+      @close="closeDeleteModal"
+    >
+      <div class="produto-list__dialog-content">
+        <h2 id="delete-dialog-title" class="produto-list__dialog-title">
+          Excluir produto
+        </h2>
+        <p class="produto-list__dialog-body">
+          Tem certeza que deseja excluir
+          <strong>{{ pendingDelete?.title }}</strong>?
+          Esta ação não pode ser desfeita.
+        </p>
+        <div class="produto-list__dialog-footer">
+          <button
+            type="button"
+            class="produto-list__dialog-btn produto-list__dialog-btn--cancel"
+            :disabled="isDeleting"
+            @click="closeDeleteModal"
+          >
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="produto-list__dialog-btn produto-list__dialog-btn--confirm"
+            :class="{ 'produto-list__dialog-btn--busy': isDeleting }"
+            :disabled="isDeleting"
+            @click="confirmDelete"
+          >
+            <span
+              v-if="isDeleting"
+              class="produto-list__mini-spinner produto-list__mini-spinner--light"
+              aria-hidden="true"
+            />
+            <span>{{ isDeleting ? 'Excluindo…' : 'Excluir' }}</span>
+          </button>
+        </div>
+      </div>
+    </dialog>
   </main>
 </template>
 
@@ -275,7 +402,7 @@ function formatPrice(raw: string | null | undefined): string {
   width: 100%;
   border-collapse: collapse;
   font-size: var(--text-sm);
-  min-width: 36rem; /* evita quebra horrível em telas muito estreitas */
+  min-width: 44rem; /* evita quebra horrível em telas muito estreitas */
 }
 
 /* ---- cabeçalho da tabela ---- */
@@ -351,31 +478,95 @@ function formatPrice(raw: string | null | undefined): string {
 
 /* ---- coluna de ações ---- */
 .produto-list__th--actions {
-  width: 5rem;
-  text-align: center;
+  width: 13rem;
+  text-align: right;
 }
 
 .produto-list__td--actions {
-  text-align: center;
+  text-align: right;
 }
 
-.produto-list__edit-link {
+.produto-list__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  justify-content: flex-end;
+}
+
+/* ---- botões de ação inline ---- */
+.produto-list__action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  min-height: 28px;
+  padding-inline: var(--space-2);
+  font-family: var(--font-sans);
   font-size: var(--text-xs);
   font-weight: var(--weight-medium);
-  color: var(--brand);
-  text-decoration: none;
-  text-underline-offset: 2px;
+  line-height: 1;
   white-space: nowrap;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: color var(--dur-fast) var(--ease-standard),
+              background-color var(--dur-fast) var(--ease-standard);
+  text-decoration: none;
 }
 
-.produto-list__edit-link:hover {
-  text-decoration: underline;
-}
-
-.produto-list__edit-link:focus-visible {
+.produto-list__action-btn:focus-visible {
   outline: 2px solid var(--brand);
   outline-offset: 2px;
-  border-radius: var(--radius-sm);
+}
+
+.produto-list__action-btn--edit {
+  color: var(--brand);
+}
+
+.produto-list__action-btn--edit:hover {
+  color: var(--brand-strong);
+  background: var(--brand-tint-quiet);
+}
+
+.produto-list__action-btn--toggle {
+  color: var(--text-muted);
+}
+
+.produto-list__action-btn--toggle:hover:not(:disabled) {
+  color: var(--text-body);
+  background: var(--surface-sunken);
+}
+
+.produto-list__action-btn--toggle:disabled,
+.produto-list__action-btn--busy {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.produto-list__action-btn--delete {
+  color: var(--danger-600);
+}
+
+.produto-list__action-btn--delete:hover {
+  background: var(--danger-100);
+}
+
+/* ---- mini spinner (inline nos botões) ---- */
+.produto-list__mini-spinner {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  border: 1.5px solid var(--border);
+  border-top-color: var(--text-muted);
+  border-radius: var(--radius-pill);
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+.produto-list__mini-spinner--light {
+  border-color: oklch(1 0 0 / 0.4);
+  border-top-color: oklch(1 0 0);
 }
 
 /* ---- botão "Novo produto" no cabeçalho ---- */
@@ -424,5 +615,98 @@ function formatPrice(raw: string | null | undefined): string {
   color: var(--text-subtle);
   border-top: var(--border-width) solid var(--border);
   text-align: right;
+}
+
+/* ============================================================
+   Modal de confirmação de exclusão
+   ============================================================ */
+.produto-list__dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(90vw, 28rem);
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: 0;
+  box-shadow: var(--shadow-xl);
+  background: var(--surface-card);
+}
+
+/* Backdrop nativo do <dialog> */
+.produto-list__dialog::backdrop {
+  background: oklch(0.24 0.014 78 / 0.5);
+  backdrop-filter: blur(2px);
+}
+
+.produto-list__dialog-content {
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.produto-list__dialog-title {
+  font-family: var(--font-sans);
+  font-size: var(--text-h4);
+  font-weight: var(--weight-semibold);
+  color: var(--text-strong);
+  line-height: var(--leading-tight);
+}
+
+.produto-list__dialog-body {
+  font-size: var(--text-sm);
+  color: var(--text-body);
+  line-height: var(--leading-normal);
+}
+
+.produto-list__dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.produto-list__dialog-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding-inline: var(--space-4);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-standard),
+              opacity var(--dur-fast) var(--ease-standard);
+}
+
+.produto-list__dialog-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+.produto-list__dialog-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.produto-list__dialog-btn--cancel {
+  color: var(--text-body);
+  background: var(--surface-sunken);
+}
+
+.produto-list__dialog-btn--cancel:hover:not(:disabled) {
+  background: var(--border);
+}
+
+.produto-list__dialog-btn--confirm {
+  color: oklch(1 0 0);
+  background: var(--danger-600);
+}
+
+.produto-list__dialog-btn--confirm:hover:not(:disabled) {
+  background: oklch(0.50 0.18 26);
 }
 </style>
