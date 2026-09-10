@@ -1,4 +1,4 @@
-// import { prisma } from '@acesso/db'
+import { prisma } from '@acesso/db'
 
 /**
  * GET /api/products/categories — categorias disponíveis na lojinha (Fase 1).
@@ -10,8 +10,6 @@
  *
  * Ordena por contagem decrescente e, em empate, pelo nome (A→Z) para uma listagem
  * estável dos chips.
- *
- * NOTA: Integração com Prisma temporariamente comentada para foco exclusivo no portal.
  */
 
 export type ProductCategory = {
@@ -20,7 +18,6 @@ export type ProductCategory = {
 }
 
 export default defineEventHandler(async (): Promise<{ data: ProductCategory[] }> => {
-  /*
   try {
     const grouped = await prisma.product.groupBy({
       by: ['category'],
@@ -44,9 +41,4 @@ export default defineEventHandler(async (): Promise<{ data: ProductCategory[] }>
     console.error('[GET /api/products/categories] falha ao consultar categorias:', error)
     return { data: [] }
   }
-  */
-
-  // Retorna lista vazia graciosa enquanto Prisma/banco está comentado/pendente
-  return { data: [] }
 })
-
