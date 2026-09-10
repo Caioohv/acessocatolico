@@ -7,7 +7,7 @@ tags:
   - providência
   - vocação
 date: '2026-09-09'
-cover: /img/blog/vidas-diferentes.jpg
+cover: /covers/post1.webp
 coverAlt: Jovem sentado sozinho olhando pela janela em um dia claro
 slug: quando-a-vida-dos-outros-parece-mais-facil
 ---
