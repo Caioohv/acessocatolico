@@ -1,13 +1,9 @@
 #!/bin/sh
-# Entrypoint do portal: sobe o servidor Nitro (Prisma/banco comentado por enquanto).
+# Entrypoint do portal: sobe o servidor Nitro.
+# As migrations do banco NÃO rodam aqui — quem aplica o schema é o serviço
+# one-shot `migrate` (prisma migrate deploy, pacote @acesso/db), que roda antes
+# dos apps subirem (depends_on: service_completed_successfully). O container do
+# portal nunca toca no schema no start.
 set -e
 
-# if [ -n "$DATABASE_URL" ]; then
-#   echo "→ Sincronizando schema do Postgres (prisma db push)..."
-#   npx prisma db push || echo "⚠  prisma db push falhou; subindo o app mesmo assim."
-# else
-#   echo "⚠  DATABASE_URL não definida — pulando o db push."
-# fi
-
 exec "$@"
-
