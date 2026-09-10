@@ -9,6 +9,11 @@
 
 ## Entries
 
+### 2026-09-09 — ProductCard (step 45): `priceRef` é string de exibição; `target`/`rel` no BaseButton via fallthrough
+**Context:** Molécula `ProductCard.vue` da lojinha, com CTA para link de afiliado.
+**Gotcha:** (1) No schema Prisma `priceRef` é `String` e o seed grava já formatado (`'R$ 49,90'`), não número — então "preço formatado em BRL" é renderizar o valor direto. Deixei um `Intl.NumberFormat('pt-BR', {currency:'BRL'})` como rede de segurança que só age se o valor vier numérico. (2) `BaseButton` não declara props `target`/`rel`; como o seu root é um único elemento (`<component :is>`), atributos não-prop (`target`, `rel`) caem por **attribute fallthrough** do Vue direto no `<a>` gerado por `href`. Então `<BaseButton href target="_blank" rel="noopener noreferrer nofollow">` funciona sem tocar no átomo. (3) O card NÃO usa link estendido (diferente do `PostCard`): a ação primária é o CTA de afiliado, e um link estendido criaria interativos aninhados.
+**Resolution:** Interface `Product` exportada de `ProductCard.vue` (espelha o contrato de `GET /api/products`) para reuso no grid/filtro (steps 46/47). Alvo de toque ≥44px vem do próprio `BaseButton` (`min-height:44px`). Validado com `npx nuxi prepare` + eslint (limpos).
+
 ### 2026-09-09 — Endpoint de categorias (step 43): `groupBy` para categorias com contagem
 **Context:** Criar `portal/server/api/products/categories.get.ts` retornando categorias ativas com contagem (chips de filtro).
 **Gotcha:** `category` é string livre (sem tabela de categorias), então para listar distintas com contagem usa-se `prisma.product.groupBy({ by: ['category'], where: { active: true }, _count: { _all: true }, orderBy: [...] })`. Dois pontos de tipagem do Prisma 7: (1) no `orderBy` de um `groupBy`, ordenar por contagem é `{ _count: { <campo>: 'desc' } }` (referenciando um campo do `by`, ex. `category`), não `{ _count: 'desc' }`; (2) o valor da contagem lido é `group._count._all` (por causa de `_count: { _all: true }`). Segui o mesmo padrão de resiliência do `products/index.get.ts`: try/catch com `console.error` no servidor e fallback `{ data: [] }` (200), sem vazar internals.
