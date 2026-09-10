@@ -9,6 +9,11 @@
 
 ## Entries
 
+### 2026-09-09 — LatestProducts (step 49): há DUAS áreas de lojinha na home (uma fake, uma real)
+**Context:** Section `sections/LatestProducts.vue` inserida na home após `LatestPosts`.
+**Gotcha:** `sections/LatestPosts.vue` (step 28) já traz uma coluna "Da lojinha" com produtos ESTÁTICOS/FAKE vindos de `~/data/home.json` (`homeData.lojinha.products`, campos `name`/`price`, sem imagem nem CTA de afiliado). A nova `LatestProducts.vue` puxa produtos REAIS de `GET /api/products` e reusa `ProductGrid`/`ProductCard`. Ou seja, a home pode exibir duas vitrines de lojinha ao mesmo tempo. Não removi a coluna fake do `LatestPosts` por estar fora do escopo do step 49 — fica para um step/refactor futuro decidir consolidar (provável: tirar a coluna lojinha do `LatestPosts`, deixando-o só com o blog, e manter só a `LatestProducts` real). A `LatestProducts` usa `v-if="products.length"` para NÃO renderizar bloco vazio quando o banco está indisponível (o endpoint devolve `{ data: [] }` com 200 nesse caso).
+**Resolution:** Validado com `npx nuxi prepare` + `eslint` (limpos). Sem typechecker no projeto.
+
 ### 2026-09-09 — Página /loja (step 48): `useFetch` com `query` reativa dispensa `watch` manual
 **Context:** Página `portal/app/pages/loja/index.vue` compondo os pedaços dos steps 43–47.
 **Gotcha:** Diferente do `blog/index.vue` (que usa `useAsyncData` + `{ watch: [...] }` porque consulta o Nuxt Content localmente), a lojinha bate nos endpoints REST `/api/products` e `/api/products/categories`. Usei `useFetch('/api/products', { query: { categoria: activeCategory } })`: quando um valor de `query` é um ref/computed, o `useFetch` já **re-busca automaticamente** ao mudar (sem `watch` explícito) e continua SSR-safe (payload transferido, sem duplo fetch na hidratação). Ponto-chave: fazer `activeCategory` devolver `undefined` (não `null`) quando não há categoria, para o ofetch **omitir** o parâmetro em vez de mandar `categoria=null`. Repassei `activeCategory ?? null` ao `ProductCategoryFilter` (prop `active` aceita `string | null`) e `has-filters="Boolean(activeCategory)"` ao `ProductGrid`. O estado vazio NÃO é duplicado na página — vive no organismo (ver nota do step 47). Os endpoints devolvem `{ data: [...] }`; consumir via `productsResponse.value?.data ?? []`.

@@ -19,6 +19,7 @@ useSeoMeta({
     <HeroHome />
     <ShortcutsHome />
     <LatestPosts />
+    <LatestProducts />
   </div>
 </template>
 
