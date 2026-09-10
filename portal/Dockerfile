@@ -6,14 +6,23 @@
 FROM node:24-slim AS builder
 WORKDIR /app
 
+# better-sqlite3 (@nuxt/content) não tem prebuild para o Node 24 e compila via
+# node-gyp — precisa de Python + toolchain C++. Fica só no builder; o runtime
+# continua slim.
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends python3 make g++ \
+  && rm -rf /var/lib/apt/lists/*
+
 # Instala dependências primeiro para aproveitar o cache de camadas.
 COPY package.json package-lock.json ./
 RUN npm ci
 
 # Código + geração do Prisma Client. O build do Nuxt NÃO exige banco vivo:
 # o Prisma é lazy (ver server/utils/prisma.ts), então o prerender não conecta.
+# O placeholder de DATABASE_URL só satisfaz o `env()` do prisma.config.ts no
+# load — `generate` não conecta em banco nenhum.
 COPY . .
-RUN npx prisma generate
+RUN DATABASE_URL="postgresql://user:pass@localhost:5432/placeholder" npx prisma generate
 RUN npm run build
 
 # ── Runtime ──────────────────────────────────────────────────────────────────
@@ -30,6 +39,7 @@ ENV NITRO_PORT=3000
 COPY --from=builder /app/.output ./.output
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
 COPY --from=builder /app/package.json ./package.json
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
