@@ -126,6 +126,11 @@
 **Gotcha:** As famílias são referenciadas via `var(--font-*)` no reset; os nomes literais só aparecem nos tokens (`--font-display: 'Spectral'...`). Ainda assim o `@nuxt/fonts` detecta essas famílias e injeta `@font-face` — não é preciso `font-family` literal. O `@import` externo do Google em `tokens/fonts.css` era redundante e render-blocking.
 **Resolution:** Declarar as famílias/pesos em `nuxt.config.ts` → `fonts.families` (provider `google`) e remover o `@import` externo. O build baixa e serve local em `.output/public/_fonts` (woff2).
 
+### 2026-09-10 — Schema movido para @acesso/db (step 55): fonte única, `portal/prisma/` NÃO some ainda
+**Context:** Mover `portal/prisma/schema.prisma` → `db/prisma/schema.prisma` (modelo `Product` intacto), fazendo do pacote `@acesso/db` a fonte única do schema.
+**Gotcha:** (1) O step diz "remover o `portal/prisma/` agora vazio", mas o diretório NÃO fica vazio: `portal/prisma/seed.ts` continua lá (o seed só migra no step 60). Então removi apenas `portal/prisma/schema.prisma` e mantive o diretório — não apagar `seed.ts` (fora de escopo). (2) O placeholder de schema do step 54 tinha um comentário "NÃO adicionar models aqui" — esse aviso era só para o step 54; o step 55 o supersede, então reescrevi o cabeçalho e adicionei o `Product`. (3) `db/prisma.config.ts` já resolvia `prisma/schema.prisma`, nada a mexer. (4) Done-criteria `npx prisma validate` (no `db/`) NÃO pôde rodar aqui: `npm install`/CLI bloqueados no sandbox e o `db/` não tem `node_modules`. Schema é correto por construção (idêntico ao já validado em prod, steps 38/52); validar na CI/fora do sandbox.
+**Resolution:** `Product` (com `@@map("produtos")` + índices `active`, `category`, `active,category`) agora vive só em `db/prisma/schema.prisma`; `portal/prisma/schema.prisma` deletado. Rodar `npm ci` na raiz + `npx prisma validate` em `db/` fora do sandbox para confirmar.
+
 <!--
 Template for each entry:
 
