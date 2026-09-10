@@ -100,34 +100,33 @@ useSeoMeta({
 </script>
 
 <template>
-  <AppContainer as="main" class="blog-index">
-    <header class="blog-index__header">
-      <BaseHeading :level="1">Blog</BaseHeading>
-      <p class="blog-index__lead">
-        Reflexões, guias e conteúdo para viver e aprofundar a fé no dia a dia.
-      </p>
-    </header>
+  <div class="blog-index">
+    <PageHero
+      title="Blog"
+      lead="Reflexões, guias e conteúdo para viver e aprofundar a fé no dia a dia."
+    />
 
-    <div class="blog-index__controls">
-      <BlogSearch
-        :model-value="searchQuery"
-        class="blog-index__search"
-        @update:model-value="updateSearchQuery"
-        @clear="updateSearchQuery('')"
-      />
+    <AppContainer as="main" class="blog-index__body">
+      <div class="blog-index__controls">
+        <BlogSearch
+          :model-value="searchQuery"
+          class="blog-index__search"
+          @update:model-value="updateSearchQuery"
+          @clear="updateSearchQuery('')"
+        />
 
-      <CategoryFilter
-        v-if="categories && categories.length"
-        :categories="categories"
-        :active="activeCategory"
-        class="blog-index__filter"
-      />
-    </div>
+        <CategoryFilter
+          v-if="categories && categories.length"
+          :categories="categories"
+          :active="activeCategory"
+          class="blog-index__filter"
+        />
+      </div>
 
-    <PostGrid v-if="posts && posts.length" :posts="posts" />
+      <PostGrid v-if="posts && posts.length" :posts="posts" />
 
-    <div v-else class="blog-index__empty">
-      <p class="blog-index__empty-text">
+      <div v-else class="blog-index__empty">
+        <p class="blog-index__empty-text">
         <template v-if="searchQuery">
           Nenhum post encontrado para "<strong>{{ searchQuery }}</strong>"
           <template v-if="activeCategory"> na categoria {{ activeCategory }}</template>.
@@ -137,40 +136,25 @@ useSeoMeta({
         </template>
         <template v-else>
           Nenhum post publicado ainda.
-        </template>
-      </p>
+          </template>
+        </p>
 
-      <BaseButton
-        v-if="searchQuery || activeCategory"
-        variant="secondary"
-        to="/blog"
-        class="blog-index__clear-button"
-      >
-        Limpar filtros e pesquisas
-      </BaseButton>
-    </div>
-  </AppContainer>
+        <BaseButton
+          v-if="searchQuery || activeCategory"
+          variant="secondary"
+          to="/blog"
+          class="blog-index__clear-button"
+        >
+          Limpar filtros e pesquisas
+        </BaseButton>
+      </div>
+    </AppContainer>
+  </div>
 </template>
 
 <style scoped>
-.blog-index {
-  padding-block: var(--space-10) var(--space-16);
-}
-
-.blog-index__header {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  margin-bottom: var(--space-6);
-}
-
-.blog-index__lead {
-  margin: 0;
-  max-width: var(--measure-prose);
-  color: var(--text-body);
-  font-family: var(--font-sans);
-  font-size: var(--text-lg);
-  line-height: var(--leading-normal);
+.blog-index__body {
+  padding-block: var(--space-8) var(--space-16);
 }
 
 .blog-index__controls {
