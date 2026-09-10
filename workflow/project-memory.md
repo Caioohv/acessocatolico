@@ -9,6 +9,11 @@
 
 ## Entries
 
+### 2026-09-09 — Prisma (step 36): tag `latest` da CLI aponta para RC v8; fixar par 7.10.0
+**Context:** Instalar `prisma` (dev) e `@prisma/client` (prod) em `portal/`.
+**Gotcha:** No registro, a dist-tag `latest` de `prisma` está em `8.0.0-rc.13` (release candidate), enquanto a `latest` de `@prisma/client` está no estável `7.10.0`. Um `npm install prisma` + `npm install @prisma/client` sem versão instala CLI v8-rc e client v7 — majors descasados, que quebram `prisma generate`. Além disso, os postinstall scripts (`@prisma/engines`) aparecem como "not covered by allowScripts" no aviso do npm, mas os engines foram baixados e `npx prisma --version` funciona (Schema Engine + Query Compiler presentes).
+**Resolution:** Fixar ambos no par estável alinhado: `npm install --save-dev prisma@7.10.0` e `npm install @prisma/client@7.10.0`. Verificar com `npm ls @prisma/client` (client 7.10.0 + prisma 7.10.0 deduped) e `npx prisma --version`. Ao subir de versão no futuro, subir CLI e client juntos no mesmo major.
+
 ### 2026-09-09 — HeroHome (step 27): `sections/` novo; `index.vue` assume `/` sobre o catch-all
 **Context:** Colocar a section `HeroHome.vue` no topo de `/`.
 **Gotcha:** Até então `/` era servido pelo catch-all `app/pages/[...slug].vue` a partir de `content/index.md`. Criado o primeiro `app/pages/index.vue`: ele é mais específico e tem prioridade sobre o catch-all no caminho `/`, então a home passa a ser composta em Vue (não mais do markdown). `content/index.md` fica órfão (não removido — fora de escopo), sem conflito de rota. Criada a nova camada atômica `app/components/sections/` (só havia atoms/molecules/organisms); auto-import por `pathPrefix: false` resolve `<HeroHome>` sem prefixo de pasta.
