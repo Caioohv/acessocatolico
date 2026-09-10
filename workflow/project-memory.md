@@ -9,6 +9,11 @@
 
 ## Entries
 
+### 2026-09-09 — Endpoint de categorias (step 43): `groupBy` para categorias com contagem
+**Context:** Criar `portal/server/api/products/categories.get.ts` retornando categorias ativas com contagem (chips de filtro).
+**Gotcha:** `category` é string livre (sem tabela de categorias), então para listar distintas com contagem usa-se `prisma.product.groupBy({ by: ['category'], where: { active: true }, _count: { _all: true }, orderBy: [...] })`. Dois pontos de tipagem do Prisma 7: (1) no `orderBy` de um `groupBy`, ordenar por contagem é `{ _count: { <campo>: 'desc' } }` (referenciando um campo do `by`, ex. `category`), não `{ _count: 'desc' }`; (2) o valor da contagem lido é `group._count._all` (por causa de `_count: { _all: true }`). Segui o mesmo padrão de resiliência do `products/index.get.ts`: try/catch com `console.error` no servidor e fallback `{ data: [] }` (200), sem vazar internals.
+**Resolution:** Retorna `{ data: [{ name, count }] }` ordenado por contagem desc, depois nome asc. Validado com `npx nuxi prepare` (de `portal/`), `eslint` (limpo) e `tsc --strict` (sem erro de tipagem no groupBy). Não testado contra Postgres real neste ambiente.
+
 ### 2026-09-09 — Prisma seed (step 41): script standalone precisa do próprio adapter + `process.loadEnvFile()`
 **Context:** Criar `portal/prisma/seed.ts` e o comando de seed no `package.json`.
 **Gotcha:** (1) O singleton `server/utils/prisma.ts` é auto-importado pelo Nitro e não pode ser reusado num script node/tsx puro — o seed precisa instanciar seu próprio `PrismaClient` com `new PrismaPg({ connectionString })` (mesma exigência de driver adapter do Prisma 7, pois o `datasource` não tem `url`). (2) Um script standalone não carrega o `.env` sozinho; `dotenv` não está instalado. Usei `process.loadEnvFile()` (nativo do Node >= 20.6, aqui v24) dentro de try/catch — silencioso se o `.env` não existir. (3) `tsx`/`ts-node` não vinham instalados; instalei `tsx` (devDep). (4) O `prisma.seed` do `package.json` ainda funciona no Prisma 7 (não migrei para `prisma.config.ts`, que ainda não existe). (5) ESLint (`@typescript-eslint/consistent-type-imports`) exige que o namespace `Prisma` (usado só como tipo, `Prisma.ProductCreateInput`) venha como `import type` separado de `PrismaClient` (usado como valor).
