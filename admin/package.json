@@ -9,9 +9,13 @@
     "lint": "eslint .",
     "preview": "nuxt preview"
   },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6"
+  },
   "dependencies": {
     "@acesso/db": "workspace:*",
     "@nuxt/eslint": "^1.17.0",
+    "bcryptjs": "^2.4.3",
     "@nuxt/fonts": "^0.14.0",
     "eslint": "^10.10.0",
     "nuxt": "^4.5.2",
