@@ -29,7 +29,7 @@ A Escritura é o primeiro instrumento de diálogo. Ler uma passagem dos Evangelh
 O terço é a âncora nos momentos em que a mente dispersa. Passar as contas com calma, contemplando os mistérios, dissipa a agitação interior e traz a alma para o recolhimento.
 
 ### 3. Um caderno pequeno e uma caneta
-Muitas inspirações, decisões importantes e pedidos de perdão surgem no silêncio da capela. Anotar essas luzes permite guardar o aprendizado para o dia a dia. Além disso, escrever impede a tentação de desbloquear o celular para tomar notas.
+Muitas inspirações, decisões importantes e pedidos de perdão surgem no silêncio da capela. Anotar essas luzes permite guardar o aprendizado para o dia a dia. Escrever no papel ainda impede a tentação de desbloquear o celular para tomar notas.
 
 ### 4. Um livro de espiritualidade clássica
 Se você sentir dificuldade para meditar por conta própria, tenha em mãos um livro de meditações sólidas, como *Imitação de Cristo*, escritos de santos ou reflexões sobre o Evangelho. Leia apenas um parágrafo por vez e deixe as ideias assentarem no coração.
