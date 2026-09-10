@@ -1,6 +1,6 @@
 # Criar organismo ProductGrid
 
-**Status:** todo
+**Status:** done
 
 ## What to do
 
@@ -9,3 +9,7 @@ Criar o organismo `portal/app/components/organisms/ProductGrid.vue` recebendo a 
 ## Original line
 
 > - [ ] Criar organismo `ProductGrid.vue` em `portal/app/components/organisms/ProductGrid.vue` com layout responsivo mobile-first e estado vazio amigável. ✔ Grid fluido (1 col mobile, 2 cols tablet, 3 cols desktop) sem estouro horizontal.
+
+## Summary
+
+Criado o organismo `portal/app/components/organisms/ProductGrid.vue`, espelhando o `PostGrid.vue`: recebe `products: Product[]` (interface reusada de `ProductCard.vue`) e renderiza grade fluida 1/2/3 colunas (`--bp-md` 48rem, `--bp-lg` 64rem) sem overflow horizontal. Estado vazio com copy PT-BR amigável e, quando `hasFilters`, um `BaseButton` "Limpar filtros" apontando para `clearTo` (padrão `/loja`). Validado com `npx nuxi prepare` e `eslint` (limpos).

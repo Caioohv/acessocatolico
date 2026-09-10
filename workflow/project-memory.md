@@ -9,6 +9,11 @@
 
 ## Entries
 
+### 2026-09-09 — ProductGrid (step 47): estado vazio mora no organismo (diferente do blog)
+**Context:** Organismo `ProductGrid.vue` da lojinha, espelhando o `PostGrid.vue` do blog.
+**Gotcha:** No blog, o `PostGrid` só renderiza a grade e o estado vazio fica na página (`blog/index.vue`). Aqui optei por embutir o estado vazio DENTRO do `ProductGrid` (`v-if` produtos / `v-else` mensagem), como o step 47 pediu. Contrato: `products: Product[]` (interface reusada de `ProductCard.vue`), `hasFilters?: boolean` (ajusta a mensagem e mostra/oculta o botão "Limpar filtros") e `clearTo?: string` (padrão `/loja`). Implicação para o step 48 (página `/loja`): NÃO duplicar o bloco de estado vazio na página — basta passar `:has-filters` (true quando `categoria`/`busca` ativos) e, se quiser, `clear-to`. Grade fluida idêntica ao PostGrid: 1 col, 2 cols em `48rem`, 3 cols em `64rem`.
+**Resolution:** Validado com `npx nuxi prepare` + `eslint` (limpos). Sem typechecker no projeto.
+
 ### 2026-09-09 — ProductCategoryFilter (step 46): mesmo padrão do blog, mas scroll horizontal e rota `/loja`
 **Context:** Molécula de chips de filtro da lojinha, espelhando o `CategoryFilter.vue` do blog.
 **Gotcha:** (1) O endpoint `GET /api/products/categories` devolve `{ data: [{ name, count }] }` (objetos), diferente do blog que passa `string[]`. Fiz a prop aceitar `ProductCategory[]` ({ name, count? }) e renderizar só `name` — a página `/loja` (step 48) pode repassar `data` direto sem `.map`. Exportei a interface do próprio SFC (como `Product` no `ProductCard`). (2) O param de query é `?categoria=` e o endpoint de produtos também aceita `?busca=` — preservo `busca` no `linkTo()` igual ao blog. A rota destino é `/loja` (a página ainda não existe até o step 48). (3) O átomo `BaseTag` já dá `aria-current="true"` + estado preenchido quando `active` e é link; nada a acrescentar no filtro. (4) Scroll horizontal no mobile: `flex-wrap:nowrap; overflow-x:auto; scroll-behavior:smooth` + `flex:0 0 auto` nos itens; some com a scrollbar (`scrollbar-width:none` / `::-webkit-scrollbar{display:none}`) e ganha `padding-bottom:var(--space-1)` pra não cortar o box-shadow de foco. A partir de `48rem` volta a `flex-wrap:wrap`.
