@@ -45,3 +45,22 @@ model User {
 
   @@map("users")
 }
+
+// Métrica first-party do portal (pageview / clique em produto / leitura de artigo).
+// `type`: "pageview" | "product_click" | "article_read".
+// `targetId`: id do produto (product_click) ou slug do artigo (article_read); nulo em pageview.
+// Índices compostos servem as agregações do painel: (type, createdAt) para séries temporais
+// por tipo; (type, targetId) para ranking por alvo (produtos/artigos mais acessados).
+model AnalyticsEvent {
+  id        String   @id @default(cuid())
+  type      String
+  path      String
+  targetId  String?
+  sessionId String
+  referrer  String?
+  createdAt DateTime @default(now())
+
+  @@index([type, createdAt])
+  @@index([type, targetId])
+  @@map("analytics_events")
+}
