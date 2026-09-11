@@ -9,6 +9,13 @@
 
 ## Entries
 
+### 2026-09-11 — Serviço 'admin' no docker-compose (step 90): paridade com portal, guarda de memória e NUXT_SESSION_PASSWORD
+**Context:** Adicionar o serviço `admin` ao `docker-compose.yml` da raiz usando `admin/Dockerfile` (`context: .`), container `acessocatolico_admin`, conectado à rede externa `caddy_net`, aguardando a conclusão com sucesso do serviço `migrate`, e com a guarda de memória espelhada do portal.
+**Gotcha:** (1) `admin` precisa de `NUXT_SESSION_PASSWORD: ${NUXT_SESSION_PASSWORD:-}` além de `DATABASE_URL: ${DATABASE_URL:-}` para autenticação via `nuxt-auth-utils`. Com defaults vazios `${VAR:-}`, `docker compose config` valida sem erro mesmo sem arquivo `.env` preenchido.
+(2) Assim como o `app` (portal), o `admin` recebe a guarda de memória (`mem_limit: 768m` + `NODE_OPTIONS: --max-old-space-size=512`) e `restart: unless-stopped` para reiniciar limpo em caso de vazamento ou OOM.
+(3) Dependência `depends_on: migrate: condition: service_completed_successfully` garante que as migrações sejam executadas com sucesso antes do painel administrativo iniciar.
+**Resolution:** Serviço `admin` adicionado ao `docker-compose.yml`. Validado com `docker compose config` (exit 0) e `docker compose build admin` (exit 0).
+
 ### 2026-09-10 — Serviço one-shot 'migrate' no docker-compose (step 89): runner único de migrations e single source of truth
 **Context:** Criar o serviço `migrate` em `docker-compose.yml` e a imagem `db/Dockerfile` para aplicar migrations com `prisma migrate deploy` a partir do pacote `@acesso/db`, garantindo que os apps (`app` e futuramente `admin`) subam somente após a conclusão com sucesso das migrações (`depends_on` com `condition: service_completed_successfully`).
 **Gotcha:** (1) O serviço `migrate` precisa rodar a partir do pacote `db/` onde reside `prisma.config.ts` (`npm run migrate:deploy` -> `prisma migrate deploy`), utilizando `restart: "no"` por ser um container one-shot que deve finalizar com exit code 0.

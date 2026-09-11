@@ -1,6 +1,6 @@
 # Add the `admin` service to compose
 
-**Status:** todo
+**Status:** done
 
 ## What to do
 
@@ -13,3 +13,7 @@ Add the `admin` service to the root `docker-compose.yml`: `container_name: acess
 ## Original line
 
 > Adicionar o serviço `admin` ao `docker-compose.yml` (`container_name: acessocatolico_admin`, rede `caddy_net`, `restart: unless-stopped`, guarda de memória `mem_limit` + `NODE_OPTIONS=--max-old-space-size`, `NUXT_SESSION_PASSWORD`, `DATABASE_URL`). ✔ `docker compose config` valida e o serviço sobe como `acessocatolico_admin:3000` na `caddy_net`.
+
+## Summary
+
+Adicionado o serviço `admin` ao `docker-compose.yml` com build multi-stage (`admin/Dockerfile`), container `acessocatolico_admin`, rede `caddy_net`, dependência do `migrate` concluído e guarda de memória (`mem_limit: 768m`, `NODE_OPTIONS: --max-old-space-size=512`). Validado com `docker compose config` e `docker compose build admin` (exit 0).

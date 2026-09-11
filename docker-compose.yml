@@ -1,7 +1,9 @@
-# Acesso Católico — portal público (Nuxt 4).
+# Acesso Católico — portal público e painel admin (Nuxt 4).
 #
-# Padrão da VPS (espelho em ../../../vps): o app entra na rede externa `caddy_net`
-# com um container_name fixo, e o Caddy faz `reverse_proxy acessocatolico_app:3000`.
+# Padrão da VPS (espelho em ../../../vps): os apps entram na rede externa `caddy_net`
+# com container_names fixos, e o Caddy faz reverse_proxy:
+#   - acessocatolico.com.br       -> acessocatolico_app:3000
+#   - admin.acessocatolico.com.br -> acessocatolico_admin:3000
 #
 # O banco NÃO sobe aqui: a lojinha usa o Postgres GLOBAL da VPS (container
 # `global_psql`, em infra/dbs/global_psql, na rede caddy_net). A conexão vem por
@@ -58,6 +60,31 @@ services:
       # String de conexão do Prisma → Postgres global
       DATABASE_URL: ${DATABASE_URL:-}
 
+    networks:
+      - caddy_net
+
+  admin:
+    build:
+      context: .
+      dockerfile: admin/Dockerfile
+    image: acessocatolico_admin
+    container_name: acessocatolico_admin
+    restart: unless-stopped
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    # Guarda de memória (defesa em profundidade — espelha o container do portal).
+    mem_limit: 768m
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      NODE_ENV: production
+      NITRO_HOST: 0.0.0.0
+      NITRO_PORT: 3000
+      NODE_OPTIONS: --max-old-space-size=512
+      DATABASE_URL: ${DATABASE_URL:-}
+      NUXT_SESSION_PASSWORD: ${NUXT_SESSION_PASSWORD:-}
     networks:
       - caddy_net
 
