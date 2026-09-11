@@ -67,10 +67,10 @@ export default defineEventHandler(async (event) => {
 
     const productRows = await prisma.product.findMany({
       where: { id: { in: productIds } },
-      select: { id: true, name: true },
+      select: { id: true, title: true },
     })
 
-    const productMap = new Map(productRows.map(p => [p.id, p.name]))
+    const productMap = new Map(productRows.map(p => [p.id, p.title]))
 
     // ── 3. Merge click counts with product titles ─────────────────────────────
     const products = clickGroups.map(group => ({
