@@ -9,6 +9,13 @@
 
 ## Entries
 
+### 2026-09-10 — Serviço one-shot 'migrate' no docker-compose (step 89): runner único de migrations e single source of truth
+**Context:** Criar o serviço `migrate` em `docker-compose.yml` e a imagem `db/Dockerfile` para aplicar migrations com `prisma migrate deploy` a partir do pacote `@acesso/db`, garantindo que os apps (`app` e futuramente `admin`) subam somente após a conclusão com sucesso das migrações (`depends_on` com `condition: service_completed_successfully`).
+**Gotcha:** (1) O serviço `migrate` precisa rodar a partir do pacote `db/` onde reside `prisma.config.ts` (`npm run migrate:deploy` -> `prisma migrate deploy`), utilizando `restart: "no"` por ser um container one-shot que deve finalizar com exit code 0.
+(2) `db/Dockerfile` foi configurado como multi-stage espelhando `portal` e `admin`: builder roda `npm ci` a partir do lockfile do monorepo e `prisma generate`, e o runner copia `/app/node_modules`, `/app/db`, manifests e o script `db/docker-entrypoint.sh`.
+(3) No `docker-compose.yml`, `migrate` se conecta à rede externa `caddy_net` para alcançar o banco `global_psql`. `DATABASE_URL: ${DATABASE_URL:-}` permite validação limpa via `docker compose config` mesmo sem o arquivo `.env` populado em ambientes locais/CI.
+**Resolution:** Criados `db/Dockerfile` e `db/docker-entrypoint.sh`; atualizado `docker-compose.yml` com o serviço `migrate` e `depends_on: migrate: condition: service_completed_successfully` no serviço `app`. Validado com `docker compose config` (exit 0) e `docker compose build migrate` (exit 0).
+
 ### 2026-09-10 — Build Docker do admin (step 88): multi-stage build da raiz e export do runtime 'Prisma' em @acesso/db
 **Context:** Criar `admin/Dockerfile` e `admin/docker-entrypoint.sh` espelhando `portal/Dockerfile` (multi-stage em `node:24-slim`, com contexto na raiz do monorepo, `npm ci` unificado, `prisma generate` e `npm run -w admin build`).
 **Gotcha:** (1) Durante o build do admin Nuxt no builder (`npm run -w admin build`), o Rollup falhou com `MISSING_EXPORT: 'Prisma' is not exported by module '/app/db/src/index.ts'` ao compilar `admin/server/api/metrics/site.get.ts`. O handler faz queries SQL raw usando `Prisma.sql` (que é um valor runtime do `@prisma/client`), mas `db/src/index.ts` continha apenas `export type { Prisma } from '@prisma/client'`, exportando `Prisma` puramente como tipo e omitindo o binding em tempo de execução.
