@@ -1,6 +1,6 @@
 # Create the admin home with summary cards
 
-**Status:** todo
+**Status:** done
 
 ## What to do
 
@@ -13,3 +13,7 @@ The admin home shows the summary numbers and navigates to products and each dash
 ## Original line
 
 > Criar a home do admin com cards-resumo (totais do período) e atalhos para as seções. ✔ Home do admin mostra os números-resumo e navega para produtos e cada dashboard.
+
+## Summary
+
+Updated `admin/app/pages/index.vue` to fetch period metrics from `/api/metrics/site`, `/api/metrics/products`, `/api/metrics/articles`, and catalog data from `/api/products`, displaying summary metric cards and interactive navigation cards to each section.
