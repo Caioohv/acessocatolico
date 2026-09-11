@@ -1,4 +1,7 @@
-import { compare } from 'bcryptjs'
+// bcryptjs é CommonJS: o Nitro o externaliza e o named import quebra em runtime
+// ("Named export 'compare' not found"). Importa o default e desestrutura.
+import bcryptjs from 'bcryptjs'
+const { compare } = bcryptjs
 
 /**
  * POST /api/auth/login

@@ -29,7 +29,10 @@
  * de `db/prisma/seed.ts` e instancia seu próprio `PrismaClient`.
  */
 
-import { hash } from 'bcryptjs'
+// bcryptjs é CommonJS: no loader ESM (tsx) o named import falha
+// ("does not provide an export named 'hash'"). Importa o default e desestrutura.
+import bcryptjs from 'bcryptjs'
+const { hash } = bcryptjs
 import { PrismaClient } from '@prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
 
