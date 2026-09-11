@@ -640,7 +640,7 @@ function targetWithPeriod(path: string) {
 .admin-home__nav-card-footer {
   margin-top: auto;
   padding-top: var(--space-2);
-  border-top: var(--border-width) solid var(--border-subtle);
+  border-top: var(--border-width) solid var(--border);
 }
 
 .admin-home__nav-card-cta {
