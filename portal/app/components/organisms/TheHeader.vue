@@ -106,6 +106,7 @@ watch(() => route.fullPath, close)
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: var(--space-4);
   max-width: var(--container-portal);
   margin: 0 auto;
