@@ -41,17 +41,19 @@ export default defineEventHandler(async (event) => {
   try {
     // ── 1. Pageviews per day ──────────────────────────────────────────────────
     // Uses raw SQL because Prisma groupBy cannot group by a date expression.
-    // created_at is stored as TIMESTAMP(3); truncating to date in UTC keeps the
-    // result consistent regardless of the server timezone.
+    // "createdAt" is stored as TIMESTAMP(3); truncating to date in UTC keeps the
+    // result consistent regardless of the server timezone. Column names are
+    // camelCase in Postgres (Prisma does not snake_case them), so they MUST be
+    // double-quoted in raw SQL.
     const pageviewRows = await prisma.$queryRaw<PageviewRow[]>(
       Prisma.sql`
         SELECT
-          TO_CHAR(created_at AT TIME ZONE 'UTC', 'YYYY-MM-DD') AS date,
+          TO_CHAR("createdAt" AT TIME ZONE 'UTC', 'YYYY-MM-DD') AS date,
           COUNT(*) AS count
         FROM analytics_events
         WHERE type = 'pageview'
-          AND created_at >= ${from}
-        GROUP BY TO_CHAR(created_at AT TIME ZONE 'UTC', 'YYYY-MM-DD')
+          AND "createdAt" >= ${from}
+        GROUP BY TO_CHAR("createdAt" AT TIME ZONE 'UTC', 'YYYY-MM-DD')
         ORDER BY date ASC
       `,
     )
@@ -84,9 +86,9 @@ export default defineEventHandler(async (event) => {
     // article_read events without an explicit pageview.
     const uniqueSessionRows = await prisma.$queryRaw<UniqueSessionRow[]>(
       Prisma.sql`
-        SELECT COUNT(DISTINCT session_id) AS unique_sessions
+        SELECT COUNT(DISTINCT "sessionId") AS unique_sessions
         FROM analytics_events
-        WHERE created_at >= ${from}
+        WHERE "createdAt" >= ${from}
       `,
     )
     const uniqueSessions = Number(uniqueSessionRows[0]?.unique_sessions ?? 0)
