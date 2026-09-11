@@ -1,6 +1,6 @@
 # Create `GET /api/metrics/articles` in the admin
 
-**Status:** todo
+**Status:** done
 
 ## What to do
 
@@ -13,3 +13,7 @@ The endpoint returns articles ordered by number of reads.
 ## Original line
 
 > Criar `GET /api/metrics/articles` no admin: ranking de `article_read` por slug num período. ✔ Endpoint retorna os artigos ordenados por número de leituras.
+
+## Summary
+
+Created `admin/server/api/metrics/articles.get.ts` protected by session returning articles ranked by `article_read` count using Prisma groupBy with resilient fallback.
