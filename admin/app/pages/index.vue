@@ -12,9 +12,27 @@ useHead({ title: 'Painel Acesso Católico' })
 
     <nav class="admin-home__nav" aria-label="Seções do painel">
       <NuxtLink to="/produtos" class="admin-home__card">
-        <span class="admin-home__card-icon" aria-hidden="true">📦</span>
+        <span class="admin-home__card-badge">Catálogo</span>
         <span class="admin-home__card-label">Produtos</span>
         <span class="admin-home__card-desc">Gerencie os itens da lojinha de afiliados.</span>
+      </NuxtLink>
+
+      <NuxtLink to="/metricas/site" class="admin-home__card">
+        <span class="admin-home__card-badge admin-home__card-badge--metrics">Métricas</span>
+        <span class="admin-home__card-label">Acesso ao site</span>
+        <span class="admin-home__card-desc">Visualizações de página, caminhos mais visitados e visitantes únicos.</span>
+      </NuxtLink>
+
+      <NuxtLink to="/metricas/produtos" class="admin-home__card">
+        <span class="admin-home__card-badge admin-home__card-badge--metrics">Métricas</span>
+        <span class="admin-home__card-label">Produtos mais acessados</span>
+        <span class="admin-home__card-desc">Ranking de cliques nos itens da lojinha.</span>
+      </NuxtLink>
+
+      <NuxtLink to="/metricas/artigos" class="admin-home__card">
+        <span class="admin-home__card-badge admin-home__card-badge--metrics">Métricas</span>
+        <span class="admin-home__card-label">Leitura de artigos</span>
+        <span class="admin-home__card-desc">Ranking de leituras dos artigos do blog.</span>
       </NuxtLink>
     </nav>
   </main>
@@ -22,7 +40,7 @@ useHead({ title: 'Painel Acesso Católico' })
 
 <style scoped>
 .admin-home {
-  max-width: var(--container-narrow);
+  max-width: var(--container-panel);
   margin-inline: auto;
   padding-inline: var(--space-4);
   padding-block: var(--space-8);
@@ -71,6 +89,12 @@ useHead({ title: 'Painel Acesso Católico' })
   }
 }
 
+@media (min-width: 64rem) {
+  .admin-home__nav {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 .admin-home__card {
   display: flex;
   flex-direction: column;
@@ -96,9 +120,22 @@ useHead({ title: 'Painel Acesso Católico' })
   box-shadow: var(--shadow-focus);
 }
 
-.admin-home__card-icon {
-  font-size: 1.5rem;
-  line-height: 1;
+.admin-home__card-badge {
+  display: inline-block;
+  align-self: flex-start;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  background: var(--surface-sunken);
+  color: var(--text-muted);
+}
+
+.admin-home__card-badge--metrics {
+  background: var(--brand-tint-quiet);
+  color: var(--brand);
 }
 
 .admin-home__card-label {

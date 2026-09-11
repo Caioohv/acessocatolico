@@ -95,6 +95,9 @@ async function confirmDelete() {
   <main class="produto-list">
     <header class="produto-list__header">
       <div>
+        <NuxtLink to="/" class="produto-list__back-link">
+          Voltar ao painel
+        </NuxtLink>
         <span class="produto-list__eyebrow">Gestão</span>
         <h1 class="produto-list__title">Produtos</h1>
       </div>
@@ -291,6 +294,29 @@ async function confirmDelete() {
   justify-content: space-between;
   gap: var(--space-4);
   margin-bottom: var(--space-8);
+}
+
+.produto-list__back-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-muted);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-2);
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+
+.produto-list__back-link:hover {
+  color: var(--brand);
+}
+
+.produto-list__back-link:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
 }
 
 .produto-list__eyebrow {
