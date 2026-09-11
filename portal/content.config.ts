@@ -41,6 +41,28 @@ export default defineContentConfig({
         coverAlt: z.string().optional(),
         /** Slug canônico do post; sobrepõe o derivado do arquivo quando presente. */
         slug: z.string().optional(),
+        /**
+         * Marca o post como destaque principal da home do blog (Hero).
+         * Havendo mais de um `featured`, o índice usa o mais recente.
+         */
+        featured: z.boolean().default(false),
+        /**
+         * Vincula o post a uma Trilha de Formação (série com ordem pedagógica).
+         * Posts com o mesmo `track.id` formam uma trilha, exibida em ordem
+         * crescente de `track.order`. Ausente = post fora de qualquer trilha.
+         */
+        track: z
+          .object({
+            /** Identificador estável da trilha (ex.: "iniciando-na-oracao"). */
+            id: z.string(),
+            /** Nome exibível da trilha (ex.: "Iniciando na Vida de Oração"). */
+            name: z.string(),
+            /** Posição do post dentro da trilha (1-based). */
+            order: z.number().int().positive(),
+            /** Total de etapas da trilha, para o rótulo "Etapa 01/05". */
+            totalSteps: z.number().int().positive().optional(),
+          })
+          .optional(),
       }),
     }),
   },

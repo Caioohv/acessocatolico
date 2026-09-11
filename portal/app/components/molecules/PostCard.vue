@@ -23,15 +23,35 @@ export interface Post {
   cover?: string
   /** Texto alternativo da capa (acessibilidade). */
   coverAlt?: string
+  /** Destaque principal do blog (Hero). */
+  featured?: boolean
+  /** Vínculo com uma Trilha de Formação, quando o post pertence a uma série. */
+  track?: {
+    id: string
+    name: string
+    order: number
+    totalSteps?: number
+  }
 }
 
 interface Props {
   /** Post a ser renderizado. */
   post: Post
+  /**
+   * Posição do post numa Trilha de Formação (1-based). Presente exibe o
+   * `TrackBadge` no topo do corpo do cartão (modo trilha).
+   */
+  step?: number
+  /** Total de etapas da trilha, para o rótulo "Etapa 01/05". */
+  totalSteps?: number
 }
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  step: undefined,
+  totalSteps: undefined,
+})
 
 const hasCover = computed(() => Boolean(props.post.cover))
+const hasStep = computed(() => typeof props.step === 'number')
 </script>
 
 <template>
@@ -49,6 +69,8 @@ const hasCover = computed(() => Boolean(props.post.cover))
     </NuxtLink>
 
     <div class="post-card__body">
+      <TrackBadge v-if="hasStep" :order="step!" :total-steps="totalSteps" />
+
       <PostMeta :category="post.category" :date="post.date" />
 
       <BaseHeading :level="3" class="post-card__title">

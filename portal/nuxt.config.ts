@@ -25,6 +25,14 @@ export default defineNuxtConfig({
   app: {
     head: {
       viewport: 'width=device-width, initial-scale=1',
+      // Favicon = mesma marca do nav (logo-mark.svg). SVG para navegadores
+      // modernos; PNG 32px e .ico (16/32/48) como fallback legado. Todos
+      // gerados a partir do mesmo ícone.
+      link: [
+        { rel: 'icon', type: 'image/svg+xml', href: '/assets/logo-mark.svg' },
+        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32.png' },
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      ],
     },
   },
   compatibilityDate: '2024-04-03',
