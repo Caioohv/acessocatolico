@@ -9,6 +9,13 @@
 
 ## Entries
 
+### 2026-09-11 — Validação final local de toda a stack Docker (step 93): compose, build e ciclo E2E
+**Context:** Validação completa e final de toda a stack em containers locais (`docker compose config`, `docker compose build`, e execução end-to-end com container Postgres na rede `caddy_net`).
+**Gotcha:** (1) A ordem de dependências do compose (`depends_on: migrate: condition: service_completed_successfully`) orquestra com precisão o ciclo de vida: o container `migrate` aplica todas as migrações via `prisma migrate deploy` e sai com exit code 0 antes de `acessocatolico_app` e `acessocatolico_admin` iniciarem.
+(2) Na execução das migrações do Prisma no `migrate`, o log emitiu aviso sobre ausência do binário `openssl` no container (`defaulting to openssl-1.1.x`), mas a migração (`20260910180000_init`) foi aplicada com sucesso absoluto.
+(3) Ambos os apps sobem e respondem perfeitamente na porta 3000: `acessocatolico_app` serve `/` (HTTP 200 SSR completo com HTML e hydration payload) e `/api/products` (HTTP 200 `{"data":[]}` consultando o banco recém-migrado); `acessocatolico_admin` serve `/` (HTTP 302 redirecionando para login) e `/login` (HTTP 200 com a tela SSR de autenticação).
+**Resolution:** Build e execução E2E validados com sucesso; containers de teste limpos sem deixar resíduos no host.
+
 ### 2026-09-11 — Atualização de .env.example e up.sh (step 91): validação de variáveis e orquestração de serviços
 **Context:** Atualizar `.env.example` com instruções de `DATABASE_URL` e `NUXT_SESSION_PASSWORD` (mínimo 32 caracteres) e o script `up.sh` para validar variáveis de ambiente, criar `caddy_net` de forma idempotente, e exibir status e rotas do proxy reverso para todos os três serviços (`migrate`, `portal`, `admin`).
 **Gotcha:** (1) `up.sh` precisa alertar e falhar caso `.env` esteja ausente e `DATABASE_URL` não esteja definida no ambiente, evitando subidas com falha no `migrate` ou `admin`. Se `DATABASE_URL` já existir no ambiente atual (ex: CI ou export direto no shell), o script emite aviso e prossegue normalmente.
