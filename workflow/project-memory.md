@@ -9,6 +9,13 @@
 
 ## Entries
 
+### 2026-09-10 — Build Docker do admin (step 88): multi-stage build da raiz e export do runtime 'Prisma' em @acesso/db
+**Context:** Criar `admin/Dockerfile` e `admin/docker-entrypoint.sh` espelhando `portal/Dockerfile` (multi-stage em `node:24-slim`, com contexto na raiz do monorepo, `npm ci` unificado, `prisma generate` e `npm run -w admin build`).
+**Gotcha:** (1) Durante o build do admin Nuxt no builder (`npm run -w admin build`), o Rollup falhou com `MISSING_EXPORT: 'Prisma' is not exported by module '/app/db/src/index.ts'` ao compilar `admin/server/api/metrics/site.get.ts`. O handler faz queries SQL raw usando `Prisma.sql` (que é um valor runtime do `@prisma/client`), mas `db/src/index.ts` continha apenas `export type { Prisma } from '@prisma/client'`, exportando `Prisma` puramente como tipo e omitindo o binding em tempo de execução.
+(2) Ao alterar `db/src/index.ts` e os re-exports de `server/utils/prisma.ts` para `export { prisma, Prisma }`, o Rollup inclui o namespace runtime `Prisma` no bundle e o build de ambos `admin` e `portal` completa com sucesso.
+(3) Imagem do admin roda na porta 3000 (`NITRO_HOST=0.0.0.0`, `NITRO_PORT=3000`), servindo os assets compilados em `.output/` com suporte a SSR e autenticação.
+**Resolution:** `db/src/index.ts`, `admin/server/utils/prisma.ts` e `portal/server/utils/prisma.ts` atualizados para exportar `Prisma` como valor e tipo; `admin/Dockerfile` e `admin/docker-entrypoint.sh` criados; imagem construída com sucesso (`docker build -f admin/Dockerfile -t acessocatolico_admin .`) e validada com container de teste respondendo HTTP 302/200 em `/login`.
+
 ### 2026-09-10 — Build Docker do portal a partir da raiz do monorepo (step 87): dep specifier '*', lockfile único e hoisting
 **Context:** Ajustar `portal/Dockerfile` e `docker-compose.yml` para build a partir da raiz do repositório (`context: .`), integrando o pacote compartilhado `db/` (`@acesso/db`), `npm ci` do lockfile único e `prisma generate`.
 **Gotcha:** (1) Protocolo `workspace:*` causa `npm error Unsupported URL Type "workspace:": workspace:*` (código `EUNSUPPORTEDPROTOCOL`) no npm (é sintaxe do pnpm/yarn, não suportada pelo npm CLI). O formato padrão de dependência interna no npm workspaces é `"*"` (ou versão exata). Alterado `"@acesso/db": "*"` em `portal/package.json` e `admin/package.json`.

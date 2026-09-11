@@ -9,5 +9,4 @@
  * `DATABASE_URL` — o erro só surge na primeira query, dentro do try/catch dos
  * endpoints, que devolvem o fallback gracioso. Ver `db/src/index.ts`.
  */
-export { prisma } from '@acesso/db'
-export type { Prisma } from '@acesso/db'
+export { prisma, Prisma } from '@acesso/db'

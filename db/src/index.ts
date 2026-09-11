@@ -1,8 +1,7 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, Prisma } from '@prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
 
-export { PrismaClient }
-export type { Prisma } from '@prisma/client'
+export { PrismaClient, Prisma }
 
 /**
  * Singleton do Prisma Client — fonte única do acesso ao banco (@acesso/db),
