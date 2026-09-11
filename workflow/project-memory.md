@@ -9,6 +9,16 @@
 
 ## Entries
 
+### 2026-09-11 — Lojinha: duas fontes (pública / organizacional) + rota não divulgada
+**Context:** Produto passou a ter `showPublic` e `showOrg` (`@default(true)`) — migration `20260911120000_product_store_audiences` (colunas com DEFAULT true, então produtos existentes entram nas duas lojas). Loja pública em `/loja` (`showPublic`); loja organizacional em `/loja/organizacional` (`showOrg`, atacado/itens para quem organiza eventos).
+**Gotcha:** (1) O portal público **não tem login** (non-goal da Fase 1), então a loja organizacional é uma **rota não divulgada, sem trava** — decisão deliberada do dono; o link é compartilhado direto (WhatsApp). A página tem `robots: noindex, nofollow`. Não adicionar link para ela em menus/navegação. Quando houver auth (Fase 2+), trocar por gate real. (2) A separação é por query param `?fonte=organizacional` em `GET /api/products` e `/api/products/categories` (default = pública). Como não há trava, qualquer um pode chamar `?fonte=organizacional` — aceitável porque os produtos não são secretos, só curados. (3) Na criação via admin, o default de UI é **pública marcada, organizacional desmarcada** (o `@default(true)` do banco serve só ao backfill da migration). (4) `ProductCategoryFilter` ganhou prop `basePath` para os chips apontarem para `/loja` ou `/loja/organizacional`.
+**Resolution:** Schema + migration em `@acesso/db`; endpoints do portal parametrizados; página `/loja/organizacional`; `ProductForm`/APIs admin com os dois flags; listagem admin mostra badges de fonte.
+
+### 2026-09-11 — Admin: botão "Ir ao site" via runtimeConfig.public.siteUrl
+**Context:** `AdminHeader` ganhou link "Ir ao site" (nova aba) para a home do portal.
+**Gotcha:** URL vem de `runtimeConfig.public.siteUrl` (default `https://acessocatolico.com.br`), sobrescrevível por `NUXT_PUBLIC_SITE_URL` (já no `admin/.env.example`, root `.env.example` e no serviço `admin` do `docker-compose.yml`).
+**Resolution:** `admin/nuxt.config.ts` + `AdminHeader.vue` + envs/compose atualizados.
+
 ### 2026-09-11 — Validação final local de toda a stack Docker (step 93): compose, build e ciclo E2E
 **Context:** Validação completa e final de toda a stack em containers locais (`docker compose config`, `docker compose build`, e execução end-to-end com container Postgres na rede `caddy_net`).
 **Gotcha:** (1) A ordem de dependências do compose (`depends_on: migrate: condition: service_completed_successfully`) orquestra com precisão o ciclo de vida: o container `migrate` aplica todas as migrações via `prisma migrate deploy` e sai com exit code 0 antes de `acessocatolico_app` e `acessocatolico_admin` iniciarem.

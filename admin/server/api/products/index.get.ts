@@ -23,6 +23,8 @@ const adminProductSelect = {
   affiliateUrl: true,
   imageUrl: true,
   active: true,
+  showPublic: true,
+  showOrg: true,
   createdAt: true,
   updatedAt: true,
 } satisfies Prisma.ProductSelect

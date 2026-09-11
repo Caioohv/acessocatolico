@@ -26,6 +26,8 @@ interface ProductFields {
   affiliateUrl: string
   imageUrl: string
   active: boolean
+  showPublic: boolean
+  showOrg: boolean
 }
 
 const props = defineProps<{
@@ -48,6 +50,9 @@ const category = ref(props.initial?.category ?? '')
 const affiliateUrl = ref(props.initial?.affiliateUrl ?? '')
 const imageUrl = ref(props.initial?.imageUrl ?? '')
 const active = ref(props.initial?.active ?? true)
+// Fontes da loja. Ao criar (sem `initial`): pública marcada, organizacional não.
+const showPublic = ref(props.initial?.showPublic ?? true)
+const showOrg = ref(props.initial?.showOrg ?? false)
 
 const loading = ref(false)
 const generalError = ref('')
@@ -67,6 +72,8 @@ async function onSubmit() {
     affiliateUrl: affiliateUrl.value.trim(),
     imageUrl: imageUrl.value.trim(),
     active: active.value,
+    showPublic: showPublic.value,
+    showOrg: showOrg.value,
   }
 
   try {
@@ -309,6 +316,43 @@ async function onSubmit() {
       </div>
     </div>
 
+    <!-- Store sources -->
+    <fieldset class="product-form__fieldset">
+      <legend class="product-form__legend">Fontes da loja</legend>
+      <p class="product-form__hint">
+        Escolha em quais lojas este produto aparece. A pública é para todos; a
+        organizacional é para quem organiza eventos (atacado e itens similares).
+      </p>
+
+      <div class="product-form__field product-form__field--inline">
+        <input
+          id="pf-show-public"
+          v-model="showPublic"
+          type="checkbox"
+          name="showPublic"
+          class="product-form__checkbox"
+          :disabled="loading"
+        >
+        <label for="pf-show-public" class="product-form__label product-form__label--inline">
+          Loja pública
+        </label>
+      </div>
+
+      <div class="product-form__field product-form__field--inline">
+        <input
+          id="pf-show-org"
+          v-model="showOrg"
+          type="checkbox"
+          name="showOrg"
+          class="product-form__checkbox"
+          :disabled="loading"
+        >
+        <label for="pf-show-org" class="product-form__label product-form__label--inline">
+          Loja organizacional
+        </label>
+      </div>
+    </fieldset>
+
     <!-- Active toggle -->
     <div class="product-form__field product-form__field--inline">
       <input
@@ -487,6 +531,33 @@ async function onSubmit() {
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+/* ── Fieldset de fontes ───────────────────────────────────────────────────── */
+.product-form__fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.product-form__legend {
+  padding-inline: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text-strong);
+}
+
+.product-form__hint {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  line-height: var(--leading-normal);
 }
 
 /* ── Checkbox ─────────────────────────────────────────────────────────────── */

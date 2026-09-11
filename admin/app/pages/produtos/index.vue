@@ -9,6 +9,8 @@ interface AdminProduct {
   affiliateUrl: string | null
   imageUrl: string | null
   active: boolean
+  showPublic: boolean
+  showOrg: boolean
   createdAt: string
   updatedAt: string
 }
@@ -150,6 +152,7 @@ async function confirmDelete() {
             <th scope="col" class="produto-list__th produto-list__th--title">Título</th>
             <th scope="col" class="produto-list__th produto-list__th--category">Categoria</th>
             <th scope="col" class="produto-list__th produto-list__th--price">Preço ref.</th>
+            <th scope="col" class="produto-list__th produto-list__th--sources">Fontes</th>
             <th scope="col" class="produto-list__th produto-list__th--status">Status</th>
             <th scope="col" class="produto-list__th produto-list__th--actions">
               <span class="sr-only">Ações</span>
@@ -170,6 +173,28 @@ async function confirmDelete() {
             </td>
             <td class="produto-list__td produto-list__td--price">
               {{ formatPrice(product.priceRef) }}
+            </td>
+            <td class="produto-list__td">
+              <div class="produto-list__sources">
+                <span
+                  v-if="product.showPublic"
+                  class="produto-list__source produto-list__source--public"
+                >
+                  Pública
+                </span>
+                <span
+                  v-if="product.showOrg"
+                  class="produto-list__source produto-list__source--org"
+                >
+                  Org
+                </span>
+                <span
+                  v-if="!product.showPublic && !product.showOrg"
+                  class="produto-list__source produto-list__source--none"
+                >
+                  Nenhuma
+                </span>
+              </div>
             </td>
             <td class="produto-list__td">
               <span
@@ -498,6 +523,38 @@ async function confirmDelete() {
 }
 
 .produto-list__badge--inactive {
+  background: var(--surface-sunken);
+  color: var(--text-muted);
+}
+
+/* ---- badges de fonte (loja) ---- */
+.produto-list__sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.produto-list__source {
+  display: inline-block;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.produto-list__source--public {
+  background: var(--info-100);
+  color: var(--info-600);
+}
+
+.produto-list__source--org {
+  background: var(--brand-tint);
+  color: var(--brand-strong);
+}
+
+.produto-list__source--none {
   background: var(--surface-sunken);
   color: var(--text-muted);
 }

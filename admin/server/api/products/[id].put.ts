@@ -11,6 +11,8 @@
  *   - affiliateUrl: string
  *   - imageUrl: string
  *   - active: boolean
+ *   - showPublic: boolean
+ *   - showOrg: boolean
  */
 export default defineEventHandler(async (event) => {
   await requireUserSession(event)
@@ -47,6 +49,12 @@ export default defineEventHandler(async (event) => {
   if (typeof body?.active !== 'boolean') {
     fields.active = 'O campo ativo deve ser verdadeiro ou falso.'
   }
+  if (typeof body?.showPublic !== 'boolean') {
+    fields.showPublic = 'O campo loja pública deve ser verdadeiro ou falso.'
+  }
+  if (typeof body?.showOrg !== 'boolean') {
+    fields.showOrg = 'O campo loja organizacional deve ser verdadeiro ou falso.'
+  }
 
   if (Object.keys(fields).length > 0) {
     throw createError({
@@ -72,6 +80,8 @@ export default defineEventHandler(async (event) => {
         affiliateUrl,
         imageUrl,
         active: body.active as boolean,
+        showPublic: body.showPublic as boolean,
+        showOrg: body.showOrg as boolean,
       },
     })
 

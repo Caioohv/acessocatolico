@@ -8,6 +8,9 @@
  */
 const { user, fetch: refreshSession } = useUserSession()
 
+// URL do portal público (definida em runtimeConfig; env NUXT_PUBLIC_SITE_URL).
+const siteUrl = useRuntimeConfig().public.siteUrl
+
 const route = useRoute()
 const isOpen = ref(false)
 const loggingOut = ref(false)
@@ -133,6 +136,17 @@ async function onLogout() {
         </ul>
 
         <div class="admin-header__account">
+          <a
+            :href="siteUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="admin-header__site-link"
+          >
+            <svg class="admin-header__site-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M11.5 4.5h4v4M15.5 4.5 9 11M8 4.5H5.5a1.5 1.5 0 0 0-1.5 1.5v8.5a1.5 1.5 0 0 0 1.5 1.5H14a1.5 1.5 0 0 0 1.5-1.5V12" />
+            </svg>
+            <span>Ir ao site</span>
+          </a>
           <span class="admin-header__user" :title="userLabel">
             <svg class="admin-header__user-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
               <circle cx="10" cy="6.5" r="3.2" />
@@ -326,6 +340,38 @@ async function onLogout() {
   align-items: center;
   gap: var(--space-3);
   flex-wrap: wrap;
+}
+
+.admin-header__site-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 40px;
+  padding-inline: var(--space-3);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-body);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  transition: color var(--dur-fast) var(--ease-standard),
+              background-color var(--dur-fast) var(--ease-standard);
+}
+
+.admin-header__site-link:hover {
+  color: var(--brand);
+  background: var(--brand-tint-quiet);
+}
+
+.admin-header__site-link:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+.admin-header__site-icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
 }
 
 .admin-header__user {

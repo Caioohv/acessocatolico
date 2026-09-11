@@ -23,12 +23,20 @@ model Product {
   affiliateUrl String
   imageUrl    String
   active      Boolean  @default(true)
+  // Fontes da lojinha: um produto pode aparecer na loja pública (todos), na loja
+  // organizacional (quem organiza um evento — atacado e similares) ou em ambas.
+  // Default `true` em ambos serve à migration (produtos existentes ficam nas duas);
+  // na interface de criação, apenas `showPublic` já vem marcado por padrão.
+  showPublic  Boolean  @default(true)
+  showOrg     Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   @@index([active])
   @@index([category])
   @@index([active, category])
+  @@index([active, showPublic])
+  @@index([active, showOrg])
   @@map("produtos")
 }
 
