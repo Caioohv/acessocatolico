@@ -5,12 +5,30 @@
  * markdown com `<ContentRenderer>`. O cabeçalho reaproveita `BaseHeading`
  * (título) e `PostMeta` (categoria + data); a capa usa `NuxtImg`. Um post
  * inexistente devolve 404. Só tokens de design.
+ *
+ * Tracking: dispara `article_read` (via POST /api/track) uma vez por visualização,
+ * no lado do cliente (onMounted), de forma não-bloqueante.
  */
 const route = useRoute()
 
 const { data: post } = await useAsyncData(`blog-${route.path}`, () =>
   queryCollection('blog').path(route.path).first(),
 )
+
+onMounted(() => {
+  if (!post.value?.slug) return
+  $fetch('/api/track', {
+    method: 'POST',
+    body: {
+      type: 'article_read',
+      path: route.path,
+      targetId: post.value.slug,
+      referrer: document.referrer || undefined,
+    },
+  }).catch(() => {
+    // Silently swallow errors — analytics nunca deve quebrar a página.
+  })
+})
 
 if (!post.value) {
   throw createError({
