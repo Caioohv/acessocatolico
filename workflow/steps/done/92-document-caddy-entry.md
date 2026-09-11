@@ -1,6 +1,6 @@
 # Document the VPS Caddy entry for the admin
 
-**Status:** todo
+**Status:** done
 
 ## What to do
 
@@ -13,3 +13,7 @@ The proxy instruction is documented, consistent with the VPS `CLAUDE.md` pattern
 ## Original line
 
 > Documentar a entrada do Caddy da VPS (`admin.acessocatolico.com.br` → `reverse_proxy acessocatolico_admin:3000`) no README do repo e na decisão de banco/infra. ✔ Instrução de proxy documentada, coerente com o padrão do `CLAUDE.md` da VPS.
+
+## Summary
+
+Documentadas as configurações do proxy reverso Caddy da VPS para o portal público (`acessocatolico.com.br` → `acessocatolico_app:3000`) e para o painel admin (`admin.acessocatolico.com.br` → `acessocatolico_admin:3000`) no root `README.md` e em `docs/decisoes/banco-monorepo.md`.
