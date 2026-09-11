@@ -58,6 +58,16 @@ const loading = ref(false)
 const generalError = ref('')
 const fieldErrors = ref<Record<string, string>>({})
 
+// ── Categorias existentes ───────────────────────────────────────────────────────
+// Carrega as categorias já cadastradas para oferecer autocomplete (via <datalist>)
+// e evitar duplicações por variação de grafia. Continua permitindo digitar uma
+// categoria nova livremente. Falha de rede é silenciosa: o campo segue funcional.
+const { data: categoriesResponse } = await useFetch<{ data: { name: string, count: number }[] }>(
+  '/api/products/categories',
+  { default: () => ({ data: [] }) },
+)
+const categoryOptions = computed(() => categoriesResponse.value?.data ?? [])
+
 // ── Submit ────────────────────────────────────────────────────────────────────
 async function onSubmit() {
   generalError.value = ''
@@ -227,15 +237,26 @@ async function onSubmit() {
           v-model="category"
           type="text"
           name="category"
+          list="pf-category-options"
+          autocomplete="off"
           class="product-form__input"
           :class="{ 'product-form__input--error': fieldErrors.category }"
           placeholder="Ex.: Terços, Bíblias, Livros…"
           maxlength="100"
           :disabled="loading"
           :aria-invalid="Boolean(fieldErrors.category)"
-          :aria-describedby="fieldErrors.category ? 'pf-category-error' : undefined"
+          :aria-describedby="fieldErrors.category ? 'pf-category-error' : 'pf-category-hint'"
           required
         >
+        <datalist id="pf-category-options">
+          <option
+            v-for="option in categoryOptions"
+            :key="option.name"
+            :value="option.name"
+          >
+            {{ option.count }} {{ option.count === 1 ? 'produto' : 'produtos' }}
+          </option>
+        </datalist>
         <span
           v-if="fieldErrors.category"
           id="pf-category-error"
@@ -243,6 +264,13 @@ async function onSubmit() {
           role="alert"
         >
           {{ fieldErrors.category }}
+        </span>
+        <span
+          v-else
+          id="pf-category-hint"
+          class="product-form__field-hint"
+        >
+          Escolha uma existente ou digite uma nova.
         </span>
       </div>
     </div>
@@ -510,6 +538,13 @@ async function onSubmit() {
   font-family: var(--font-sans);
   font-size: var(--text-xs);
   color: var(--danger-600);
+}
+
+/* ── Dica de campo ────────────────────────────────────────────────────────── */
+.product-form__field-hint {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
 }
 
 /* ── Preview de imagem ────────────────────────────────────────────────────── */

@@ -38,65 +38,61 @@ useSeoMeta({
 </script>
 
 <template>
-  <AppContainer as="main" class="loja-index">
-    <header class="loja-index__header">
-      <BaseHeading :level="1">Loja organizacional</BaseHeading>
-      <p class="loja-index__lead">
-        Itens em quantidade para encontros, retiros e eventos. Uma seleção pensada
-        para quem organiza a vida da comunidade.
-      </p>
-    </header>
+  <main class="loja-page">
+    <StoreHero
+      title="Loja organizacional"
+      lead="Itens em quantidade para encontros, retiros e eventos. Uma seleção pensada para quem organiza a vida da comunidade."
+    >
+      <AffiliateNotice />
+    </StoreHero>
 
-    <AffiliateNotice class="loja-index__notice" />
+    <AppContainer as="section" class="loja-page__content">
+      <ProductCategoryFilter
+        v-if="categories.length"
+        :categories="categories"
+        :active="activeCategory ?? null"
+        base-path="/loja/organizacional"
+        class="loja-page__filter"
+      />
 
-    <ProductCategoryFilter
-      v-if="categories.length"
-      :categories="categories"
-      :active="activeCategory ?? null"
-      base-path="/loja/organizacional"
-      class="loja-index__filter"
-    />
+      <!-- Sem filtro: trilhos por categoria (um carrossel para cada). -->
+      <ProductCategoryRailsSection
+        v-if="!activeCategory && products.length"
+        :products="products"
+        :categories="categories"
+        base-path="/loja/organizacional"
+      />
 
-    <ProductGrid
-      :products="products"
-      :has-filters="Boolean(activeCategory)"
-      clear-to="/loja/organizacional"
-      class="loja-index__grid"
-    />
-  </AppContainer>
+      <!-- Com filtro: grade completa da categoria escolhida. -->
+      <ProductGrid
+        v-else
+        :products="products"
+        :has-filters="Boolean(activeCategory)"
+        clear-to="/loja/organizacional"
+      />
+    </AppContainer>
+  </main>
 </template>
 
 <style scoped>
-.loja-index {
-  padding-block: var(--space-10) var(--space-16);
+.loja-page {
+  padding-bottom: var(--space-16);
 }
 
-.loja-index__header {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  margin-bottom: var(--space-6);
+.loja-page__content {
+  padding-top: var(--space-8);
 }
 
-.loja-index__lead {
-  margin: 0;
-  max-width: var(--measure-prose);
-  color: var(--text-body);
-  font-family: var(--font-sans);
-  font-size: var(--text-lg);
-  line-height: var(--leading-normal);
-}
-
-.loja-index__notice {
-  margin-bottom: var(--space-6);
-}
-
-.loja-index__filter {
+.loja-page__filter {
   margin-bottom: var(--space-8);
 }
 
 @media (min-width: 48rem) {
-  .loja-index__filter {
+  .loja-page__content {
+    padding-top: var(--space-10);
+  }
+
+  .loja-page__filter {
     margin-bottom: var(--space-10);
   }
 }

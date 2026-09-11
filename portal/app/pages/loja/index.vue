@@ -2,14 +2,17 @@
 /**
  * /loja — página principal da lojinha de afiliados (Fase 1).
  * Lista os produtos ativos vindos do endpoint `GET /api/products`, dos mais
- * novos para os mais antigos, renderizando cada um com a molécula `ProductCard`
- * dentro do organismo `ProductGrid`. O filtro de categoria vive na query string
- * (`?categoria=<valor>`), mantendo a URL compartilhável e compatível com SSR.
+ * novos para os mais antigos. O cabeçalho (título, chamada e aviso de
+ * transparência) vive numa faixa roxa (`StoreHero`).
  *
- * Busca de dados SSR-safe via `useFetch`: os dados são resolvidos no servidor e
- * transferidos para o cliente (sem re-fetch na hidratação). O filtro re-consulta
- * o endpoint automaticamente quando `activeCategory` muda, pois a `query` do
- * `useFetch` é reativa. Só tokens de design.
+ * Duas apresentações do acervo, ambas SSR-safe:
+ * - Sem categoria selecionada (`?categoria=` ausente): trilhos por categoria
+ *   (`ProductCategoryRailsSection`), um carrossel para cada categoria.
+ * - Com categoria selecionada: a grade completa filtrada (`ProductGrid`).
+ *
+ * O filtro vive na query string (`?categoria=<valor>`), mantendo a URL
+ * compartilhável. O `useFetch` é reativo: re-consulta ao trocar de categoria.
+ * Só tokens de design.
  */
 const route = useRoute()
 
@@ -24,7 +27,7 @@ const { data: productsResponse } = await useFetch('/api/products', {
   query: { categoria: activeCategory },
 })
 
-/** Categorias disponíveis para os chips de filtro. Consulta fixa. */
+/** Categorias disponíveis para os chips de filtro e os trilhos. Consulta fixa. */
 const { data: categoriesResponse } = await useFetch('/api/products/categories')
 
 const products = computed(() => productsResponse.value?.data ?? [])
@@ -42,63 +45,60 @@ useSeoMeta({
 </script>
 
 <template>
-  <AppContainer as="main" class="loja-index">
-    <header class="loja-index__header">
-      <BaseHeading :level="1">Lojinha</BaseHeading>
-      <p class="loja-index__lead">
-        Uma seleção de terços, bíblias, livros e itens para viver a fé no dia a dia.
-      </p>
-    </header>
+  <main class="loja-page">
+    <StoreHero
+      title="Lojinha"
+      lead="Uma seleção de terços, bíblias, livros e itens para viver a fé no dia a dia."
+    >
+      <AffiliateNotice />
+    </StoreHero>
 
-    <AffiliateNotice class="loja-index__notice" />
+    <AppContainer as="section" class="loja-page__content">
+      <ProductCategoryFilter
+        v-if="categories.length"
+        :categories="categories"
+        :active="activeCategory ?? null"
+        class="loja-page__filter"
+      />
 
-    <ProductCategoryFilter
-      v-if="categories.length"
-      :categories="categories"
-      :active="activeCategory ?? null"
-      class="loja-index__filter"
-    />
+      <!-- Sem filtro: trilhos por categoria (um carrossel para cada). -->
+      <ProductCategoryRailsSection
+        v-if="!activeCategory && products.length"
+        :products="products"
+        :categories="categories"
+        base-path="/loja"
+      />
 
-    <ProductGrid
-      :products="products"
-      :has-filters="Boolean(activeCategory)"
-      clear-to="/loja"
-      class="loja-index__grid"
-    />
-  </AppContainer>
+      <!-- Com filtro: grade completa da categoria escolhida. -->
+      <ProductGrid
+        v-else
+        :products="products"
+        :has-filters="Boolean(activeCategory)"
+        clear-to="/loja"
+      />
+    </AppContainer>
+  </main>
 </template>
 
 <style scoped>
-.loja-index {
-  padding-block: var(--space-10) var(--space-16);
+.loja-page {
+  padding-bottom: var(--space-16);
 }
 
-.loja-index__header {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  margin-bottom: var(--space-6);
+.loja-page__content {
+  padding-top: var(--space-8);
 }
 
-.loja-index__lead {
-  margin: 0;
-  max-width: var(--measure-prose);
-  color: var(--text-body);
-  font-family: var(--font-sans);
-  font-size: var(--text-lg);
-  line-height: var(--leading-normal);
-}
-
-.loja-index__notice {
-  margin-bottom: var(--space-6);
-}
-
-.loja-index__filter {
+.loja-page__filter {
   margin-bottom: var(--space-8);
 }
 
 @media (min-width: 48rem) {
-  .loja-index__filter {
+  .loja-page__content {
+    padding-top: var(--space-10);
+  }
+
+  .loja-page__filter {
     margin-bottom: var(--space-10);
   }
 }
