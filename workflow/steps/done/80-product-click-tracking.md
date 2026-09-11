@@ -1,6 +1,6 @@
 # Fire product_click on shop card click
 
-**Status:** todo
+**Status:** done
 
 ## What to do
 
@@ -13,3 +13,7 @@ Clicking a product generates a `product_click` event with the correct id and sti
 ## Original line
 
 > Disparar `product_click` (com `targetId` = id do produto) no clique do card da lojinha, sem atrapalhar o redirecionamento ao afiliado. ✔ Clicar num produto gera um evento `product_click` com o id correto e ainda abre o link de afiliado.
+
+## Summary
+
+Added `trackClick()` to `portal/app/components/molecules/ProductCard.vue`: on CTA click, fires a fire-and-forget `$fetch('POST /api/track', { type: 'product_click', path: route.path, targetId: product.id })` with a silent `.catch()` so network failures never affect the affiliate link redirect (which still opens in `_blank`).
