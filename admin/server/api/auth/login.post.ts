@@ -16,7 +16,10 @@ import { compare } from 'bcryptjs'
 export default defineEventHandler(async (event) => {
   const body = await readBody(event).catch(() => null)
 
-  const email = typeof body?.email === 'string' ? body.email.trim() : ''
+  // Normaliza o e-mail igual ao create-master-user.ts (trim + lowercase): a
+  // coluna `email` é @unique e case-sensitive no Postgres, então logar com
+  // "Admin@Exemplo.com" precisa casar com o "admin@exemplo.com" gravado.
+  const email = typeof body?.email === 'string' ? body.email.trim().toLowerCase() : ''
   const password = typeof body?.password === 'string' ? body.password : ''
 
   // Validate presence of both fields.
