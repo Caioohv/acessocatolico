@@ -6,10 +6,12 @@ import { prisma, type Prisma } from '@acesso/db'
  * Query string (todos opcionais):
  *   - `categoria`: filtra por categoria exata (ex.: "Terços").
  *   - `busca`: termo de busca livre, casa em título ou descrição (case-insensitive).
+ *   - `fonte`: qual loja consultar — "organizacional" (produtos com `showOrg`,
+ *     voltados a quem organiza eventos) ou, por padrão, a pública (`showPublic`).
  *
  * Retorna apenas produtos ativos, do mais novo para o mais antigo. Expõe só o
- * contrato público de cada produto — campos internos (`active`, `createdAt`,
- * `updatedAt`) não vão para o cliente.
+ * contrato público de cada produto — campos internos (`active`, `showPublic`,
+ * `showOrg`, `createdAt`, `updatedAt`) não vão para o cliente.
  */
 
 const publicProductSelect = {
@@ -31,8 +33,18 @@ export default defineEventHandler(async (event): Promise<{ data: PublicProduct[]
 
   const categoria = typeof query.categoria === 'string' ? query.categoria.trim() : ''
   const busca = typeof query.busca === 'string' ? query.busca.trim() : ''
+  const fonte = typeof query.fonte === 'string' ? query.fonte.trim() : ''
 
   const where: Prisma.ProductWhereInput = { active: true }
+
+  // Fonte da loja: organizacional filtra por `showOrg`; qualquer outro valor
+  // (incluindo ausência) cai na loja pública, filtrando por `showPublic`.
+  if (fonte === 'organizacional') {
+    where.showOrg = true
+  }
+  else {
+    where.showPublic = true
+  }
 
   if (categoria) {
     where.category = categoria

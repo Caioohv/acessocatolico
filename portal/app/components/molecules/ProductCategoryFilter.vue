@@ -25,9 +25,12 @@ interface Props {
   categories: ProductCategory[]
   /** Categoria atualmente selecionada, ou `null`/ausente para "Todas". */
   active?: string | null
+  /** Rota base dos chips (ex.: "/loja" ou "/loja/organizacional"). */
+  basePath?: string
 }
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   active: null,
+  basePath: '/loja',
 })
 
 const route = useRoute()
@@ -41,7 +44,7 @@ function linkTo(category?: string): { path: string; query: Record<string, string
   if (category) {
     query.categoria = category
   }
-  return { path: '/loja', query }
+  return { path: props.basePath, query }
 }
 </script>
 

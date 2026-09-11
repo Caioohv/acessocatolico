@@ -93,6 +93,8 @@ services:
       NODE_OPTIONS: --max-old-space-size=512
       DATABASE_URL: ${DATABASE_URL:-}
       NUXT_SESSION_PASSWORD: ${NUXT_SESSION_PASSWORD:-}
+      # Destino do botão "Ir ao site" do painel (portal público).
+      NUXT_PUBLIC_SITE_URL: ${NUXT_PUBLIC_SITE_URL:-https://acessocatolico.com.br}
     # Probe de readiness (espelha o portal): /api/health não exige sessão.
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]

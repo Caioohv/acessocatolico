@@ -24,6 +24,13 @@ export default defineNuxtConfig({
       { name: 'JetBrains Mono', provider: 'google', weights: [400, 500] },
     ],
   },
+  // URL do portal público, usada pelo botão "Ir ao site" do painel.
+  // Sobrescreva em produção com NUXT_PUBLIC_SITE_URL.
+  runtimeConfig: {
+    public: {
+      siteUrl: 'https://acessocatolico.com.br',
+    },
+  },
   app: {
     head: {
       viewport: 'width=device-width, initial-scale=1',
