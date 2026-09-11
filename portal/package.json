@@ -10,7 +10,7 @@
     "preview": "nuxt preview"
   },
   "dependencies": {
-    "@acesso/db": "workspace:*",
+    "@acesso/db": "*",
     "@nuxt/content": "^3.16.0",
     "@nuxt/eslint": "^1.17.0",
     "@nuxt/fonts": "^0.14.0",

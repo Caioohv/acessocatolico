@@ -1,0 +1,31 @@
+# Saídas de build/dev (regeradas dentro da imagem)
+.output
+.nuxt
+.nitro
+.cache
+.data
+dist
+**/.output
+**/.nuxt
+**/.nitro
+**/.cache
+**/.data
+**/dist
+
+# Dependências (reinstaladas com npm ci)
+node_modules
+**/node_modules
+
+# Git e envs locais
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+
+# Logs e lixo de editor
+*.log
+logs
+.DS_Store
+.idea
+.fleet
