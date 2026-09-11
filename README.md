@@ -25,19 +25,35 @@ Os serviços de produção rodam via Docker Compose conectados à rede externa c
 2. **`app`** (`acessocatolico_app:3000`): Container de produção do portal público.
 3. **`admin`** (`acessocatolico_admin:3000`): Container de produção do painel administrativo.
 
+`app` e `admin` têm **healthcheck** em `GET /api/health` (rota barata, sem banco; no admin fica fora da autenticação porque middleware de rota não roda em `/api/*`). O probe usa o `fetch` global do Node 24, então a imagem `slim` não precisa de `curl`/`wget`. Confira o estado com `docker compose ps` (coluna `STATUS` mostra `healthy`).
+
 ### Subindo os Serviços
 
-Copie o arquivo de variáveis de ambiente e preencha as configurações:
+Copie o arquivo de variáveis de ambiente e **preencha as duas variáveis obrigatórias**:
 
 ```bash
 cp .env.example .env
 ```
+
+- **`DATABASE_URL`**: string de conexão com o Postgres global (usada por `migrate`, `app` e `admin`).
+- **`NUXT_SESSION_PASSWORD`**: chave de sessão do `nuxt-auth-utils` no admin — **mínimo 32 caracteres**. Gere com `openssl rand -base64 32`. Sem ela (ou curta), o admin não sobe.
 
 Para realizar o build e subir todos os serviços na ordem correta:
 
 ```bash
 ./up.sh
 ```
+
+O `up.sh` valida `DATABASE_URL` e `NUXT_SESSION_PASSWORD` (lendo do `.env` ou do ambiente) e aborta antes do build se alguma faltar ou for curta demais.
+
+No **primeiro deploy**, crie o usuário master do painel antes de acessar o admin (não há cadastro público):
+
+```bash
+docker exec acessocatolico_admin \
+  npm run -w db create-user -- admin@exemplo.com "SenhaForte123" "Nome do Usuário"
+```
+
+> O e-mail é normalizado para minúsculas na criação **e** no login, então logue com o mesmo endereço em qualquer capitalização.
 
 ---
 
