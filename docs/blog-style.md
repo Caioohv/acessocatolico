@@ -1,6 +1,6 @@
 # Estilo e Arquitetura do Blog — Formato Trilha / Plataforma de Formação (`blog-style.md`)
 
-> **Status:** Proposta conceitual / Documento de viabilidade (não implementado).  
+> **Status:** Implementado (interface). Aguarda conteúdo editorial para "encher" as trilhas e carrosséis (ver seção 6).  
 > **Objetivo:** Documentar a viabilidade, estrutura de UX e arquitetura técnica para transformar a página inicial do Blog (`/blog`) em uma experiência similar a plataformas de cursos/streaming (Netflix / LMS), com trilhas sequenciais de formação e carrosséis horizontais por categoria.
 
 ---
@@ -133,3 +133,18 @@ track:
 Antes de virar a chave da interface para carrosséis:
 1. **Volume Mínimo de Artigos:** Carrosséis horizontais transmitem abundância quando têm entre **4 e 8 artigos por categoria**. Com apenas 1 ou 2 artigos, a linha pode parecer vazia.
 2. **Definição das Trilhas Iniciais:** Planejar ao menos 1 ou 2 trilhas completas (ex.: 3 a 5 artigos sequenciais cada) para que o leitor experimente o fluxo contínuo desde o lançamento.
+
+---
+
+## 7. O que foi implementado
+
+A interface descrita acima está construída (zero dependências novas; CSS nativo + Nuxt Content v3):
+
+- **Schema (`content.config.ts`):** campos opcionais `featured: boolean` e `track: { id, name, order, totalSteps? }` no frontmatter da collection `blog`.
+- **Átomo:** `TrackBadge.vue` — rótulo "Etapa 01/05".
+- **Moléculas:** `CarouselControls.vue` (setas acessíveis) e `PostCard.vue` estendido com props opcionais `step`/`totalSteps` para o modo trilha.
+- **Organismo:** `PostCarousel.vue` — trilho com `scroll-snap` nativo, detecção de limites (setas habilitam/desabilitam) e `variant: 'default' | 'track'`. A variante `track` exibe o badge de etapa e a linha conectora. **Reúso:** em vez de um `TrackRail.vue` separado (como sugeria a seção 3.3), a variante evita duplicação.
+- **Seções:** `BlogHeroSection.vue`, `BlogTrackSection.vue`, `BlogCategoryCarouselSection.vue`.
+- **Página (`/blog`):** dois modos no mesmo endereço — **navegação** (Hero + Trilhas + carrosséis por categoria) e **busca/filtro** (`?busca=`/`?categoria=` caem na listagem plana `PostGrid`, preservando SSR e URLs compartilháveis). **Degradação graciosa:** seções sem conteúdo não são renderizadas; o Hero usa `featured` ou, na ausência, o post mais recente.
+
+Ainda **não** implementado (fora do escopo desta entrega): recursos "Continuar lendo"/"marcar como lido" via `localStorage` (seção 2, item 4).
