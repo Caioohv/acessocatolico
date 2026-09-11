@@ -1,6 +1,6 @@
 # Update `.env.example` and `up.sh`
 
-**Status:** todo
+**Status:** done
 
 ## What to do
 
@@ -13,3 +13,7 @@ Update `.env.example` with `NUXT_SESSION_PASSWORD` (and anything else the admin/
 ## Original line
 
 > Atualizar `.env.example` (`NUXT_SESSION_PASSWORD` e o que mais for necessário) e o `up.sh` (mensagens/serviços novos). ✔ `cp .env.example .env` + preencher + `./up.sh` sobe migrate + portal + admin sem erro.
+
+## Summary
+
+Atualizados `.env.example` (instruções de conexão `DATABASE_URL` e chave de sessão de 32+ caracteres `NUXT_SESSION_PASSWORD`) e `up.sh` (validação limpa de `.env`, criação idempotente de `caddy_net`, build e subida dos 3 serviços com mensagens das rotas de proxy reverso do Caddy). Validação com `docker compose config` executada com sucesso.

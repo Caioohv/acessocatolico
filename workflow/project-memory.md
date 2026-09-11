@@ -9,6 +9,12 @@
 
 ## Entries
 
+### 2026-09-11 — Atualização de .env.example e up.sh (step 91): validação de variáveis e orquestração de serviços
+**Context:** Atualizar `.env.example` com instruções de `DATABASE_URL` e `NUXT_SESSION_PASSWORD` (mínimo 32 caracteres) e o script `up.sh` para validar variáveis de ambiente, criar `caddy_net` de forma idempotente, e exibir status e rotas do proxy reverso para todos os três serviços (`migrate`, `portal`, `admin`).
+**Gotcha:** (1) `up.sh` precisa alertar e falhar caso `.env` esteja ausente e `DATABASE_URL` não esteja definida no ambiente, evitando subidas com falha no `migrate` ou `admin`. Se `DATABASE_URL` já existir no ambiente atual (ex: CI ou export direto no shell), o script emite aviso e prossegue normalmente.
+(2) As saídas finais do `up.sh` devem apontar claramente as duas rotas que o Caddy roteia na rede `caddy_net`: `acessocatolico.com.br` -> `acessocatolico_app:3000` e `admin.acessocatolico.com.br` -> `acessocatolico_admin:3000`.
+**Resolution:** Atualizados `.env.example` e `up.sh`. Validados comportamento sem `.env` (exit 1 com instruções) e sintaxe/config com `docker compose config` com `.env` populado (exit 0).
+
 ### 2026-09-11 — Serviço 'admin' no docker-compose (step 90): paridade com portal, guarda de memória e NUXT_SESSION_PASSWORD
 **Context:** Adicionar o serviço `admin` ao `docker-compose.yml` da raiz usando `admin/Dockerfile` (`context: .`), container `acessocatolico_admin`, conectado à rede externa `caddy_net`, aguardando a conclusão com sucesso do serviço `migrate`, e com a guarda de memória espelhada do portal.
 **Gotcha:** (1) `admin` precisa de `NUXT_SESSION_PASSWORD: ${NUXT_SESSION_PASSWORD:-}` além de `DATABASE_URL: ${DATABASE_URL:-}` para autenticação via `nuxt-auth-utils`. Com defaults vazios `${VAR:-}`, `docker compose config` valida sem erro mesmo sem arquivo `.env` preenchido.

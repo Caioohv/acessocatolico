@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
-# Sobe o portal Acesso Católico (build + up) numa tacada só.
+# Sobe os serviços do Acesso Católico (build + up) numa tacada só:
+#   - migrate (executa migrations e sai)
+#   - portal  (acessocatolico_app:3000)
+#   - admin   (acessocatolico_admin:3000)
 #
 # Uso:  ./up.sh
 #
 # Pré-requisitos (uma vez):
-#   1. cp .env.example .env  e preencher DATABASE_URL (Postgres global da VPS).
+#   1. cp .env.example .env  e preencher DATABASE_URL e NUXT_SESSION_PASSWORD.
 #   2. O database `acessocatolico` é criado pelo init do global_psql. Se essa
 #      instância já existia antes disso, crie-o manualmente:
 #        docker exec -it global_psql psql -U postgres -c 'CREATE DATABASE acessocatolico;'
@@ -22,12 +25,17 @@ else
   exit 1
 fi
 
-# .env é opcional enquanto a integração com o banco / Prisma estiver comentada.
-# if [ ! -f .env ]; then
-#   echo "✗ .env não encontrado. Rode:  cp .env.example .env  e preencha DATABASE_URL." >&2
-#   exit 1
-# fi
-
+# Validação do arquivo .env
+if [ ! -f .env ]; then
+  if [ -z "${DATABASE_URL:-}" ]; then
+    echo "✗ Arquivo .env não encontrado (e DATABASE_URL não definida no ambiente)." >&2
+    echo "  Execute:  cp .env.example .env" >&2
+    echo "  E preencha DATABASE_URL e NUXT_SESSION_PASSWORD antes de subir os serviços." >&2
+    exit 1
+  else
+    echo "! Aviso: Arquivo .env não encontrado, utilizando variáveis definidas no ambiente."
+  fi
+fi
 
 # A rede externa do Caddy precisa existir (idempotente — não recria se já houver).
 if ! docker network inspect caddy_net >/dev/null 2>&1; then
@@ -35,13 +43,20 @@ if ! docker network inspect caddy_net >/dev/null 2>&1; then
   docker network create caddy_net
 fi
 
-echo "→ Build da imagem e subida (detached)..."
+echo "→ Build das imagens e subida dos serviços (detached)..."
 $COMPOSE up -d --build
 
-echo "→ Status:"
+echo "→ Status dos serviços:"
 $COMPOSE ps
 
 echo
-echo "✓ Portal no ar como acessocatolico_app:3000."
-echo "  Caddy já aponta acessocatolico.com.br → acessocatolico_app:3000."
-echo "  Recarregar o proxy, se preciso:  ../../../vps/infra/proxy/restart-caddy.sh"
+echo "✓ Serviços iniciados:"
+echo "  - migrate: executa migrações pendentes do banco (@acesso/db) e finaliza com sucesso."
+echo "  - portal:  acessocatolico_app:3000"
+echo "  - admin:   acessocatolico_admin:3000"
+echo
+echo "  Configuração de proxy reverso no Caddy (rede caddy_net):"
+echo "  - acessocatolico.com.br       -> acessocatolico_app:3000"
+echo "  - admin.acessocatolico.com.br -> acessocatolico_admin:3000"
+echo
+echo "  Recarregar o proxy Caddy, se preciso:  ../../../vps/infra/proxy/restart-caddy.sh"
