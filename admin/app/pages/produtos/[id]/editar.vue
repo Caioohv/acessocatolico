@@ -8,6 +8,8 @@ interface AdminProduct {
   affiliateUrl: string | null
   imageUrl: string | null
   active: boolean
+  showPublic: boolean
+  showOrg: boolean
 }
 
 const route = useRoute()
@@ -71,6 +73,8 @@ async function onSaved(_product: Record<string, unknown>) {
           affiliateUrl: product.affiliateUrl ?? '',
           imageUrl: product.imageUrl ?? '',
           active: product.active,
+          showPublic: product.showPublic,
+          showOrg: product.showOrg,
         }"
         @saved="onSaved"
       />

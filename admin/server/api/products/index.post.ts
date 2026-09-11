@@ -11,6 +11,8 @@
  *   - affiliateUrl: string
  *   - imageUrl: string
  *   - active: boolean (optional, defaults to true)
+ *   - showPublic: boolean (optional, defaults to true — visível na loja pública)
+ *   - showOrg: boolean (optional, defaults to false — visível na loja organizacional)
  */
 export default defineEventHandler(async (event) => {
   await requireUserSession(event)
@@ -48,10 +50,13 @@ export default defineEventHandler(async (event) => {
   }
 
   const active = typeof body?.active === 'boolean' ? body.active : true
+  // Novos produtos: pública marcada por padrão, organizacional desmarcada.
+  const showPublic = typeof body?.showPublic === 'boolean' ? body.showPublic : true
+  const showOrg = typeof body?.showOrg === 'boolean' ? body.showOrg : false
 
   try {
     const product = await prisma.product.create({
-      data: { title, description, priceRef, category, affiliateUrl, imageUrl, active },
+      data: { title, description, priceRef, category, affiliateUrl, imageUrl, active, showPublic, showOrg },
     })
 
     setResponseStatus(event, 201)
