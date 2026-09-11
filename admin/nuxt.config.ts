@@ -6,6 +6,11 @@ export default defineNuxtConfig({
     'nuxt-auth-utils',
   ],
   devtools: { enabled: true },
+  // Atomic Design: componentes auto-importados pelo nome puro (<MetricCard>,
+  // <ProductForm>), sem prefixo de diretório (molecules/organisms). Espelha a
+  // config do portal — sem isso o Nuxt registraria <MoleculesMetricCard> etc.
+  // e as referências sem prefixo nas páginas não renderizam nada.
+  components: [{ path: '~/components', pathPrefix: false }],
   // Design tokens compartilhados (mesma fonte de verdade do portal): cores,
   // espaçamento, tipografia, efeitos e reset. Nada hardcoded — sempre var(--*).
   css: ['~/assets/css/main.css'],

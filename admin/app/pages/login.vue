@@ -3,7 +3,7 @@ definePageMeta({ layout: false })
 useHead({ title: 'Entrar — Acesso Católico' })
 
 // If already authenticated, skip the login page.
-const { loggedIn } = useUserSession()
+const { loggedIn, fetch: refreshSession } = useUserSession()
 if (loggedIn.value) {
   await navigateTo('/')
 }
@@ -24,6 +24,11 @@ async function onSubmit() {
       method: 'POST',
       body: { email: email.value, password: password.value },
     })
+
+    // O endpoint gravou o cookie de sessão, mas o estado client-side do
+    // nuxt-auth-utils ainda não reflete isso. Sem este refresh, o middleware
+    // global lê loggedIn=false ao navegar para "/" e rebota para /login.
+    await refreshSession()
 
     // Success — go to admin home.
     await navigateTo('/')
