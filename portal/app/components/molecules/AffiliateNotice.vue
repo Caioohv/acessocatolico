@@ -14,7 +14,7 @@ interface Props {
 }
 withDefaults(defineProps<Props>(), {
   title: 'Transparência',
-  text: 'Alguns links da loja são de afiliados. Quando você compra por eles, o Acesso Católico recebe uma pequena comissão, sem custo a mais para você. É o que mantém o portal gratuito.',
+  text: 'Os botões daqui levam para a Shopee, o preço que mostramos é uma referência. Quando você abre e compra por aqui, o Acesso Católico recebe uma pequena comissão, sem custo a mais para você. É o que mantém o portal e os sistemas gratuitos para todos.',
 })
 </script>
 
