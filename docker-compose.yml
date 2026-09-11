@@ -59,7 +59,15 @@ services:
       NODE_OPTIONS: --max-old-space-size=512
       # String de conexão do Prisma → Postgres global
       DATABASE_URL: ${DATABASE_URL:-}
-
+    # Probe de readiness: bate em /api/health (rota barata, sem banco). Node 24
+    # traz `fetch` global, então não precisa de curl/wget na imagem slim. O
+    # start_period cobre o boot do Nitro antes de contar falhas.
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
     networks:
       - caddy_net
 
@@ -85,6 +93,13 @@ services:
       NODE_OPTIONS: --max-old-space-size=512
       DATABASE_URL: ${DATABASE_URL:-}
       NUXT_SESSION_PASSWORD: ${NUXT_SESSION_PASSWORD:-}
+    # Probe de readiness (espelha o portal): /api/health não exige sessão.
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
     networks:
       - caddy_net
 
