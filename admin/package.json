@@ -1,0 +1,26 @@
+{
+  "name": "@acesso/admin",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "lint": "eslint .",
+    "preview": "nuxt preview"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6"
+  },
+  "dependencies": {
+    "@acesso/db": "*",
+    "@nuxt/eslint": "^1.17.0",
+    "bcryptjs": "^2.4.3",
+    "@nuxt/fonts": "^0.14.0",
+    "eslint": "^10.10.0",
+    "nuxt": "^4.5.2",
+    "nuxt-auth-utils": "^0.5.18",
+    "vue": "^3.5.42",
+    "vue-router": "^5.3.1"
+  }
+}

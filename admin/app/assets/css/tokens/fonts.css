@@ -1,0 +1,12 @@
+/* Acesso Católico — webfonts.
+   As faces são carregadas e self-hospedadas pelo @nuxt/fonts (config em
+   nuxt.config.ts → `fonts.families`), não por @import externo — evita request
+   render-blocking ao Google e mantém as fontes servidas do próprio domínio.
+
+   Spectral       — serifa editorial, calorosa e moderna (display/títulos)
+   Figtree        — sans humanista amigável (UI/corpo)
+   JetBrains Mono — meta-dados técnicos (atualizado_em, códigos, Pix)
+
+   As famílias/pesos aqui declarados vivem em tokens/typography.css
+   (--font-display, --font-sans, --font-mono). @nuxt/fonts injeta as regras
+   @font-face automaticamente para as famílias referenciadas nesses tokens. */

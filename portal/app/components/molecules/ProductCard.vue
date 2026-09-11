@@ -37,6 +37,25 @@ const props = defineProps<Props>()
 
 const hasImage = computed(() => Boolean(props.product.imageUrl))
 
+const route = useRoute()
+
+/**
+ * Dispara `product_click` fire-and-forget: não bloqueia a navegação
+ * para o link de afiliado (que abre em `_blank`).
+ */
+function trackClick() {
+  $fetch('/api/track', {
+    method: 'POST',
+    body: {
+      type: 'product_click',
+      path: route.path,
+      targetId: props.product.id,
+    },
+  }).catch(() => {
+    // Silencioso: falha de rede não deve romper a experiência do usuário.
+  })
+}
+
 /**
  * Preço em BRL. `priceRef` já costuma vir como string de exibição
  * (`R$ 49,90`); se vier como número puro (`49.90`), formata em BRL.
@@ -91,6 +110,7 @@ const price = computed(() => {
           rel="noopener noreferrer nofollow"
           block
           :aria-label="`Ver oferta de ${product.title}`"
+          @click="trackClick"
         >
           Ver oferta
         </BaseButton>

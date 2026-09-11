@@ -1,7 +1,9 @@
-# Acesso Católico — portal público (Nuxt 4).
+# Acesso Católico — portal público e painel admin (Nuxt 4).
 #
-# Padrão da VPS (espelho em ../../../vps): o app entra na rede externa `caddy_net`
-# com um container_name fixo, e o Caddy faz `reverse_proxy acessocatolico_app:3000`.
+# Padrão da VPS (espelho em ../../../vps): os apps entram na rede externa `caddy_net`
+# com container_names fixos, e o Caddy faz reverse_proxy:
+#   - acessocatolico.com.br       -> acessocatolico_app:3000
+#   - admin.acessocatolico.com.br -> acessocatolico_admin:3000
 #
 # O banco NÃO sobe aqui: a lojinha usa o Postgres GLOBAL da VPS (container
 # `global_psql`, em infra/dbs/global_psql, na rede caddy_net). A conexão vem por
@@ -11,12 +13,31 @@
 # Subir tudo de uma vez:  ./up.sh
 
 services:
+  migrate:
+    build:
+      context: .
+      dockerfile: db/Dockerfile
+    image: acessocatolico_migrate
+    container_name: acessocatolico_migrate
+    restart: "no"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-}
+    networks:
+      - caddy_net
+
   app:
     build:
-      context: ./portal
+      context: .
+      dockerfile: portal/Dockerfile
     image: acessocatolico_app
     container_name: acessocatolico_app
     restart: unless-stopped
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
     # Guarda de memória (defesa em profundidade — ver incidente 2026-09-10 no
     # JOURNAL da VPS). Operação saudável usa ~80MB (pico ~250MB sob carga). O
     # teto default do heap do V8 (~2GB) deixava um vazamento inflar por minutos
@@ -36,9 +57,49 @@ services:
       # normal, mas força um OOM rápido (e restart) num vazamento, em vez do
       # thrashing prolongado perto do teto default de ~2GB.
       NODE_OPTIONS: --max-old-space-size=512
-      # String de conexão do Prisma → Postgres global (comentada: banco em pendência/foco no portal).
-      # DATABASE_URL: ${DATABASE_URL:?defina DATABASE_URL no .env (veja .env.example)}
+      # String de conexão do Prisma → Postgres global
+      DATABASE_URL: ${DATABASE_URL:-}
+    # Probe de readiness: bate em /api/health (rota barata, sem banco). Node 24
+    # traz `fetch` global, então não precisa de curl/wget na imagem slim. O
+    # start_period cobre o boot do Nitro antes de contar falhas.
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
+    networks:
+      - caddy_net
 
+  admin:
+    build:
+      context: .
+      dockerfile: admin/Dockerfile
+    image: acessocatolico_admin
+    container_name: acessocatolico_admin
+    restart: unless-stopped
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    # Guarda de memória (defesa em profundidade — espelha o container do portal).
+    mem_limit: 768m
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      NODE_ENV: production
+      NITRO_HOST: 0.0.0.0
+      NITRO_PORT: 3000
+      NODE_OPTIONS: --max-old-space-size=512
+      DATABASE_URL: ${DATABASE_URL:-}
+      NUXT_SESSION_PASSWORD: ${NUXT_SESSION_PASSWORD:-}
+    # Probe de readiness (espelha o portal): /api/health não exige sessão.
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
     networks:
       - caddy_net
 

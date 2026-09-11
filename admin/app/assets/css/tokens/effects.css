@@ -1,0 +1,27 @@
+/* ==========================================================================
+   Acesso Católico — Raios, sombras e outros efeitos
+   Sombras quentes e discretas; cantos suaves mas não "bolha".
+   ========================================================================== */
+:root {
+  /* Raios */
+  --radius-sm: 6px;    /* chips, badges, inputs pequenos */
+  --radius-md: 10px;   /* botões, inputs */
+  --radius-lg: 14px;   /* cards */
+  --radius-xl: 20px;   /* painéis, modais, imagens */
+  --radius-pill: 999px;
+
+  /* Sombras — tinta quente, baixa saturação */
+  --shadow-sm: 0 1px 2px rgba(46, 34, 22, 0.06);
+  --shadow-md: 0 4px 16px -4px rgba(46, 34, 22, 0.12);
+  --shadow-lg: 0 14px 34px -10px rgba(46, 34, 22, 0.18);
+  --shadow-focus: 0 0 0 3px oklch(0.60 0.14 305 / 0.30); /* anel de foco violeta */
+
+  /* Bordas */
+  --border-width: 1px;
+
+  /* Movimento — sereno, sem exageros */
+  --ease-standard: cubic-bezier(0.2, 0, 0.1, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 320ms;
+}

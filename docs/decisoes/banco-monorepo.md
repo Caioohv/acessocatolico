@@ -60,6 +60,41 @@ build passa a ser a raiz do repo** (não mais `./portal`): o Dockerfile copia `p
 `package-lock.json` da raiz + o pacote `db/` + o app, roda `npm ci` (lockfile único) e gera o client.
 É a troca aceita por ter fonte única — documentada aqui para não surpreender no deploy.
 
+### Roteamento e Proxy (Caddy na VPS)
+
+Na topologia de produção da VPS, tanto o portal quanto o painel administrativo conectam-se à rede Docker externa `caddy_net`. O proxy reverso Caddy recebe os requests externos e encaminha para os respectivos containers:
+
+- **Portal público:** `acessocatolico.com.br` → `reverse_proxy acessocatolico_app:3000`
+- **Painel administrativo:** `admin.acessocatolico.com.br` → `reverse_proxy acessocatolico_admin:3000`
+
+Configuração no `Caddyfile` da VPS:
+
+```caddyfile
+# Portal público (canônico no apex)
+http://acessocatolico.com.br, http://www.acessocatolico.com.br, www.acessocatolico.com.br {
+	redir https://acessocatolico.com.br{uri} permanent
+}
+acessocatolico.com.br {
+	import sec_headers
+	reverse_proxy acessocatolico_app:3000
+}
+
+# Painel administrativo
+admin.acessocatolico.com.br {
+	import sec_headers
+	reverse_proxy acessocatolico_admin:3000
+}
+```
+
+Caso o ambiente de proxy utilize snippets dedicados de TLS (ex.: `/etc/caddy/snippets/tls.caddy`), o bloco mantém a mesma regra de encaminhamento:
+
+```caddyfile
+admin.acessocatolico.com.br {
+    import /etc/caddy/snippets/tls.caddy
+    reverse_proxy acessocatolico_admin:3000
+}
+```
+
 ### Custo / trade-off
 
 - **+** Fonte única real, zero drift, posse correta das tabelas, histórico de migrations.
