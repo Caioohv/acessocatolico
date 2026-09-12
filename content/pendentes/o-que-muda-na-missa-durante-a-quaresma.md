@@ -1,6 +1,6 @@
 ---
 title: O que muda na Missa durante a Quaresma
-description: As cores litúrgicas, as omissões e o sentido das penitências desse período.
+description: As cores litúrgicas, as omissões e o sentido espiritual das penitências desse tempo.
 category: Formação
 tags:
   - quaresma
@@ -12,52 +12,32 @@ coverAlt: Altar paroquial com toalha e paramentos em tom roxo durante a Quaresma
 slug: o-que-muda-na-missa-durante-a-quaresma
 ---
 
-Quem entra em uma igreja católica na Quarta-feira de Cinzas percebe uma mudança profunda no ambiente. A atmosfera alegre e florida do Tempo Comum dá lugar a um clima de recolhimento, sobriedade e silêncio.
+Quem entra em uma igreja católica a partir da Quarta-feira de Cinzas nota uma transformação profunda no presbitério. A alegria florida e a sonoridade festiva do Tempo Comum cedem espaço para um clima de sóbrio recolhimento, silêncio e despojamento.
 
-A Quaresma compreende os quarenta dias de preparação espiritual para a celebração da Paixão, Morte e Ressurreição de Jesus Cristo na Semana Santa. Inspirada nos quarenta dias de Jesus jejuando no deserto e nos quarenta anos do povo de Israel no êxodo, a liturgia quaresmal ajusta seus ritos e símbolos visuais para educar a alma pelo despojamento.
+A Quaresma compreende quarenta dias de caminhada penitencial rumo ao mistério da Páscoa do Senhor. Inspirada nos quarenta dias de jejum de Jesus no deserto e nos quarenta anos de travessia do povo hebreu no êxodo, a liturgia da Igreja educa os olhos e ouvidos pelo jejum dos sentidos.
 
-Entender cada uma dessas mudanças transforma a participação na missa dominical durante esse tempo santo.
+Compreender o sentido espiritual dessas mudanças permite participar da Santa Missa quaresmal com maior proveito para a alma.
 
-## As alterações visuais no presbitério
+## A sobriedade visual do presbitério
 
-Os olhos captam imediatamente a sobriedade do templo:
+A visão capta de imediato a mudança visual do templo sagrado. O verde das celebrações habituais é substituído pelo roxo na casula do sacerdote, nas estolas e nos panos litúrgicos do ambão e do altar. Na pedagogia católica, a cor roxa simboliza a penitência, o recolhimento interior e a prontidão para converter a vida aos caminhos do Senhor.
 
-### O roxo litúrgico
-A cor verde do Tempo Comum é substituída pelo roxo na casula do sacerdote, nas estolas e nos panos que recobrem o ambão e o sacrário. Na simbologia da Igreja, o roxo representa penitência, recolhimento interior e sincero arrependimento dos pecados.
+Os altares deixam de receber arranjos de flores vistosos durante as seis semanas do tempo penitencial. A nudez do mármore e da madeira sem adornos recorda a aridez do deserto onde Cristo jejuou e venceu as insídias do tentador.
 
-### O desaparecimento das flores
-Durante os quarenta dias, os altares não recebem arranjos de flores festivos. A sobriedade do mármore e da madeira desprovidos de adornos lembra a aridez do deserto onde Cristo jejuou e venceu as tentações do diabo.
+A partir do quinto domingo da Quaresma, muitas igrejas preservam o costume de cobrir os crucifixos e as imagens dos santos com véus roxos. Os olhos dos fiéis se desapegam da beleza das imagens visíveis para se concentrarem com fervor no mistério da Cruz que se aproxima na Semana Santa.
 
-### O véu roxo cobrindo as imagens
-A partir do quinto domingo da Quaresma, muitas paróquias mantêm a tradição secular de cobrir os crucifixos e as imagens dos santos com tecidos roxos. Os olhos dos fiéis são privados da beleza das imagens sacras para que a mente se concentre exclusivamente no mistério interior da Cruz que se aproxima. As cruzes permanecem cobertas até o final da celebração da Paixão na Sexta-feira Santa, e as imagens dos santos até o início do canto do Glória na Vigília Pascal.
+## O jejum sonoro nos cantos e textos litúrgicos
 
-## As mudanças nos cantos e textos da missa
+A palavra e a música também passam por uma purificação austera. Aos domingos quaresmais, a assembleia não entoa o hino solene do Glória a Deus nas alturas, reservando esse cântico angélico para ressoar com júbilo renovado na noite da Vigília Pascal.
 
-A liturgia da palavra e o canto sacro também passam por um jejum sonoro:
+O canto festivo do Aleluia, que em hebraico significa louvor a Deus, fica terminantemente suspenso durante todo o período. Antes da proclamação do Evangelho, o louvor dá lugar a versículos solenes de arrependimento e reverência a Cristo Redentor.
 
-### Omissão do hino do Glória
-Aos domingos quaresmais, o hino do "Glória a Deus nas alturas" não é recitado nem cantado. Esse cântico angélico de festa é guardado em silêncio durante todo o período penitencial, para reaparecer com solenidade estrondosa na noite do Sábado Santo, anunciando a Ressurreição.
+Os instrumentos musicais, como órgão e violão, passam a ser utilizados com estrita contenção. Sua função se limita a sustentar a afinação do canto da comunidade reunida, calando-se imediatamente assim que as vozes cessam, sem solos ou floreios instrumentais.
 
-### O silêncio do Aleluia
-O canto do "Aleluia" (palavra hebraica que significa "Louvai ao Senhor com júbilo") é rigorosamente proibido na liturgia quaresmal. Antes da proclamação do Evangelho, a aclamação alegre dá lugar a versículos de tom penitencial, como: "Louvor a vós, ó Cristo, Rei da eterna glória" ou "Glória a vós, Senhor, Jesus, Primogênito dos mortos".
+## O Domingo da Alegria e os frutos para a vida prática
 
-### Instrumentos musicais contidos
-O uso de órgãos, violões e instrumentos musicais passa a ser rigorosamente restrito: eles servem apenas para sustentar o tom das vozes dos fiéis, sem solos ornamentados, ritmos de festa ou exibições técnicas. Quando o canto cessa, os instrumentos calam imediatamente.
+No meio dessa marcha austera, surge uma pausa festiva no quarto domingo da Quaresma, chamado de Domingo Laetare ou Domingo da Alegria. Nesse dia, o sacerdote pode vestir paramentos de cor rósea, o altar pode exibir flores discretas e a liturgia lembra que a vitória da Páscoa já está próxima no horizonte.
 
-## A exceção festiva: o Domingo da Alegria (Laetare)
+A pedagogia dos ritos litúrgicos deve inspirar a conduta diária do católico por meio dos três pilares bíblicos indicados no Evangelho: oração, jejum e caridade fraterna.
 
-No meio dessa caminhada penitencial, surge uma pausa celebrativa no quarto domingo da Quaresma, chamado liturgicamente de *Domingo Laetare* (Domingo da Alegria).
-
-Nesse dia:
-- O sacerdote pode usar paramentos de cor rosa.
-- O altar pode receber flores discretas.
-- O som dos instrumentos pode ser mais expressivo.
-
-Essa pausa lembra à comunidade que a Páscoa já está próxima e que a penitência cristã não é tristeza amarga, mas expectativa esperançosa da vitória definitiva da vida sobre a morte.
-
-## Como viver a liturgia quaresmal na prática diária
-
-A sobriedade dos ritos deve transbordar para a vida cotidiana do católico através dos três remédios bíblicos recomendados no Evangelho:
-1. **Oração intensificada**: participar da Via-Sacra na paróquia às sextas-feiras, rezar os Salmos penitenciais e fazer uma confissão detalhada.
-2. **Jejum voluntário**: abster-se de pequenos prazeres alimentares ou digitais, educando o corpo a dizer "não" aos caprichos passageiros.
-3. **Esmola e caridade ativa**: partilhar o dinheiro economizado com as penitências para aliviar as dores reais dos mais pobres da sua cidade.
+Intensifique a oração pessoal participando da Via-Sacra na sua comunidade e buscando o sacramento da confissão. Pratique pequenos jejuns alimentares e digitais para educar o corpo, e transforme essa economia em esmola generosa para socorrer os necessitados que cruzarem o seu caminho.
