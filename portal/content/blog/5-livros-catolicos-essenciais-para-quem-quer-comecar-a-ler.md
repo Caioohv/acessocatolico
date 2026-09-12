@@ -7,7 +7,7 @@ tags:
   - espiritualidade
   - leitura
 date: '2026-09-09'
-cover: /img/blog/livros-catolicos.jpg
+cover: /covers/post2.webp
 coverAlt: Pilha de livros de espiritualidade clássica sobre mesa de estudo
 slug: 5-livros-catolicos-essenciais-para-quem-quer-comecar-a-ler
 ---
